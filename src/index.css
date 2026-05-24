@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-base: #EBEAE6;
+  --color-pure-white: #FFFFFE;
+  --color-sun-red: #F4160F;
+  --color-gold-base: #AB825A;
+  --color-gold-light: #E6CD9A;
+  --color-gold-dark: #4E3624;
+  --color-charcoal: #241F1B;
+ /* dbaa5c-ffffff-170802-cdb48e-fdfdfd-5c3f24-9f1516-9a7951-c8a260 */
+  
+  --font-antique: "Cinzel", serif;
+}
