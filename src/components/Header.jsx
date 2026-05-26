@@ -1,13 +1,13 @@
-import { Search, Globe, ChevronDown, User, Heart, HelpCircle } from 'lucide-react';
-import logo from '../assets/images/logo1.jpg'; 
+import { Search, Globe, ChevronDown,  HelpCircle } from 'lucide-react';
+import logo from '../assets/images/logo.png'; 
 export default function Header() {
   return (
     <header className="bg-pure-white w-full border-b border-gold-light/60 sticky top-0 z-50">
       
       <div className="max-w-7xl mx-auto px-4 md:px-6 h-20 flex items-center justify-between gap-6">
         
-        <div className="flex items-center gap-3 shrink-0 cursor-pointer">
-          <img src={logo} alt="Pyramid Japan" className="w-14 h-14 object-contain" />
+        <div className="flex items-center  shrink-0 cursor-pointer">
+          <img src={logo} alt="Pyramid Japan" className="w-30 h-30 object-contain" />
           <div className="leading-tight">
             <h1 className="font-antique text-base md:text-lg font-black tracking-wider text-charcoal">
               PYRAMID JAPAN <span className="text-sun-red">CORP.</span>
@@ -41,15 +41,10 @@ export default function Header() {
             <span>How to Buy</span>
           </a>
 
-          <button className="relative p-2 hover:text-sun-red transition-colors cursor-pointer" title="Favorites">
-            <Heart className="w-4 h-4" />
-            <span className="absolute -top-1 -right-1 bg-sun-red text-pure-white text-[9px] font-mono font-bold rounded-full w-4 h-4 flex items-center justify-center">0</span>
-          </button>
-
-          <button className="flex items-center gap-2 border border-charcoal/30 bg-bg-base/20 hover:border-charcoal hover:bg-charcoal hover:text-pure-white px-4 py-2 rounded-md font-semibold tracking-wider uppercase transition-all duration-300 cursor-pointer">
+          {/* <button className="flex items-center gap-2 border border-charcoal/30 bg-bg-base/20 hover:border-charcoal hover:bg-charcoal hover:text-pure-white px-4 py-2 rounded-md font-semibold tracking-wider uppercase transition-all duration-300 cursor-pointer">
             <User className="w-3.5 h-3.5" />
             <span>Login / Register</span>
-          </button>
+          </button> */}
           
         </div>
       </div>
