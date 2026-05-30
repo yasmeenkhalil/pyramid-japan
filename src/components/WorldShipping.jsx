@@ -1,4 +1,3 @@
-// 1. استيراد الصورة محلياً من مجلد الأسيتس (تأكد من كتابة الاسم والمسار الصحيح لملفك)
 import worldMapImage from '../assets/images/world_map.svg'; 
 
 export default function WorldShipping() {
@@ -32,14 +31,12 @@ export default function WorldShipping() {
   return (
     <div className="w-full text-left bg-white select-none pb-8">
       
-      {/* 1. الشريط الأزرق الممتد */}
       <div className="bg-[#005BAC] text-white px-5 py-2.5 rounded-sm mb-8">
         <h3 className="text-xs font-bold font-sans tracking-wide">
           Areas supported by Pyramid Japan Co.
         </h3>
       </div>
 
-      {/* 2. العنوان الرئيسي */}
       <div className="text-center my-8">
         <h2 className="text-2xl font-bold font-sans tracking-tight inline-block relative">
           <span className="text-gray-800 font-light">From </span>
@@ -50,21 +47,18 @@ export default function WorldShipping() {
         </h2>
       </div>
 
-      {/* 3. حاوية خريطة العالم - تم ربطها بملف الأسيتس المستورد */}
       <div className="w-full max-w-2xl mx-auto my-6 flex justify-center items-center p-4 relative">
         <div 
           className="relative w-full aspect-[2/1] bg-no-repeat bg-center bg-contain opacity-80" 
           style={{ 
-            backgroundImage: `url(${worldMapImage})`, // 2. تمرير المتغير هنا مباشرة
+            backgroundImage: `url(${worldMapImage})`, 
             maskImage: 'linear-gradient(to bottom, black 80%, transparent)' 
           }}
         >
           
-          {/* بؤرة الشحن من اليابان */}
           <div className="absolute top-[35%] left-[73%] w-2.5 h-2.5 bg-[#D70014] rounded-full animate-ping"></div>
           <div className="absolute top-[35%] left-[73%] w-2 h-2 bg-[#005BAC] rounded-full"></div>
           
-          {/* التأثير القوسي للملاحة البحرية */}
           <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 200">
             <path d="M292,70 Q200,10 100,60" fill="none" stroke="#005BAC" strokeWidth="1" strokeDasharray="2,2" />
             <path d="M292,70 Q250,20 180,120" fill="none" stroke="#005BAC" strokeWidth="1" strokeDasharray="2,2" />
@@ -74,7 +68,6 @@ export default function WorldShipping() {
         </div>
       </div>
 
-      {/* 4. شبكة الدول والمدن المدعومة */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 px-6 text-[11px] text-gray-700 font-sans leading-relaxed mt-10">
         <div className="flex flex-col gap-1">
           {column1.map((item, idx) => <p key={idx} className="hover:text-[#005BAC] cursor-pointer">{item}</p>)}

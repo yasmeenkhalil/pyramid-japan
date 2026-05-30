@@ -12,3 +12,6 @@
   
   --font-antique: "Cinzel", serif;
 }
+html {
+  scroll-behavior: smooth;
+}

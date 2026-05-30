@@ -1,56 +1,45 @@
-import { Truck, Compass, Layers, Wrench, Settings } from 'lucide-react';
-import { TbBackhoe } from "react-icons/tb";
-
 const categories = [
-  { name: 'Excavators', count: 41, icon: TbBackhoe, iconColor: 'text-amber-600', iconBg: 'bg-amber-50 border-amber-100' },
-  { name: 'Mini-Excavators', count: 83, icon: Settings, iconColor: 'text-blue-600', iconBg: 'bg-blue-50 border-blue-100' },
-  { name: 'Heavy Cranes', count: 3, icon: Compass, iconColor: 'text-emerald-600', iconBg: 'bg-emerald-50 border-emerald-100' },
-  { name: 'Foundation Systems', count: 6, icon: Layers, iconColor: 'text-indigo-600', iconBg: 'bg-indigo-50 border-indigo-100' },
-  { name: 'Logistic Trucks', count: 14, icon: Truck, iconColor: 'text-rose-600', iconBg: 'bg-rose-50 border-rose-100' },
-  { name: 'Road Rollers', count: 7, icon: Wrench, iconColor: 'text-sky-600', iconBg: 'bg-sky-50 border-sky-100' },
+  { name: 'Excavators', count: 41, desc: 'Heavy tracked and wheeled excavators for mining and earthmoving projects.', imageSrc: 'https://www.quinncompany.com/wp-content/uploads/2022/03/jpg_5db2c5f496713.webp' },
+  { name: 'Mini-Excavators', count: 83, desc: 'Compact excavators ideal for tight spaces, landscaping, and utility work.', imageSrc: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7Hk8g53_seSEOALEq46EMf2sWl22b2PMLUQ&s' },
+  { name: 'Heavy Cranes', count: 3, desc: 'High-capacity lifting solutions for heavy construction and infrastructure.', imageSrc: 'https://i.ytimg.com/vi/H4j-EpTW4uY/sddefault.jpg' },
+  { name: 'Foundation Systems', count: 6, desc: 'Advanced piling rigs and drilling equipment for deep foundation works.', imageSrc: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRLKvS1he4PVTyPyu_ABEqifYyfskPJIVBOw&s' },
+  { name: 'Logistic Trucks', count: 14, desc: 'Heavy-duty transport trucks and tippers for site logistics and hauling.', imageSrc: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhGT1KJzv-R3s797d4KrSF-vKPYQZ0hP9DRw&s' },
+  { name: 'Road Rollers', count: 7, desc: 'Soil and asphalt compactors for road building and paving operations.', imageSrc: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTicBrtuYrDAl7i93fgsX5wOVKY1whn95ZcXg&s' },
 ];
 
 export default function CategoryGrid() {
   return (
-    <section className="flex-1">
-      {/* الهيدر العلوي الأزرق */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between bg-sky-700/95 text-white rounded-lg px-4 py-2">
-          <h3 className="text-sm font-semibold tracking-wide uppercase">Search by Used Construction Machines</h3>
-          <div className="text-xs opacity-90">Total <span className="font-bold">{categories.reduce((s, c) => s + c.count, 0)}</span></div>
-        </div>
-      </div>
-
-      {/* شبكة البطاقات الفخمة */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <section className="w-full max-w-7xl mx-auto p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map((cat, idx) => {
-          const IconComponent = cat.icon;
           return (
             <div 
               key={idx} 
-              className="bg-pure-white border border-gold-light/40 hover:border-sun-red/60 rounded-2xl p-6 flex flex-col justify-between h-44 cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 group relative overflow-hidden"
+              className="group bg-white border border-slate-200 rounded-xl overflow-hidden hover:border-slate-300 transition-colors duration-200 cursor-pointer flex flex-col justify-between h-[300px]"
             >
-              {/* الصف العلوي: الأيقونة والعداد */}
-              <div className="flex justify-between items-start">
-                
-                {/* حاوية الأيقونة الملونة */}
-                <div className={`p-3.5 ${cat.iconBg} border rounded-xl group-hover:bg-sun-red/10 group-hover:border-sun-red/20 group-hover:text-sun-red ${cat.iconColor} transition-all duration-300 flex items-center justify-center`}>
-                  {/* تم توحيد الحجم إلى w-7 h-7 ليتطابق شكل الحفار تماماً مع بقية أيقونات لوكيد */}
-                  <IconComponent className="w-7 h-7 stroke-[1.5]" />
-                </div>
-
-                {/* العداد الرقمي الأنيق */}
-                <span className="text-xs font-mono font-bold bg-bg-base/50 text-gold-dark px-2.5 py-1 rounded-md group-hover:bg-sun-red group-hover:text-pure-white transition-colors duration-300">
-                  {cat.count}
-                </span>
+              <div className="w-full h-36 bg-slate-50 relative overflow-hidden shrink-0">
+                <img 
+                  src={cat.imageSrc} 
+                  alt={cat.name} 
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-101"
+                />
               </div>
 
-              {/* الصف السفلي: النصوص */}
-              <div>
-                <h4 className="font-antique text-sm font-bold text-charcoal group-hover:text-sun-red transition-colors duration-300 uppercase tracking-wider">
-                  {cat.name}
-                </h4>
-                <p className="text-[11px] text-gold-base font-light mt-1">Inspected & Documented</p>
+              <div className="p-4 flex flex-col justify-between flex-1 bg-white">
+                <div>
+                  <h4 className="text-sm md:text-base font-extrabold text-slate-800 group-hover:text-sky-600 transition-colors duration-200 uppercase tracking-wide">
+                    {cat.name}
+                  </h4>
+                  <p className="text-xs text-slate-400 font-normal mt-1 leading-relaxed line-clamp-2">
+                    {cat.desc}
+                  </p>
+                </div>
+                
+                <div className="flex justify-end pt-2 border-t border-slate-50 mt-3">
+                  <span className="text-[11px] font-mono font-bold text-slate-500 bg-slate-50 border border-slate-100 px-2.5 py-0.5 rounded">
+                    {cat.count} Types Available
+                  </span>
+                </div>
               </div>
             </div>
           );

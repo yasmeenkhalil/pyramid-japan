@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { ChevronDown, HardHat, Settings, Compass, Layers } from 'lucide-react';
 
 export default function EquipmentStockSidebar() {
-  // تفعيل فتح القسم الأول (Excavators) افتراضياً تماماً كما في الصورة
   const [openSection, setOpenSection] = useState('Excavators');
 
   const stockData = [
@@ -35,7 +34,6 @@ export default function EquipmentStockSidebar() {
   return (
     <div className="w-full bg-pure-white border border-gold-light/40 rounded-2xl overflow-hidden shadow-xs text-left mt-2">
       
-      {/* الشريط الأزرق الفخم المطابق تماماً للعنوان في الصورة القديمة */}
       <div className="bg-[#005BAC] text-pure-white p-4 border-b border-gold-light/20">
         <h3 className="text-[11px] font-bold tracking-wider uppercase leading-tight font-mono">
           Used Heavy Equipment <span className="text-gold-light/60">・</span>
@@ -45,7 +43,6 @@ export default function EquipmentStockSidebar() {
         </h3>
       </div>
 
-      {/* القائمة الشجرية للتصنيفات والأعداد بالأسفل */}
       <div className="p-3 flex flex-col gap-1 bg-white">
         {stockData.map((item, idx) => {
           const IconComponent = item.icon;
@@ -54,7 +51,6 @@ export default function EquipmentStockSidebar() {
           return (
             <div key={idx} className="border-b border-bg-base/40 last:border-0 pb-1 last:pb-0">
               
-              {/* زر القسم الرئيسي للضغط والفتح */}
               <button 
                 onClick={() => setOpenSection(isCurrentOpen ? '' : item.name)}
                 className="w-full flex items-center justify-between py-2 px-2 hover:bg-bg-base/30 rounded-xl transition-all group cursor-pointer"
@@ -69,7 +65,6 @@ export default function EquipmentStockSidebar() {
                 <ChevronDown className={`w-3.5 h-3.5 text-gold-base transition-transform duration-300 ${isCurrentOpen ? 'rotate-180' : ''}`} />
               </button>
 
-              {/* القائمة الفرعية التي تظهر عند الفتح (مثل سعات الحفارات في الصورة) */}
               {isCurrentOpen && (
                 <div className="pl-7 pr-2 py-1.5 flex flex-col gap-2 text-[11px] bg-bg-base/10 rounded-lg mt-1">
                   {item.subItems.map((sub, sIdx) => (

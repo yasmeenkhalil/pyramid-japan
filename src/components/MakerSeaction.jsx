@@ -1,6 +1,5 @@
 
 export default function MakerSeaction() {
-  // مصفوفة بأسماء وألوان الشركات المصنعة لتبدو كالشعارات الأصلية تماماً
   const makers = [
     { name: 'TADANO', style: 'text-[#005BAC] font-black' },
     { name: 'KATO', style: 'bg-[#002F6C] text-white px-3 py-0.5 font-black tracking-tighter' },
@@ -37,14 +36,12 @@ export default function MakerSeaction() {
   return (
     <div className="w-full text-left bg-white select-none">
       
-      {/* 1. الشريط الأزرق الممتد المطابق للصورة تماماً */}
       <div className="bg-[#005BAC] text-white px-5 py-2.5 rounded-sm mb-6">
         <h3 className="text-xs font-bold font-sans tracking-wide">
           Search Used Japanese Construction equipment by Maker
         </h3>
       </div>
 
-      {/* 2. شبكة الشعارات - 6 أعمدة متناسقة في الشاشات الكبيرة */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-2 gap-y-8 items-center justify-items-center py-4 px-2">
         {makers.map((maker, idx) => (
           <div 
@@ -58,7 +55,6 @@ export default function MakerSeaction() {
         ))}
       </div>
 
-      {/* 3. خيار OTHERS بالأسفل كما يظهر بالصورة */}
       <div className="my-4 pt-4 border-t border-gray-100 pl-6">
         <button className="text-xs font-bold text-gray-800 hover:text-blue-600 transition-colors cursor-pointer uppercase tracking-wider">
           OTHERS

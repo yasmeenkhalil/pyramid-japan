@@ -1,30 +1,26 @@
 import MachineCard from './MachineCard';
 
 export default function EquipmentSection({ title, badgeColor, data }) {
-  // فصل الكلمة الأولى من العنوان لتلوينها بالأحمر (مثل Pick Up أو New Arrival)
   const words = title.split(' ');
   const firstWord = words[0] + (words[1] && words[0] === 'New' ? ' ' + words[1] : '');
   const restOfTitle = title.replace(firstWord, '');
 
   return (
-    <div className="w-full mb-10 text-left">
+    <div className="w-full mb-8 text-left px-2 sm:px-0">
       
-      {/* شريط العنوان الممتد المطابق للصورة الاصلية */}
-      <div className={`flex items-center justify-between ${badgeColor} text-white px-4 py-1.5 rounded-sm mb-4 border border-blue-800/10`}>
-        <h3 className="text-sm font-bold font-sans tracking-wide">
-          {/* الكلمة الأولى باللون الأحمر الساطع أو الأصفر، والباقي أبيض */}
-          <span className={badgeColor.includes('bg-charcoal') ? 'text-red-500' : 'text-red-500'}>{firstWord}</span>
+      <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${badgeColor} text-white px-4 py-3 sm:py-1.5 rounded-sm mb-5 border border-blue-800/10`}>
+        
+        <h3 className="text-xs sm:text-sm font-bold font-sans tracking-wide leading-snug">
+          <span className="text-red-500">{firstWord}</span>
           <span className="text-white">{restOfTitle}</span>
         </h3>
         
-        {/* الزر البرتقالي الصغير في الزاوية المقابلة بالظبط */}
-        <button className="bg-[#FF8A00] hover:bg-[#e07a00] text-white text-[10px] font-bold px-3 py-0.5 rounded-full shadow-xs transition-colors flex items-center gap-1 cursor-pointer">
+        <button className="bg-[#FF8A00] hover:bg-[#e07a00] text-white text-[10px] font-bold px-3 py-1 sm:py-0.5 rounded-full shadow-xs transition-colors flex items-center justify-center gap-1 cursor-pointer self-start sm:self-auto shrink-0">
           <span>▸</span> Click here for More
         </button>
       </div>
 
-      {/* شبكة المعدات المكونة من 4 أعمدة أفقية متراصة بدقة */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {data.map((machine) => (
           <MachineCard key={machine.id} machine={machine} />
         ))}
