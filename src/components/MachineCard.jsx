@@ -1,37 +1,69 @@
-
 export default function MachineCard({ machine }) {
   return (
-    <div className="bg-white flex flex-col group cursor-pointer text-left select-none">
-      
-      <div className="relative aspect-[4/3] w-full bg-gray-100 overflow-hidden border border-gray-200">
-        <img 
-          src={machine.image} 
-          alt={machine.title} 
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-102"
-        />
-        <span className="absolute bottom-0 right-0 bg-[#005BAC] text-white text-[10px] font-sans px-2.5 py-0.5 font-medium tracking-wide">
-          {machine.tag}
-        </span>
-      </div>
-
-      <div className="pt-2 flex flex-col gap-0.5 text-[11px] text-gray-700 font-sans">
-        
-        <h4 className="text-gray-900 font-medium tracking-tight line-clamp-1 group-hover:text-blue-600 transition-colors">
-          {machine.title}
-        </h4>
-        <p className="font-bold text-gray-900 uppercase tracking-tight">{machine.model}</p>
-        
-        <p className="text-gray-600 font-mono mt-0.5">
-          {machine.hours}hr&nbsp;&nbsp;&nbsp;&nbsp;{machine.year}
-        </p>
-        
-        <p className="text-gray-800">{machine.tag}</p>
-        
-        <p className="text-gray-600 font-medium">Price : {machine.price}</p>
-        <p className="text-gray-500 uppercase text-[10px] tracking-wide font-mono">{machine.location}</p>
-        
-      </div>
-
+    <div className=" bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-[#C47B36]/40 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer ">
+      {" "}
+      {/* IMAGE */}{" "}
+      <div className="relative h-56 overflow-hidden bg-slate-100 ">
+        {" "}
+        <img
+          src={machine.image}
+          alt={machine.title}
+          className=" w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 "
+        />{" "}
+        <span className=" absolute top-3 left-3 px-3 py-1 rounded-full bg-[#C47B36] text-white text-[10px] font-semibold uppercase tracking-wide ">
+          {" "}
+          {machine.tag}{" "}
+        </span>{" "}
+      </div>{" "}
+      {/* CONTENT */}{" "}
+      <div className="p-5">
+        {" "}
+        <h3 className=" text-lg font-bold text-[#0F172A] line-clamp-1 mb-1 ">
+          {" "}
+          {machine.model}{" "}
+        </h3>{" "}
+        <p className=" text-sm text-slate-500 line-clamp-1 mb-4 ">
+          {" "}
+          {machine.title}{" "}
+        </p>{" "}
+        {/* DETAILS */}{" "}
+        <div className="flex items-center justify-between text-sm mb-3">
+          {" "}
+          <span className="text-slate-500">Year</span>{" "}
+          <span className="font-semibold text-[#0F172A]">
+            {" "}
+            {machine.year}{" "}
+          </span>{" "}
+        </div>{" "}
+        <div className="flex items-center justify-between text-sm mb-3">
+          {" "}
+          <span className="text-slate-500">Hours</span>{" "}
+          <span className="font-semibold text-[#0F172A]">
+            {" "}
+            {machine.hours} hr{" "}
+          </span>{" "}
+        </div>{" "}
+        <div className="flex items-center justify-between text-sm mb-5">
+          {" "}
+          <span className="text-slate-500">Location</span>{" "}
+          <span className="font-semibold text-[#0F172A]">
+            {" "}
+            {machine.location}{" "}
+          </span>{" "}
+        </div>{" "}
+        {/* FOOTER */}{" "}
+        <div className="flex items-center justify-between border-t pt-4">
+          {" "}
+          <span className=" text-[#C47B36] font-bold text-sm ">
+            {" "}
+            {machine.price}{" "}
+          </span>{" "}
+          <button className=" px-4 py-2 rounded-lg bg-[#0F172A] text-white text-sm font-medium hover:bg-[#C47B36] transition-colors ">
+            {" "}
+            Get Quote{" "}
+          </button>{" "}
+        </div>{" "}
+      </div>{" "}
     </div>
   );
 }

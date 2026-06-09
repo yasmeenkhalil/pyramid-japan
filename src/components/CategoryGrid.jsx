@@ -1,49 +1,211 @@
-const categories = [
-  { name: 'Excavators', count: 41, desc: 'Heavy tracked and wheeled excavators for mining and earthmoving projects.', imageSrc: 'https://www.quinncompany.com/wp-content/uploads/2022/03/jpg_5db2c5f496713.webp' },
-  { name: 'Mini-Excavators', count: 83, desc: 'Compact excavators ideal for tight spaces, landscaping, and utility work.', imageSrc: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7Hk8g53_seSEOALEq46EMf2sWl22b2PMLUQ&s' },
-  { name: 'Heavy Cranes', count: 3, desc: 'High-capacity lifting solutions for heavy construction and infrastructure.', imageSrc: 'https://i.ytimg.com/vi/H4j-EpTW4uY/sddefault.jpg' },
-  { name: 'Foundation Systems', count: 6, desc: 'Advanced piling rigs and drilling equipment for deep foundation works.', imageSrc: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRLKvS1he4PVTyPyu_ABEqifYyfskPJIVBOw&s' },
-  { name: 'Logistic Trucks', count: 14, desc: 'Heavy-duty transport trucks and tippers for site logistics and hauling.', imageSrc: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhGT1KJzv-R3s797d4KrSF-vKPYQZ0hP9DRw&s' },
-  { name: 'Road Rollers', count: 7, desc: 'Soil and asphalt compactors for road building and paving operations.', imageSrc: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTicBrtuYrDAl7i93fgsX5wOVKY1whn95ZcXg&s' },
-];
-
 export default function CategoryGrid() {
-  return (
-    <section className="w-full max-w-7xl mx-auto p-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {categories.map((cat, idx) => {
-          return (
-            <div 
-              key={idx} 
-              className="group bg-white border border-slate-200 rounded-xl overflow-hidden hover:border-slate-300 transition-colors duration-200 cursor-pointer flex flex-col justify-between h-[300px]"
-            >
-              <div className="w-full h-36 bg-slate-50 relative overflow-hidden shrink-0">
-                <img 
-                  src={cat.imageSrc} 
-                  alt={cat.name} 
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-101"
-                />
-              </div>
+  const categories = [
+    {
+      name: "Excavators",
+      count: 41,
+      imageSrc: "/assets/images/Excavators.png",
+    },
+    {
+      name: "Aerial Work Platforms",
+      count: 83,
+      imageSrc: "/assets/images/Aerial_Work_Platforms.png",
+    },
+    {
+      name: "Attachments",
+      count: 3,
+      imageSrc: "/assets/images/Attachments.png",
+    },
+    {
+      name: "Bulldozers",
+      count: 6,
+      imageSrc: "/assets/images/Bulldozers.png",
+    },
+    {
+      name: "Compressors",
+      count: 14,
+      imageSrc: "/assets/images/Compressors.png",
+    },
+    {
+      name: "Cranes",
+      count: 7,
+      imageSrc: "/assets/images/Cranes.png",
+    },
+    {
+      name: "Crushers Wood Chippers",
+      count: 7,
+      imageSrc: "/assets/images/Crushers_Wood_Chippers.png",
+    },
+    {
+      name: "Equipment Inspection",
+      count: 7,
+      imageSrc: "/assets/images/Equipment_Inspection.png",
+    },
+    
+    {
+      name: "Forklifts",
+      count: 7,
+      imageSrc: "/assets/images/Forklifts.png",
+    },
+    
+    {
+      name: "Generators",
+      count: 7,
+      imageSrc: "/assets/images/Generators.png",
+    },
+    {
+      name: "Foundation Machines",
+      count: 7,
+      imageSrc: "/assets/images/Foundation_Machines.png",
+    },
+    {
+      name: "Graders",
+      count: 7,
+      imageSrc: "/assets/images/Graders.png",
+    },
+    {
+      name: "Mini Excavators",
+      count: 7,
+      imageSrc: "/assets/images/Mini_Excavators.png",
+    },
+    {
+      name: "Road Rollers",
+      count: 7,
+      imageSrc: "/assets/images/Road_Rollers.png",
+    },
+     {
+      name: "Spare_Parts",
+      count: 7,
+      imageSrc: "/assets/images/Spare_Parts.png",
+    },
+     {
+      name: "Trucks",
+      count: 7,
+      imageSrc: "/assets/images/Trucks.png",
+    },
+     {
+      name: "Welders",
+      count: 7,
+      imageSrc: "/assets/images/Welders.png",
+    },
+     {
+      name: "Wheel_Loaders",
+      count: 7,
+      imageSrc: "/assets/images/Wheel_Loaders.png",
+    },
+    
 
-              <div className="p-4 flex flex-col justify-between flex-1 bg-white">
-                <div>
-                  <h4 className="text-sm md:text-base font-extrabold text-slate-800 group-hover:text-sky-600 transition-colors duration-200 uppercase tracking-wide">
-                    {cat.name}
-                  </h4>
-                  <p className="text-xs text-slate-400 font-normal mt-1 leading-relaxed line-clamp-2">
-                    {cat.desc}
-                  </p>
-                </div>
-                
-                <div className="flex justify-end pt-2 border-t border-slate-50 mt-3">
-                  <span className="text-[11px] font-mono font-bold text-slate-500 bg-slate-50 border border-slate-100 px-2.5 py-0.5 rounded">
-                    {cat.count} Types Available
-                  </span>
-                </div>
-              </div>
+  ];
+
+  return (
+    <section className="w-full">
+      {/* Heading */}
+      {/* SECTION HEADER */}
+<div className="mb-8">
+  <span
+    className="
+      inline-flex
+      px-4
+      py-1
+      rounded-full
+      bg-[#E0B15A]/10
+      text-[#C47B36]
+      text-xs
+      uppercase
+      tracking-[0.25em]
+      font-semibold
+    "
+  >
+    Our Machinery
+  </span>
+
+  <h2
+    className="
+      mt-3
+      text-3xl
+      font-black
+      text-[#0B1B3A]
+    "
+  >
+    Browse Equipment Categories
+  </h2>
+</div>
+
+      {/* Categories Grid */}
+      <div
+        className="
+        grid
+        grid-cols-1
+        md:grid-cols-4
+        xl:grid-cols-5
+        gap-5
+      "
+      >
+        {categories.map((cat) => (
+          <div
+            key={cat.name}
+            className="
+            group
+            bg-white
+            rounded-2xl
+            overflow-hidden
+            border
+            border-slate-200
+            hover:border-[#C47B36]
+            hover:shadow-xl
+            transition-all
+            duration-300
+            cursor-pointer
+            hover:-translate-y-2
+          "
+          >
+            {/* Image */}
+<div className="relative w-full h-[210px] overflow-hidden bg-[#16110F]">
+  <img
+    src={cat.imageSrc}
+    alt={cat.name}
+    className="
+      w-full
+      h-full
+      object-contain
+      object-center
+      transition-transform
+      duration-750
+      ease-out
+      group-hover:scale-105
+    "
+  />
+  {/* طبقة تظليل علوية وسفلية لدمج الحواف تماماً ومنع ظهور أي فوارق لونية */}
+  <div className="absolute inset-0 bg-gradient-to-b from-[#16110F]/40 via-transparent to-[#16110F] opacity-90" />
+</div>
+
+
+            {/* Content */}
+            <div className="p-5 text-center">
+              <h3
+                className="
+                text-[#111827]
+                font-bold
+                uppercase
+                tracking-wide
+                text-sm
+                lg:text-base
+              "
+              >
+                {cat.name}
+              </h3>
+
+              <p
+                className="
+                mt-2
+                text-xs
+                text-slate-500
+              "
+              >
+                {cat.count} Machines Available
+              </p>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     </section>
   );

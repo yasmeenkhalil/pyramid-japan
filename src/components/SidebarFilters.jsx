@@ -41,17 +41,7 @@ export default function SidebarFilters() {
           </div>
         ))}
 
-        <div>
-          <label className="block text-[11px] font-semibold text-amber-700 uppercase tracking-wider mb-2">
-            Technical Specification
-          </label>
-
-          <input
-            type="text"
-            placeholder="e.g. High-reach, Blade, EPA..."
-            className="w-full border border-amber-200 p-3 rounded-xl text-xs bg-gray-50 text-gray-800 placeholder-gray-400 focus:border-red-500 focus:bg-white focus:outline-none transition-all duration-300"
-          />
-        </div>
+      
 
         <button className="w-full bg-gray-900 hover:bg-red-600 text-white py-3 rounded-xl text-xs font-bold tracking-widest uppercase transition-all duration-300 shadow-sm cursor-pointer mt-2">
           Apply Queries

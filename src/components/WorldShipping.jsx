@@ -1,88 +1,214 @@
-import worldMapImage from '../assets/images/world_map.svg'; 
+import worldMapImage from '/assets/images/map.jpeg';
 
 export default function WorldShipping() {
-  const column1 = [
-    "Ireland (Dublin)", "United States of America (Washington, D.C.)", 
-    "United Arab Emirates/UAE (Abu Dhabi)", "Algeria (Algiers)", 
-    "Argentina (Buenos Aires)", "Antigua and Barbuda (St. John's)", 
-    "Yemen (Sana'a)", "United Kingdom (London)"
-  ];
-
-  const column2 = [
-    "Cyprus (Nicosia)", "Greece (Athens)", "Kiribati (Tarawa)", 
-    "Kuwait (Kuwait)", "Croatia (Zagreb)", "Kenya (Nairobi)", 
-    "Colombia (Bogotá)", "Saudi Arabia (Riyadh)", 
-    "Independent State of Samoa (Apia)", "Zambia (Lusaka)"
-  ];
-
-  const column3 = [
-    "Dominican Republic (Santo Domingo)", "Trinidad and Tobago (Port of Spain)", 
-    "Turkey (Ankara)", "Nigeria (Abuja)", "New Zealand (Wellington)", 
-    "Nepal (Kathmandu)", "Norway (Oslo)", "Bahrain (Manama)", "Haiti (Port-au-Prince)"
-  ];
-
-  const column4 = [
-    "Republic of Peru (Lima)", "Belgium (Brussels)", "Bolivia (La Paz)", 
-    "Portugal (Lisbon)", "Honduras (Tegucigalpa)", "Malta (Valletta)", 
-    "Malaysia (Kuala Lumpur)", "Federated States of Micronesia (Palikir)", 
-    "Myanmar (Naypyidaw)", "Mexico (Mexico City)"
+  const countries = [
+    "United States",
+    "United Kingdom",
+    "United Arab Emirates",
+    "Saudi Arabia",
+    "Australia",
+    "New Zealand",
+    "Nigeria",
+    "Kenya",
+    "Malaysia",
+    "Turkey",
+    "Belgium",
+    "Portugal",
+    "Ireland",
+    "Peru",
+    "Mexico",
+    "Argentina",
+    "Kuwait",
+    "Bahrain",
+    "Greece",
+    "Cyprus",
+    "Nepal",
+    "Bolivia",
+    "Zambia",
+    "Colombia",
   ];
 
   return (
-    <div className="w-full text-left bg-white select-none pb-8">
-      
-      <div className="bg-[#005BAC] text-white px-5 py-2.5 rounded-sm mb-8">
-        <h3 className="text-xs font-bold font-sans tracking-wide">
-          Areas supported by Pyramid Japan Co.
-        </h3>
-      </div>
+    <section className="w-full">
 
-      <div className="text-center my-8">
-        <h2 className="text-2xl font-bold font-sans tracking-tight inline-block relative">
-          <span className="text-gray-800 font-light">From </span>
-          <span className="text-[#005BAC] font-black">PYRAMID JAPAN </span>
-          <span className="text-gray-800 font-light">to </span>
-          <span className="text-[#D70014] font-medium">the world</span>
-          <span className="absolute left-0 right-0 bottom-1 h-1.5 bg-[#FFD600] -z-10 opacity-70"></span>
-        </h2>
-      </div>
-
-      <div className="w-full max-w-2xl mx-auto my-6 flex justify-center items-center p-4 relative">
-        <div 
-          className="relative w-full aspect-[2/1] bg-no-repeat bg-center bg-contain opacity-80" 
-          style={{ 
-            backgroundImage: `url(${worldMapImage})`, 
-            maskImage: 'linear-gradient(to bottom, black 80%, transparent)' 
-          }}
+      {/* Header */}
+      <div className="text-center mb-8">
+        <span
+          className="
+            inline-flex
+            items-center
+            px-5
+            py-2
+            rounded-full
+            bg-[#FFF7ED]
+            border
+            border-[#D6A06A]/40
+            text-[#C47B36]
+            text-xs
+            font-semibold
+            tracking-[0.25em]
+            uppercase
+          "
         >
-          
-          <div className="absolute top-[35%] left-[73%] w-2.5 h-2.5 bg-[#D70014] rounded-full animate-ping"></div>
-          <div className="absolute top-[35%] left-[73%] w-2 h-2 bg-[#005BAC] rounded-full"></div>
-          
-          <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 200">
-            <path d="M292,70 Q200,10 100,60" fill="none" stroke="#005BAC" strokeWidth="1" strokeDasharray="2,2" />
-            <path d="M292,70 Q250,20 180,120" fill="none" stroke="#005BAC" strokeWidth="1" strokeDasharray="2,2" />
-            <path d="M292,70 Q340,30 380,80" fill="none" stroke="#005BAC" strokeWidth="1" strokeDasharray="2,2" />
-            <path d="M292,70 Q280,110 210,160" fill="none" stroke="#005BAC" strokeWidth="1" strokeDasharray="2,2" />
-          </svg>
+          Worldwide Export Network
+        </span>
+
+        <h2
+          className="
+            mt-4
+            text-3xl
+            md:text-4xl
+            font-extrabold
+            text-[#0F172A]
+          "
+        >
+          Shipping From Japan To The World
+        </h2>
+
+        <p
+          className="
+            mt-3
+            text-slate-500
+            max-w-3xl
+            mx-auto
+          "
+        >
+          Delivering quality construction and agricultural machinery
+          from Japan to customers across Asia, Africa, Europe,
+          Oceania and the Americas.
+        </p>
+      </div>
+
+      {/* Main Card */}
+      <div
+        className="
+          bg-white
+          border
+          border-slate-200
+          rounded-3xl
+          overflow-hidden
+          shadow-sm
+        "
+      >
+        {/* Stats */}
+        <div
+          className="
+            grid
+            grid-cols-2
+            md:grid-cols-4
+            border-b
+            border-slate-100
+          "
+        >
+          <div className="p-6 text-center">
+            <div className="text-3xl font-black text-[#C47B36]">
+              50+
+            </div>
+            <div className="text-sm text-slate-500 mt-1">
+              Countries Served
+            </div>
+          </div>
+
+          <div className="p-6 text-center border-l border-slate-100">
+            <div className="text-3xl font-black text-[#0F172A]">
+              20+
+            </div>
+            <div className="text-sm text-slate-500 mt-1">
+              Years Experience
+            </div>
+          </div>
+
+          <div className="p-6 text-center border-l border-slate-100">
+            <div className="text-3xl font-black text-[#0F172A]">
+              1000+
+            </div>
+            <div className="text-sm text-slate-500 mt-1">
+              Machines Exported
+            </div>
+          </div>
+
+          <div className="p-6 text-center border-l border-slate-100">
+            <div className="text-3xl font-black text-[#0F172A]">
+              Global
+            </div>
+            <div className="text-sm text-slate-500 mt-1">
+              Shipping Network
+            </div>
+          </div>
+        </div>
+
+        {/* Map */}
+        <div className="p-6 md:p-10">
+          <div
+            className="
+              overflow-hidden
+              rounded-2xl
+              border
+              border-slate-200
+            "
+          >
+            <img
+              src={worldMapImage}
+              alt="Worldwide Shipping Network"
+              className="w-full object-cover"
+            />
+          </div>
+        </div>
+
+        {/* Countries */}
+        <div className="px-6 md:px-10 pb-10">
+          <div
+            className="
+              border-t
+              border-slate-100
+              pt-8
+            "
+          >
+            <h3
+              className="
+                text-lg
+                font-bold
+                text-[#0F172A]
+                mb-5
+              "
+            >
+              Countries We Export To
+            </h3>
+
+            <div
+              className="
+                flex
+                flex-wrap
+                gap-3
+              "
+            >
+              {countries.map((country, index) => (
+                <span
+                  key={index}
+                  className="
+                    px-4
+                    py-2
+                    rounded-full
+                    bg-slate-50
+                    border
+                    border-slate-200
+                    text-sm
+                    text-slate-700
+                    hover:border-[#C47B36]
+                    hover:text-[#C47B36]
+                    transition-all
+                    duration-300
+                    cursor-pointer
+                  "
+                >
+                  {country}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 px-6 text-[11px] text-gray-700 font-sans leading-relaxed mt-10">
-        <div className="flex flex-col gap-1">
-          {column1.map((item, idx) => <p key={idx} className="hover:text-[#005BAC] cursor-pointer">{item}</p>)}
-        </div>
-        <div className="flex flex-col gap-1">
-          {column2.map((item, idx) => <p key={idx} className="hover:text-[#005BAC] cursor-pointer">{item}</p>)}
-        </div>
-        <div className="flex flex-col gap-1">
-          {column3.map((item, idx) => <p key={idx} className="hover:text-[#005BAC] cursor-pointer">{item}</p>)}
-        </div>
-        <div className="flex flex-col gap-1">
-          {column4.map((item, idx) => <p key={idx} className="hover:text-[#005BAC] cursor-pointer">{item}</p>)}
-        </div>
-      </div>
-
-    </div>
+    </section>
   );
 }

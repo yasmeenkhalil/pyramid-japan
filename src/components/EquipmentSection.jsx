@@ -1,26 +1,37 @@
 import MachineCard from './MachineCard';
 
-export default function EquipmentSection({ title, badgeColor, data }) {
+export default function EquipmentSection({ title, data }) {
   const words = title.split(' ');
-  const firstWord = words[0] + (words[1] && words[0] === 'New' ? ' ' + words[1] : '');
-  const restOfTitle = title.replace(firstWord, '');
+  const firstTwoWords = words.slice(0, 2).join(' ');
+  const restOfTitle = words.slice(2).join(' ');
 
   return (
-    <div className="w-full mb-8 text-left px-2 sm:px-0">
+    <div className="w-full mb-12 text-left px-2 sm:px-0">
       
-      <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${badgeColor} text-white px-4 py-3 sm:py-1.5 rounded-sm mb-5 border border-blue-800/10`}>
+      {/* 🌟 شريط العنوان الفخم الجديد المتناسق مع الهوية */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 mb-6 border-b border-[#E5C193]/20">
         
-        <h3 className="text-xs sm:text-sm font-bold font-sans tracking-wide leading-snug">
-          <span className="text-red-500">{firstWord}</span>
-          <span className="text-white">{restOfTitle}</span>
+        <h3 className="text-lg sm:text-xl font-bold tracking-tight text-[#E6DED5]">
+          <span className="text-[#E5C193] mr-2">{firstTwoWords}</span>
+          <span className="text-black font-medium">{restOfTitle}</span>
         </h3>
         
-        <button className="bg-[#FF8A00] hover:bg-[#e07a00] text-white text-[10px] font-bold px-3 py-1 sm:py-0.5 rounded-full shadow-xs transition-colors flex items-center justify-center gap-1 cursor-pointer self-start sm:self-auto shrink-0">
-          <span>▸</span> Click here for More
+        {/* زر "عرض المزيد" بتصميم عصري تفاعلي */}
+        <button className="group bg-[#16110F] hover:bg-[#E5C193] text-[#E5C193] hover:text-[#110E0D] text-xs font-semibold px-4 py-2 rounded-lg border border-[#E5C193]/30 hover:border-[#E5C193] transition-all duration-300 flex items-center gap-2 cursor-pointer shrink-0 shadow-lg shadow-black/20">
+          <span>View All Equipment</span>
+          <svg 
+            className="w-3 h-3 transform group-hover:translate-x-1 transition-transform duration-300" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+          </svg>
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {/* شبكة عرض البطاقات */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
         {data.map((machine) => (
           <MachineCard key={machine.id} machine={machine} />
         ))}

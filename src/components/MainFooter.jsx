@@ -1,169 +1,123 @@
-import {
-  ChevronUp,
-  ArrowRight,
-  Globe,
-} from "lucide-react";
+import { ChevronUp, Globe, MapPin, Phone } from "lucide-react";
+
 export default function MainFooter() {
-  return (
-    <footer
-      className="w-full overflow-hidden font-sans text-left select-none"
-      dir="ltr"
-    >
-      {/* ================= TOP DARK BLUE AREA ================= */}
-      <div className="bg-[#00458F] border-b border-[#ffffff14]">
-        <div className="max-w-[1180px] mx-auto px-6 py-7 flex flex-col xl:flex-row justify-between gap-10">
-          
-          {/* LOGO */}
-          <div className="flex items-start gap-4 shrink-0">
-            <div className="w-[68px] h-[68px] rounded-full border border-white/30 bg-white/5 flex items-center justify-center">
-              <Globe className="w-8 h-8 text-white" strokeWidth={1.5} />
-            </div>
+return ( <footer className="bg-[#0F172A] text-white mt-16">
 
-            <div className="leading-none pt-1">
-              <h2 className="text-white text-[35px] font-black tracking-[-3px] uppercase">
-                PYRADMID JAPAN
-              </h2>
+```
+  {/* TOP SECTION */}
+  <div className="max-w-7xl mx-auto px-6 py-14">
 
-              <span className="text-white text-[24px] font-bold tracking-wide">
-                Corporation
-              </span>
-            </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+
+      {/* COMPANY */}
+      <div>
+        <div className="flex items-center gap-4 mb-5">
+          <div className="w-14 h-14 rounded-full border border-[#C47B36]/40 flex items-center justify-center">
+            <Globe className="w-7 h-7 text-[#C47B36]" />
           </div>
 
-          {/* OFFICE 1 */}
-          <div className="text-white text-[11px] leading-[1.45] font-medium max-w-[320px]">
-            <p className="font-bold mb-1">
-              PYRADMID JAPAN Corporation (Head Office)
-            </p>
+          <div>
+            <h2 className="text-2xl font-black">
+              PYRAMID JAPAN
+            </h2>
 
-            <p>
-              1-1550-8, Sakashita-Cho, Kasugai City,
-              <br />
-              Aichi 480-0305, Japan
-            </p>
-
-            <p className="mt-2">
-              TEL:+81-568-88-7980 &nbsp;&nbsp;FAX:+81-568-88-7989
-            </p>
-
-            <p className="text-white/75 mt-1">
-              Business hours: 9:00-18:00 (Mon-Fri), 9:00-12:00 (Sat)
-            </p>
-
-            <p className="text-white/90">
-              (Closed: Sundays and holidays)
+            <p className="text-slate-400 text-sm">
+              Co.LTD 
             </p>
           </div>
+        </div>
 
-          {/* OFFICE 2 */}
-          <div className="text-white text-[11px] leading-[1.45] font-medium max-w-[320px]">
-            <p className="font-bold mb-1">
-              PYRADMID JAPAN Corporation (Maintenance Factory)
-            </p>
+        <p className="text-slate-400 text-sm leading-relaxed">
+          Trusted partner in heavy equipment export,
+          supplying quality Japanese machinery worldwide
+          since 2013.
+        </p>
+      </div>
 
-            <p>
-              6-783-162, Sakashita-Cho, Kasugai City,
-              <br />
-              Aichi 480-0305, Japan
-            </p>
+      {/* QUICK LINKS */}
+      <div>
+        <h3 className="text-lg font-bold mb-5">
+          Quick Links
+        </h3>
 
-            <p className="mt-2">
-              TEL:+81-568-90-6970 &nbsp;&nbsp;FAX:+81-568-90-6979
-            </p>
+        <ul className="space-y-3 text-slate-400 text-sm">
+          <li className="hover:text-[#C47B36] cursor-pointer">Home</li>
+          <li className="hover:text-[#C47B36] cursor-pointer">About Us</li>
+          <li className="hover:text-[#C47B36] cursor-pointer">Stock List</li>
+          <li className="hover:text-[#C47B36] cursor-pointer">Contact</li>
+        </ul>
+      </div>
 
-            <p className="text-white/75 mt-1">
-              Business hours: 8:30-17:30 (Mon-Fri), 8:30-12:00 (Sat)
-            </p>
+      {/* SERVICES */}
+      <div>
+        <h3 className="text-lg font-bold mb-5">
+          Services
+        </h3>
 
-            <p className="text-white/90">
-              (Closed: Sundays and holidays)
-            </p>
+        <ul className="space-y-3 text-slate-400 text-sm">
+          <li>Construction Machinery</li>
+          <li>Agricultural Equipment</li>
+          <li>Maintenance Services</li>
+          <li>Worldwide Export</li>
+        </ul>
+      </div>
+
+      {/* CONTACT */}
+      <div>
+        <h3 className="text-lg font-bold mb-5">
+          Contact Info
+        </h3>
+
+        <div className="space-y-4 text-slate-400 text-sm">
+
+          <div className="flex gap-3">
+            <MapPin className="w-4 h-4 text-[#C47B36] mt-1 shrink-0" />
+            <span>
+              Kasugai City, Aichi 480-0305, Japan
+            </span>
           </div>
+
+          <div className="flex gap-3">
+            <Phone className="w-4 h-4 text-[#C47B36] shrink-0" />
+            <span>+81-568-88-7980</span>
+          </div>
+
         </div>
       </div>
 
-      {/* ================= LIGHT AREA ================= */}
-      <div className="relative bg-[#DCE5EF] min-h-[250px] overflow-hidden">
-        
-        {/* RIGHT IMAGE */}
-        <div className="absolute inset-y-0 right-0 w-full lg:w-[58%]">
-          <div
-            className="w-full h-full bg-cover bg-right bg-no-repeat"
-            style={{
-              backgroundImage:
-                "url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000&auto=format&fit=crop')",
-              maskImage:
-                "linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0) 100%)",
-              WebkitMaskImage:
-                "linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0) 100%)",
-            }}
-          />
-        </div>
+    </div>
 
-        {/* CONTENT */}
-        <div className="relative z-10 max-w-[1180px] mx-auto px-6 py-10 flex flex-col lg:flex-row justify-between gap-8">
-          
-          {/* LEFT LINKS */}
-          <div className="flex flex-col justify-between min-h-[170px]">
-            <div className="grid grid-cols-2 gap-x-14 gap-y-3 text-[#003B73] text-[12px] font-black tracking-[0.5px]">
-              
-              <a href="#" className="hover:translate-x-1 transition-all flex items-center gap-1">
-                <ArrowRight className="w-3 h-3" />
-                HOME
-              </a>
+  </div>
 
-              <a href="#" className="hover:translate-x-1 transition-all flex items-center gap-1">
-                <ArrowRight className="w-3 h-3" />
-                Company Profile
-              </a>
+  {/* BOTTOM BAR */}
+  <div className="border-t border-slate-800">
 
-              <a
-                href="#"
-                className="leading-[1.5] hover:translate-x-1 transition-all flex items-start gap-1"
-              >
-                <ArrowRight className="w-3 h-3 mt-[2px]" />
-                <span>
-                  Used Heavy Equipment ・
-                  <br />
-                  Construction Machines Stock(1463台)
-                </span>
-              </a>
+    <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
 
-              <a href="#" className="hover:translate-x-1 transition-all flex items-center gap-1">
-                <ArrowRight className="w-3 h-3" />
-                Access
-              </a>
+      <p className="text-slate-500 text-sm">
+        © 2026 Pyramid Japan Co.LTD All Rights Reserved.
+      </p>
 
-              <a href="#" className="hover:translate-x-1 transition-all flex items-center gap-1">
-                <ArrowRight className="w-3 h-3" />
-                Contact us
-              </a>
+      <button
+        className="
+          w-10
+          h-10
+          rounded-full
+          bg-[#C47B36]
+          hover:bg-[#A86428]
+          flex
+          items-center
+          justify-center
+          transition-all
+        "
+      >
+        <ChevronUp className="w-5 h-5 text-white" />
+      </button>
 
-              <a href="#" className="hover:translate-x-1 transition-all flex items-center gap-1">
-                <ArrowRight className="w-3 h-3" />
-                Privacy policy
-              </a>
-            </div>
+    </div>
 
-            <p className="text-[#003B73]/70 text-[10px] mt-10">
-              Copyright (C) PYRADMID JAPAN-World Corporation. All rights reserved.
-            </p>
-          </div>
+  </div>
 
-          {/* PAGE TOP */}
-          <div className="flex items-start justify-end">
-            <button className="bg-[#0A5BB1] hover:bg-[#00458F] transition-colors w-[86px] h-[86px] flex flex-col items-center justify-center text-white shadow-xl">
-              <ChevronUp className="w-5 h-5 mb-1" />
+</footer>
 
-              <span className="text-[12px] leading-[1.1] font-bold">
-                Page
-                <br />
-                Top
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
-}
+)}

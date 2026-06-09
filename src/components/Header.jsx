@@ -1,142 +1,262 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom'; 
-import { Search, Globe, ChevronDown, HelpCircle, Menu, X } from 'lucide-react';
-import logo from '../assets/images/logo.png'; 
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Search, Menu, X } from "lucide-react";
+import logo from "../../public/assets/images/logo1.jpg";
 
 export default function Header() {
-  // حالة للتحكم بفتح وإغلاق منيو الجوال
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  const navLinks = [
+
+  { name: "Home", path: "/" },
+  { name: "Export", path: "/export-services" },
+  { name: "Construction", path: "/construction-equipment" },
+  { name: "Agriculture", path: "/agricultural-equipment" },
+  { name: "Maintenance", path: "/maintenance" },
+  { name: "Contact", path: "/contact" },
+
+  ];
 
   return (
-    <header className="bg-pure-white w-full border-b border-gold-light/60 sticky top-0 z-50">
-      
-      {/* البار الرئيسي العلوي */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 h-20 flex items-center justify-between gap-6">
-        
-        {/* اللوجو واسم الشركة */}
-        <div className="flex items-center shrink-0 cursor-pointer">
-          <img src={logo} alt="Pyramid Japan" className="w-16 h-16 md:w-20 md:h-20 object-contain" />
-          <div className="leading-tight ml-2">
-            <h1 className="font-antique text-sm md:text-lg font-black tracking-wider text-charcoal">
-              PYRAMID JAPAN <span className="text-sun-red">CORP.</span>
-            </h1>
-            <p className="text-[8px] md:text-[10px] text-gold-base font-medium tracking-widest uppercase">
-              Used Heavy Equipment Directory
-            </p>
-          </div>
-        </div>
-
-        {/* صندوق البحث - يظهر على الكمبيوتر والتابلت فقط */}
-        <div className="flex-1 max-w-2xl relative hidden md:block">
-          <div className="flex border-2 border-charcoal rounded-lg overflow-hidden focus-within:border-sun-red transition-colors duration-200">
-            <div className="flex items-center bg-bg-base/40 px-3 border-r border-gold-light/60">
-              <Search className="w-4 h-4 text-gold-dark" />
-            </div>
-            <input 
-              type="text" 
-              placeholder="Search by Keyword, Maker, Model, Stock No..." 
-              className="w-full bg-pure-white py-2.5 px-3 text-xs text-charcoal placeholder-gold-dark/40 focus:outline-none"
+    <header
+      className="
+      sticky
+      top-0
+      z-50
+      bg-white/95
+      backdrop-blur-md
+      border-b
+      border-slate-200
+      "
+    >
+      <div className="max-w-[1400px] mx-auto px-6">
+        <div className="h-[78px] flex items-center justify-between">
+          {/* LOGO */}
+          <Link
+            to="/"
+            className="flex items-center gap-3 shrink-0"
+          >
+            <img
+              src={logo}
+              alt="Pyramid Japan CO,LTD"
+              className="
+                w-14
+                h-14
+                rounded-xl
+                object-cover
+              "
             />
-            <button className="bg-charcoal hover:bg-sun-red text-pure-white px-6 text-xs font-bold uppercase tracking-wider transition-colors duration-300 cursor-pointer">
-              Search
+
+            <div>
+              <h1
+                className="
+                  text-lg
+                  md:text-l
+                  font-bold
+                  tracking-wide
+                  text-[#111827]
+                  leading-none
+                "
+              >
+                PYRAMID JAPAN CO.LTD
+              </h1>
+
+              <p
+                className="
+                  text-[10px]
+                  uppercase
+                  tracking-[0.2em]
+                  text-slate-500
+                  mt-1
+                "
+              >
+                Used Equipment & Spare Parts
+              </p>
+            </div>
+          </Link>
+
+          {/* DESKTOP NAV */}
+          <nav
+            className="
+              hidden
+              lg:flex
+              items-center
+              gap-6
+            "
+          >
+            {navLinks.map((item) => (
+              <Link
+                key={item.name}
+                to={item.path}
+                className={`
+                  relative
+                  font-medium
+                  transition-all
+                  duration-300
+                  ${
+                    location.pathname === item.path
+                      ? "text-[#E0B15A]"
+                      : "text-slate-700 hover:text-[#E0B15A]"
+                  }
+                `}
+              >
+                {item.name}
+
+                {location.pathname === item.path && (
+                  <span
+                    className="
+                      absolute
+                      -bottom-[28px]
+                      left-0
+                      w-full
+                      h-[3px]
+                      bg-[#E0B15A]
+                      rounded-full
+                    "
+                  />
+                )}
+              </Link>
+            ))}
+          </nav>
+
+          {/* RIGHT SIDE */}
+          <div
+            className="
+              hidden
+              lg:flex
+              items-center
+              gap-4
+            "
+          >
+            {/* SEARCH */}
+            <div
+              className="
+                flex
+                items-center
+                w-[280px]
+                h-11
+                rounded-xl
+                border
+                border-slate-200
+                bg-slate-50
+                px-4
+                transition-all
+                focus-within:border-amber-500
+              "
+            >
+              <Search
+                className="
+                  w-4
+                  h-4
+                  text-slate-400
+                "
+              />
+
+              <input
+                type="text"
+                placeholder="Search by Model, Maker or Stock No"
+                className="
+                  flex-1
+                  ml-3
+                  bg-transparent
+                  outline-none
+                  text-sm
+                  placeholder:text-slate-400
+                "
+              />
+            </div>
+
+            {/* CTA */}
+            <button
+              className="
+                h-11
+                px-5
+                rounded-xl
+                bg-[#E0B15A]
+                text-white
+                font-semibold
+                hover:bg-[#C47B36]
+                transition-all
+                duration-300
+                shadow-sm
+              "
+            >
+              Register
             </button>
           </div>
-        </div>
 
-        {/* يمين الهيدر: زر الهامبرغر للجوال وروابط المساعدة للكمبيوتر */}
-        <div className="flex items-center gap-4 text-xs font-medium text-charcoal shrink-0">
-          <a href="#how-to-buy" className="hidden lg:flex items-center gap-1.5 hover:text-sun-red transition-colors">
-            <HelpCircle className="w-4 h-4 text-gold-base" />
-            <span>How to Buy</span>
-          </a>
-
-          {/* زر قائمة الجوال (يظهر فقط على الجوال) */}
-          <button 
-            onClick={() => setIsOpen(!isOpen)} 
-            className="block md:hidden p-2 text-slate-700 hover:text-sun-red transition-colors cursor-pointer"
+          {/* MOBILE BUTTON */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="
+              lg:hidden
+              p-2
+              text-slate-700
+            "
           >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
       </div>
 
-      {/* 1. منيو الشاشات الكبيرة (الكمبيوتر والتابلت) - تبقى كما هي */}
-      <div className="bg-bg-base/40 border-t border-gold-light/40 w-full hidden md:block">
-        <div className="max-w-7xl mx-auto px-6 h-11 flex items-center justify-between text-xs text-charcoal font-semibold">
-          <nav className="flex items-center gap-8 tracking-wider uppercase">
-            <Link to="/" className="hover:text-sun-red transition-colors border-b-2 border-transparent hover:border-sun-red py-3">Home</Link>
-            <Link to="/about" className="hover:text-sun-red transition-colors border-b-2 border-transparent hover:border-sun-red py-3">About us</Link>
-            <a href="#how-to-export" className="hover:text-sun-red transition-colors border-b-2 border-transparent hover:border-sun-red py-3">Export Service</a>
-            <a href="#auction" className="hover:text-sun-red transition-colors border-b-2 border-transparent hover:border-sun-red py-3">Auction Info</a>
-            <a href="#about-us" className="hover:text-sun-red transition-colors border-b-2 border-transparent hover:border-sun-red py-3">Contact us</a>
-          </nav>
-
-          <div className="flex items-center gap-2 border-l border-gold-light/60 pl-6 h-6">
-            <Globe className="w-3.5 h-3.5 text-gold-base" />
-            <span className="font-light text-gold-dark">Language:</span>
-            <button className="flex items-center gap-1 text-charcoal hover:text-sun-red cursor-pointer uppercase">
-              <span>English</span>
-              <ChevronDown className="w-3 h-3" />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. منيو الجوال المنسدلة الذكية (تظهر فقط عند الضغط على زر الهامبرغر ☰) */}
+      {/* MOBILE MENU */}
       {isOpen && (
-        <div className="md:hidden w-full bg-white border-t border-slate-100 shadow-xl absolute left-0 right-0 z-40 animate-in fade-in slide-in-from-top-2 duration-200">
-          <nav className="flex flex-col p-4 space-y-3 font-semibold text-xs text-charcoal tracking-wide uppercase">
-            <Link 
-              to="/" 
-              onClick={() => setIsOpen(false)} 
-              className="hover:text-sun-red hover:bg-slate-50 p-2.5 rounded-lg transition-colors"
-            >
-              Home
-            </Link>
-            <Link 
-              to="/about" 
-              onClick={() => setIsOpen(false)} 
-              className="hover:text-sun-red hover:bg-slate-50 p-2.5 rounded-lg transition-colors"
-            >
-              About us
-            </Link>
-            <a 
-              href="#how-to-export" 
-              onClick={() => setIsOpen(false)} 
-              className="hover:text-sun-red hover:bg-slate-50 p-2.5 rounded-lg transition-colors"
-            >
-              Export Service
-            </a>
-            <a 
-              href="#auction" 
-              onClick={() => setIsOpen(false)} 
-              className="hover:text-sun-red hover:bg-slate-50 p-2.5 rounded-lg transition-colors"
-            >
-              Auction Info
-            </a>
-            <a 
-              href="#about-us" 
-              onClick={() => setIsOpen(false)} 
-              className="hover:text-sun-red hover:bg-slate-50 p-2.5 rounded-lg transition-colors"
-            >
-              Contact us
-            </a>
+        <div
+          className="
+            lg:hidden
+            border-t
+            border-slate-200
+            bg-white
+          "
+        >
+          <div className="p-5">
+  <nav className="flex flex-col gap-2">
+    {navLinks.map((item) => (
+      <Link
+        key={item.name}
+        to={item.path}
+        onClick={() => setIsOpen(false)}
+        className={`
+          px-4
+          py-3
+          rounded-xl
+          transition-all
+          ${
+            location.pathname === item.path
+              ? "bg-[#C47B36]/10 text-[#C47B36] font-semibold"
+              : "text-slate-700 hover:bg-slate-50 hover:text-[#C47B36]"
+          }
+        `}
+      >
+        {item.name}
+      </Link>
+    ))}
+  </nav>
 
-            {/* خط فاصل واختيار اللغة داخل الجوال */}
-            <div className="pt-3 border-t border-slate-100 flex items-center justify-between px-2">
-              <div className="flex items-center gap-2">
-                <Globe className="w-4 h-4 text-gold-base" />
-                <span className="font-light text-gold-dark lowercase">Language:</span>
-              </div>
-              <button className="flex items-center gap-1 text-charcoal font-bold bg-slate-50 px-3 py-1.5 rounded-md border border-slate-100">
-                <span>English</span>
-                <ChevronDown className="w-3 h-3" />
-              </button>
-            </div>
-          </nav>
+  <div className="mt-5">
+    <button
+      className="
+        w-full
+        h-11
+        rounded-xl
+        bg-[#C47B36]
+        text-white
+        font-semibold
+        hover:bg-[#A86428]
+        transition-all
+      "
+    >
+      Register
+    </button>
+  </div>
+</div>
         </div>
       )}
-
     </header>
   );
 }
