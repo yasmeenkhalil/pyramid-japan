@@ -3,7 +3,6 @@ import { ChevronUp, Globe, MapPin, Phone } from "lucide-react";
 export default function MainFooter() {
 return ( <footer className="bg-[#0F172A] text-white mt-16">
 
-```
   {/* TOP SECTION */}
   <div className="max-w-7xl mx-auto px-6 py-14">
 
