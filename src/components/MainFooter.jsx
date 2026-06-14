@@ -1,14 +1,13 @@
 import { ChevronUp, Globe, MapPin, Phone } from "lucide-react";
 
 export default function MainFooter() {
-  // دالة برمجية لجعل سهم الصعود يرفع الصفحة لأعلى بسلاسة عند الضغط عليه
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    // تم إصلاح الكود هنا بإزالة mt-16 وتصفير الهامش تماماً mt-0 ليلتصق بالأقسام فوقه فوراً
-    <footer className="bg-[#0F172A] text-white mt-0 w-full relative z-10">
+    // تم إضافة pb-12 هنا لرفع محتويات الفوتر للأعلى ومنع الشريط الثابت من تغطيتها
+    <footer className="bg-[#0F172A] text-white mt-0 pb-12 w-full relative z-10">
 
       {/* TOP SECTION */}
       <div className="max-w-7xl mx-auto px-6 py-11">
@@ -104,7 +103,6 @@ export default function MainFooter() {
             © 2026 Pyramid Japan Co.LTD All Rights Reserved.
           </p>
 
-          {/* ربط زر السهم بالدالة البرمجية للصعود للأعلى */}
           <button
             onClick={scrollToTop}
             className="
