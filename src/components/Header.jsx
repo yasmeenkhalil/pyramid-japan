@@ -10,9 +10,9 @@ export default function Header() {
   const navLinks = [
 
   { name: "Home", path: "/" },
-  { name: "Export", path: "/export-services" },
-  { name: "Construction", path: "/construction-equipment" },
-  { name: "Agriculture", path: "/agricultural-equipment" },
+  { name: "Export", path: "/Export" },
+  { name: "Construction", path: "/construction" },
+  { name: "Agriculture", path: "/agricultural" },
   { name: "Maintenance", path: "/maintenance" },
   { name: "Contact", path: "/contact" },
 

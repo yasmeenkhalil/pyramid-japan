@@ -11,8 +11,11 @@ import MakerSeaction from './components/MakerSeaction';
 import WorldShipping from './components/WorldShipping';
 import MainFooter from './components/MainFooter'; 
 import FixedContactBar from './components/FixedContactBar'; 
-
-import AboutUs from './components/AboutUs'; 
+import Export from './components/Export'; 
+import Construction from './components/ConstructionPage'; 
+import Agriculture from './components/AgriculturePage'; 
+import Maintenance from './components/MaintenancePage'; 
+import ContactPage from './components/ContactPage'; 
 
 const RECOMMENDED_MACHINES = [
   { id: 'r1', title: 'Large Excavator For Demolition', model: 'KOBELCO ZX225USRLCK-5B', hours: '5,458', year: '2016 (H28)', location: 'AOCHI Yard', tag: 'For Demolition', price: 'Ask Price', image: '/assets/images/Crushers_Wood_Chippers.png' },
@@ -33,72 +36,76 @@ const NEW_ARRIVALS = [
 export default function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-bg-base text-charcoal selection:bg-sun-red selection:text-pure-white antialiased pb-16 overflow-x-hidden">
+      {/* تم إزالة كلاس pb-10 لتفادي المسافة الإجبارية الفاصلة فوق الفوتر في كل الصفحات */}
+      <div className="min-h-screen bg-bg-base text-charcoal selection:bg-sun-red selection:text-pure-white antialiased overflow-x-hidden flex flex-col justify-between">
         
-        <TopBar />
-        <Header />
-        
-        <Routes>
+        <div>
+          <TopBar />
+          <Header />
           
-          <Route path="/" element={
-            <>
-              <Hero />
-              
-              <main className="max-w-[1600px] mx-auto px-4 md:px-6 py-6 md:py-12 flex flex-col gap-12">
+          <Routes>
+            
+            <Route path="/" element={
+              <>
+                <Hero />
                 
-                {/* الحاوية العلوية تجمع القسمين بنفس الارتفاع الفعلي لليسار */}
-                <div className="flex flex-col lg:flex-row gap-6 items-start">
+                <main className="max-w-[1600px] mx-auto px-4 md:px-6 py-6 md:py-12 flex flex-col gap-12">
                   
-                  {/* شريط اليسار يتمدد طبيعياً ويتحكم بارتفاع المنطقة بالكامل */}
-                  <div id="left-sidebar" className="w-full lg:w-72 shrink-0 flex flex-col gap-4">
-                    <SidebarFilters />
-                    <SidebarBanners />
+                  {/* الحاوية العلوية تجمع القسمين بنفس الارتفاع الفعلي لليسار */}
+                  <div className="flex flex-col lg:flex-row gap-6 items-start">
+                    
+                    {/* شريط اليسار يتمدد طبيعياً ويتحكم بارتفاع المنطقة بالكامل */}
+                    <div id="left-sidebar" className="w-full lg:w-72 shrink-0 flex flex-col gap-4">
+                      <SidebarFilters />
+                      <SidebarBanners />
+                    </div>
+
+                    <div className="flex-1 w-full relative lg:self-stretch">
+                      <div className="lg:absolute lg:inset-0 lg:overflow-y-auto pr-3
+                        [&::-webkit-scrollbar]:w-[8px]
+                        [&::-webkit-scrollbar-track]:bg-transparent
+                        [&::-webkit-scrollbar-thumb]:bg-[#C47B36]/30
+                        [&::-webkit-scrollbar-thumb]:rounded-full
+                        hover:[&::-webkit-scrollbar-thumb]:bg-[#C47B36]/60
+                      ">
+                        <CategoryGrid />
+                      </div>
+                    </div>
+
                   </div>
 
-                  <div className="flex-1 w-full relative lg:self-stretch">
-<div className="lg:absolute lg:inset-0 lg:overflow-y-auto pr-3
-  [&::-webkit-scrollbar]:w-[8px]
-  [&::-webkit-scrollbar-track]:bg-transparent
-  [&::-webkit-scrollbar-thumb]:bg-[#C47B36]/30
-  [&::-webkit-scrollbar-thumb]:rounded-full
-  hover:[&::-webkit-scrollbar-thumb]:bg-[#C47B36]/60
-">
-  <CategoryGrid />
-</div>
+                  {/* بقية الأقسام تظهر تحت الحاوية العلوية مباشرة وتأخذ كامل العرض */}
+                  <div className="w-full flex flex-col gap-8 md:gap-12">
+                    <EquipmentSection 
+                      title="Pick Up Recommended Used Construction Machine!" 
+                      badgeColor="bg-[#0E4A86]" 
+                      data={RECOMMENDED_MACHINES}
+                    />
 
-
+                    <EquipmentSection 
+                      title="New Arrival Used Construction Machine" 
+                      badgeColor="bg-[#0E4A86]" 
+                      data={NEW_ARRIVALS}
+                    />
+                    
+                    <MakerSeaction /> 
+                    <WorldShipping />
                   </div>
 
-                </div>
+                </main>
+              </>
+            } />
 
-                {/* بقية الأقسام تظهر تحت الحاوية العلوية مباشرة وتأخذ كامل العرض */}
-                <div className="w-full flex flex-col gap-8 md:gap-12">
-                  <EquipmentSection 
-                    title="Pick Up Recommended Used Construction Machine!" 
-                    badgeColor="bg-[#0E4A86]" 
-                    data={RECOMMENDED_MACHINES}
-                  />
+            <Route path="/export" element={<Export />} />
+            <Route path="/construction" element={<Construction />} />
+            <Route path="/agricultural" element={<Agriculture />} />
+            <Route path="/maintenance" element={<Maintenance />} />
+            <Route path="/contact" element={<ContactPage />} />
 
-                  <EquipmentSection 
-                    title="New Arrival Used Construction Machine" 
-                    badgeColor="bg-[#0E4A86]" 
-                    data={NEW_ARRIVALS}
-                  />
-                  
-                
-                  
-                  <MakerSeaction /> 
-                  <WorldShipping />
-                </div>
+          </Routes>
+        </div>
 
-              </main>
-            </>
-          } />
-
-          <Route path="/about" element={<AboutUs />} />
-
-        </Routes>
-
+        {/* وضع الفوتر خارج الـ div العلوي ليجبر المتصفح على لصقه بالأسفل تماماً */}
         <MainFooter />
         <FixedContactBar />
 
