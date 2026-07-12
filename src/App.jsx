@@ -16,6 +16,8 @@ import Construction from './components/ConstructionPage';
 import Agriculture from './components/AgriculturePage'; 
 import Maintenance from './components/MaintenancePage'; 
 import ContactPage from './components/ContactPage'; 
+import MachineryDetails from './components/MachineryDetails'; 
+import AllMachineryPage from './components/AllMachineryPage'; 
 
 const RECOMMENDED_MACHINES = [
   { id: 'r1', title: 'Large Excavator For Demolition', model: 'KOBELCO ZX225USRLCK-5B', hours: '5,458', year: '2016 (H28)', location: 'AOCHI Yard', tag: 'For Demolition', price: 'Ask Price', image: '/assets/images/Crushers_Wood_Chippers.png' },
@@ -101,6 +103,9 @@ export default function App() {
             <Route path="/agricultural" element={<Agriculture />} />
             <Route path="/maintenance" element={<Maintenance />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/machinery/:id" element={<MachineryDetails />} />
+            <Route path="/machinery-all/:category" element={<AllMachineryPage />} />
+
 
           </Routes>
         </div>

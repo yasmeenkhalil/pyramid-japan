@@ -41,8 +41,8 @@ export default function Header() {
               src={logo}
               alt="Pyramid Japan CO,LTD"
               className="
-                w-14
-                h-14
+                w-18
+                h-18
                 rounded-xl
                 object-cover
               "

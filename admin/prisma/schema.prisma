@@ -1,0 +1,85 @@
+generator client {
+provider = "prisma-client-js"
+}
+
+datasource db {
+provider = "mysql"
+url      = env("DATABASE_URL")
+}
+
+model User {
+id        String   @id @default(cuid())
+name      String
+email     String   @unique
+password  String
+role      String   @default("admin")
+createdAt DateTime @default(now())
+}
+
+model Category {
+id         String      @id @default(cuid())
+nameEn     String
+nameAr     String
+nameJa     String
+slug       String      @unique
+imageUrl   String?
+sector    String
+
+machinery  Machinery[]
+
+createdAt  DateTime    @default(now())
+}
+
+model Machinery {
+id              String           @id @default(cuid())
+
+titleEn         String
+titleAr         String
+titleJa         String
+
+slug            String           @unique
+
+stockNo         String?
+year            Int?
+hour            Int?
+price           Float?
+
+descriptionEn   String?
+descriptionAr   String?
+descriptionJa   String?
+
+featured        Boolean          @default(false)
+
+categoryId      String
+category        Category         @relation(fields: [categoryId], references: [id])
+
+images          MachineryImage[]
+
+createdAt       DateTime         @default(now())
+}
+
+model MachineryImage {
+id          String      @id @default(cuid())
+
+imageUrl    String
+
+machineryId String
+machinery   Machinery   @relation(fields: [machineryId], references: [id], onDelete: Cascade)
+
+createdAt   DateTime    @default(now())
+}
+
+model Inquiry {
+id          String      @id @default(cuid())
+
+name        String
+email       String
+phone       String?
+country     String?
+
+message     String
+
+status      String      @default("pending")
+
+createdAt   DateTime    @default(now())
+}
