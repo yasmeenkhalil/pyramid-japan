@@ -9,29 +9,68 @@ interface Category {
   nameEn: string;
 }
 
+interface Manufacturer {
+  id: string;
+  name: string;
+}
+
+interface Specification {
+  id: string;
+  nameEn: string;
+  nameAr: string;
+}
+
+interface Unit {
+  id: string;
+  name: string;
+}
+
+interface MachinerySpecRelation {
+  specificationId: string;
+  value: string;
+  unitId: string | null;
+}
+
 interface Machinery {
   id: string;
   titleEn: string;
   titleAr: string;
   titleJa: string;
+  slug: string;
   stockNo: string | null;
   year: number | null;
   hour: number | null;
   price: number | null;
+  location: string;
+  sector: string; // 💡 تم إضافة حقل القطاع هنا ليمرر لمودال التعديل بشكل صحيح
+  minPrice: number | null;
+  avgPrice: number | null;
+  maxPrice: number | null;
   descriptionEn: string | null;
   descriptionAr: string | null;
   descriptionJa: string | null;
   featured: boolean;
   categoryId: string;
+  manufacturerId: string;
   images: { id: string; imageUrl: string }[];
+  specifications: MachinerySpecRelation[];
 }
 
 interface MachineryActionsProps {
   machinery: Machinery;
   categories: Category[];
+  manufacturers: Manufacturer[];
+  availableSpecs: Specification[];
+  availableUnits: Unit[];
 }
 
-export default function MachineryActions({ machinery, categories }: MachineryActionsProps) {
+export default function MachineryActions({
+  machinery,
+  categories,
+  manufacturers,
+  availableSpecs,
+  availableUnits,
+}: MachineryActionsProps) {
   const [openDelete, setOpenDelete] = useState(false);
 
   async function handleDelete() {
@@ -50,11 +89,16 @@ export default function MachineryActions({ machinery, categories }: MachineryAct
       alert("Something went wrong during deletion");
     }
   }
-
   return (
     <>
       <div className="flex items-center justify-start gap-2 h-full my-auto">
-        <MachineryModal machinery={machinery} categories={categories} />
+        <MachineryModal 
+          machinery={machinery} 
+          categories={categories} 
+          manufacturers={manufacturers}
+          availableSpecs={availableSpecs}
+          availableUnits={availableUnits}
+        />
         <button
           onClick={() => setOpenDelete(true)}
           className="flex h-[38px] w-[38px] items-center justify-center rounded-2xl bg-red-50 text-red-600 hover:bg-red-100 transition shrink-0"

@@ -1,10 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, useEffect, FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { X, Edit2 } from "lucide-react";
+import MachinerySpecsForm from "./MachinerySpecsForm";
+import ImageUploader from "./ImageUploader";
 
-interface Category {
+interface DropdownItem {
   id: string;
-  nameEn: string;
+  nameEn?: string;
+  nameAr?: string;
+  name?: string;
+}
+
+interface SelectedSpec {
+  specificationId: string;
+  value: string;
+  unitId: string;
 }
 
 interface Machinery {
@@ -12,119 +24,153 @@ interface Machinery {
   titleEn: string;
   titleAr: string;
   titleJa: string;
+  slug: string;
   stockNo: string | null;
   year: number | null;
   hour: number | null;
   price: number | null;
+  location: string;
+  sector: string; // 💡 ممرر وجاهز للاستخدام
+  minPrice: number | null;
+  avgPrice: number | null;
+  maxPrice: number | null;
   descriptionEn: string | null;
   descriptionAr: string | null;
   descriptionJa: string | null;
   featured: boolean;
   categoryId: string;
+  manufacturerId: string;
   images: { id: string; imageUrl: string }[];
+  specifications: { specificationId: string; value: string; unitId: string | null }[];
 }
 
 interface MachineryModalProps {
-  machinery?: Machinery | null;
-  categories: Category[];
-  onSuccess?: () => void;
+  machinery: Machinery;
+  categories: DropdownItem[];
+  manufacturers: DropdownItem[];
+  availableSpecs: any[];
+  availableUnits: any[];
 }
 
-export default function CategoryModal({ machinery, categories, onSuccess }: MachineryModalProps) {
-  const [open, setOpen] = useState(false);
-
-  const [titleEn, setTitleEn] = useState(machinery?.titleEn || "");
-  const [titleAr, setTitleAr] = useState(machinery?.titleAr || "");
-  const [titleJa, setTitleJa] = useState(machinery?.titleJa || "");
-  const [stockNo, setStockNo] = useState(machinery?.stockNo || "");
-  const [year, setYear] = useState(machinery?.year?.toString() || "");
-  const [hour, setHour] = useState(machinery?.hour?.toString() || "");
-  const [price, setPrice] = useState(machinery?.price?.toString() || "");
-  const [descriptionEn, setDescriptionEn] = useState(machinery?.descriptionEn || "");
-  const [descriptionAr, setDescriptionAr] = useState(machinery?.descriptionAr || "");
-  const [descriptionJa, setDescriptionJa] = useState(machinery?.descriptionJa || "");
-  const [featured, setFeatured] = useState(machinery?.featured || false);
-  const [categoryId, setCategoryId] = useState(machinery?.categoryId || "");
-
-  const [files, setFiles] = useState<File[]>([]);
-  const [previews, setPreviews] = useState<string[]>(machinery?.images.map(img => img.imageUrl) || []);
-  const [loading, setLoading] = useState(false);
+export default function MachineryModal({
+  machinery,
+  categories,
+  manufacturers,
+  availableSpecs,
+  availableUnits,
+}: MachineryModalProps) {
+  const [open, setOpen] = useState<boolean>(false);
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const isEditMode = !!machinery;
+  // تهيئة الحالات بالقيم الحالية للماكينة
+  const [titleEn, setTitleEn] = useState(machinery.titleEn);
+  const [titleAr, setTitleAr] = useState(machinery.titleAr);
+  const [titleJa, setTitleJa] = useState(machinery.titleJa);
+  const [slug, setSlug] = useState(machinery.slug);
+  const [stockNo, setStockNo] = useState(machinery.stockNo || "");
+  const [year, setYear] = useState(machinery.year ? machinery.year.toString() : "");
+  const [hour, setHour] = useState(machinery.hour ? machinery.hour.toString() : "");
+  const [price, setPrice] = useState(machinery.price ? machinery.price.toString() : "");
+  const [location, setLocation] = useState(machinery.location || "");
+  const [sector, setSector] = useState(machinery.sector || ""); // 💡 قراءة القطاع الحالي
+  const [minPrice, setMinPrice] = useState(machinery.minPrice ? machinery.minPrice.toString() : "");
+  const [avgPrice, setAvgPrice] = useState(machinery.avgPrice ? machinery.avgPrice.toString() : "");
+  const [maxPrice, setMaxPrice] = useState(machinery.maxPrice ? machinery.maxPrice.toString() : "");
+  const [descriptionEn, setDescriptionEn] = useState(machinery.descriptionEn || "");
+  const [descriptionAr, setDescriptionAr] = useState(machinery.descriptionAr || "");
+  const [descriptionJa, setDescriptionJa] = useState(machinery.descriptionJa || "");
+  const [featured, setFeatured] = useState<boolean>(machinery.featured);
+  const [categoryId, setCategoryId] = useState(machinery.categoryId);
+  const [manufacturerId, setManufacturerId] = useState(machinery.manufacturerId);
+  const [selectedSpecs, setSelectedSpecs] = useState<SelectedSpec[]>([]);
+  const [images, setImages] = useState<string[]>([]);
 
+  useEffect(() => {
+    if (machinery) {
+      if (machinery.specifications) {
+        setSelectedSpecs(machinery.specifications.map((spec) => ({
+          specificationId: spec.specificationId,
+          value: spec.value,
+          unitId: spec.unitId || "",
+        })));
+      }
+      if (machinery.images) {
+        setImages(machinery.images.map((img) => img.imageUrl));
+      }
+    }
+  }, [machinery]);
+  const handleTitleEnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setTitleEn(value);
+    if (errors.titleEn) setErrors((prev) => ({ ...prev, titleEn: "" }));
+    if (errors.slug) setErrors((prev) => ({ ...prev, slug: "" }));
+    setSlug(value.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-"));
+  };
+
+  // دالة الفحص والتحقق الإلزامية
   const validateForm = (): boolean => {
     const newErrors: { [key: string]: string } = {};
-
     if (!titleEn.trim()) newErrors.titleEn = "English title is required.";
     if (!titleAr.trim()) newErrors.titleAr = "Arabic title is required.";
     if (!titleJa.trim()) newErrors.titleJa = "Japanese title is required.";
+    if (!slug.trim()) newErrors.slug = "Slug is required.";
+    if (!location.trim()) newErrors.location = "Location is required.";
+    if (!sector) newErrors.sector = "Sector is required. Please select one."; // 💡 التحقق من القطاع
     if (!categoryId) newErrors.categoryId = "Please select a category.";
-
-    if (!isEditMode && files.length === 0) {
-      newErrors.files = "At least one image is required.";
-    }
-
+    if (!manufacturerId) newErrors.manufacturerId = "Please select a manufacturer.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (!validateForm()) return;
-
+    setLoading(true);
     try {
-      setLoading(true);
-      let uploadedUrls: string[] = [...previews];
-
-      if (files.length > 0) {
-        const uploadPromises = files.map(async (file) => {
-          const formData = new FormData();
-          formData.append("file", file);
-          const res = await fetch("/api/upload", { method: "POST", body: formData });
-          if (!res.ok) throw new Error("Image upload failed");
-          const data: { url: string } = await res.json();
-          return data.url;
-        });
-        
-        const newUrls = await Promise.all(uploadPromises);
-        uploadedUrls = isEditMode ? [...uploadedUrls, ...newUrls] : newUrls;
-      }
-
-      const apiUrl = isEditMode ? `/api/machinery/${machinery.id}` : "/api/machinery";
-      const apiMethod = isEditMode ? "PUT" : "POST";
-
-      const res = await fetch(apiUrl, {
-        method: apiMethod,
+      const res = await fetch(`/api/machinery/${machinery.id}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           titleEn: titleEn.trim(),
           titleAr: titleAr.trim(),
           titleJa: titleJa.trim(),
+          slug: slug.trim(),
           stockNo: stockNo.trim() || null,
           year: year ? parseInt(year) : null,
           hour: hour ? parseInt(hour) : null,
           price: price ? parseFloat(price) : null,
+          location: location.trim(),
+          sector, // 💡 إرسال القطاع المحدث
+          minPrice: minPrice ? parseFloat(minPrice) : null,
+          avgPrice: avgPrice ? parseFloat(avgPrice) : null,
+          maxPrice: maxPrice ? parseFloat(maxPrice) : null,
           descriptionEn: descriptionEn.trim() || null,
           descriptionAr: descriptionAr.trim() || null,
           descriptionJa: descriptionJa.trim() || null,
           featured,
           categoryId,
-          images: uploadedUrls,
+          manufacturerId,
+          specifications: selectedSpecs,
+          images: images,
         }),
       });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "Operation failed");
+      if (res.ok) {
+        setOpen(false);
+        setErrors({});
+        router.refresh();
+      } else {
+        const err = await res.json();
+        if (err.message && err.message.toLowerCase().includes("slug")) {
+          setErrors((prev) => ({ ...prev, slug: err.message }));
+        } else {
+          alert(err.message || "Failed to update machinery");
+        }
       }
-
-      setOpen(false);
-      if (onSuccess) onSuccess();
-      else window.location.reload();
-    } catch (error: unknown) {
-      console.error(error);
-      alert(error instanceof Error ? error.message : "Something went wrong");
+    } catch (error) {
+      alert("Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -133,277 +179,302 @@ export default function CategoryModal({ machinery, categories, onSuccess }: Mach
   const handleClose = () => {
     setOpen(false);
     setErrors({});
-    if (!isEditMode) {
-      setTitleEn("");
-      setTitleAr("");
-      setTitleJa("");
-      setStockNo("");
-      setYear("");
-      setHour("");
-      setPrice("");
-      setDescriptionEn("");
-      setDescriptionAr("");
-      setDescriptionJa("");
-      setFeatured(false);
-      setCategoryId("");
-      setFiles([]);
-      setPreviews([]);
+    setTitleEn(machinery.titleEn);
+    setTitleAr(machinery.titleAr);
+    setTitleJa(machinery.titleJa);
+    setSlug(machinery.slug);
+    setStockNo(machinery.stockNo || "");
+    setYear(machinery.year ? machinery.year.toString() : "");
+    setHour(machinery.hour ? machinery.hour.toString() : "");
+    setPrice(machinery.price ? machinery.price.toString() : "");
+    setLocation(machinery.location || "");
+    setSector(machinery.sector || ""); // 💡 إعادة تعيين قيمة السيكتور الأصلية عند الإلغاء
+    setMinPrice(machinery.minPrice ? machinery.minPrice.toString() : "");
+    setAvgPrice(machinery.avgPrice ? machinery.avgPrice.toString() : "");
+    setMaxPrice(machinery.maxPrice ? machinery.maxPrice.toString() : "");
+    setDescriptionEn(machinery.descriptionEn || "");
+    setDescriptionAr(machinery.descriptionAr || "");
+    setDescriptionJa(machinery.descriptionJa || "");
+    setFeatured(machinery.featured);
+    setCategoryId(machinery.categoryId);
+    setManufacturerId(machinery.manufacturerId);
+    if (machinery.specifications) {
+      setSelectedSpecs(machinery.specifications.map(s => ({
+        specificationId: s.specificationId,
+        value: s.value,
+        unitId: s.unitId || "",
+      })));
     }
-  };
-
-  const removeExistingImage = (urlToRemove: string) => {
-    setPreviews((prev) => prev.filter((url) => url !== urlToRemove));
-  };
-
-  const removeNewFile = (indexToRemove: number) => {
-    setFiles((prev) => prev.filter((_, i) => i !== indexToRemove));
+    if (machinery.images) {
+      setImages(machinery.images.map(img => img.imageUrl));
+    }
   };
   return (
     <>
       <button
         onClick={() => setOpen(true)}
-        className="rounded-2xl bg-[#0B4EA2] px-4 py-2 text-white font-medium shadow-md hover:bg-[#093d80] transition"
+        className="flex h-[38px] w-[38px] items-center justify-center rounded-2xl border border-slate-200 bg-white text-blue-600 shadow-sm hover:bg-slate-50 transition shrink-0 cursor-pointer"
       >
-        {isEditMode ? "Edit" : "Add Machinery"}
+        <Edit2 size={18} />
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/40 p-4">
-          <div className="flex min-h-full items-center justify-center py-8">
-            <div className="w-full max-w-2xl max-h-[90vh] flex flex-col rounded-3xl bg-white p-6 shadow-2xl overflow-hidden">
-              
-              <h2 className="mb-4 text-xl font-bold text-gray-900 shrink-0">
-                {isEditMode ? "Edit Machinery" : "Add New Machinery"}
-              </h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+          <div className="w-full max-w-[94vw] xl:max-w-[85vw] h-[92vh] rounded-3xl bg-white p-6 shadow-xl border border-slate-100 flex flex-col overflow-hidden text-left">
+            <div className="flex items-center justify-between border-b pb-4 mb-5 shrink-0">
+              <h3 className="text-xl font-bold text-gray-900">Edit Machinery</h3>
+              <button
+                onClick={handleClose}
+                className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+              >
+                <X size={20} />
+              </button>
+            </div>
 
-              <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden" noValidate>
+            <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden" noValidate>
+              <div className="space-y-4 overflow-y-auto flex-1 pr-1 pb-4">
                 
-                <div className="space-y-4 overflow-y-auto flex-1 pr-2 pb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                  
-                  <div className="md:col-span-2 space-y-4">
+                {/* صف العناوين اللغوية الثلاثة */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${errors.titleEn ? "text-red-600" : "text-gray-500"}`}>
+                      Title English *
+                    </label>
+                    <input
+                      type="text"
+                      value={titleEn}
+                      onChange={handleTitleEnChange}
+                      className={`w-full border px-4 py-3 rounded-xl text-sm focus:outline-none transition-all ${
+                        errors.titleEn ? "border-red-500 bg-red-50 text-red-900 focus:border-red-600" : "border-slate-200 bg-slate-50 text-gray-800 focus:border-[#0B4EA2]"
+                      }`}
+                    />
+                    {errors.titleEn && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.titleEn}</p>}
+                  </div>
+
+                  <div>
+                    <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${errors.titleAr ? "text-red-600" : "text-gray-500"}`}>
+                      Title Arabic *
+                    </label>
+                    <input
+                      type="text"
+                      value={titleAr}
+                      onChange={(e) => {
+                        setTitleAr(e.target.value);
+                        if (errors.titleAr) setErrors((prev) => ({ ...prev, titleAr: "" }));
+                      }}
+                      className={`w-full border px-4 py-3 rounded-xl text-sm focus:outline-none transition-all ${
+                        errors.titleAr ? "border-red-500 bg-red-50 text-red-900 focus:border-red-600" : "border-slate-200 bg-slate-50 text-gray-800 focus:border-[#0B4EA2]"
+                      }`}
+                    />
+                    {errors.titleAr && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.titleAr}</p>}
+                  </div>
+
+                  <div>
+                    <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${errors.titleJa ? "text-red-600" : "text-gray-500"}`}>
+                      Title Japanese *
+                    </label>
+                    <input
+                      type="text"
+                      value={titleJa}
+                      onChange={(e) => {
+                        setTitleJa(e.target.value);
+                        if (errors.titleJa) setErrors((prev) => ({ ...prev, titleJa: "" }));
+                      }}
+                      className={`w-full border px-4 py-3 rounded-xl text-sm focus:outline-none transition-all ${
+                        errors.titleJa ? "border-red-500 bg-red-50 text-red-900 focus:border-red-600" : "border-slate-200 bg-slate-50 text-gray-800 focus:border-[#0B4EA2]"
+                      }`}
+                    />
+                    {errors.titleJa && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.titleJa}</p>}
+                  </div>
+                </div>
+
+                {/* صف الـ Slug وحقل الـ Sector الإجباري المحدث */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className={`block text-xs font-bold mb-1 ${errors.titleEn ? "text-red-600" : "text-gray-500"}`}>English Title *</label>
+                      <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${errors.slug ? "text-red-600" : "text-gray-500"}`}>
+                        Slug *
+                      </label>
                       <input
                         type="text"
-                        placeholder="Enter English title"
-                        value={titleEn}
+                        value={slug}
                         onChange={(e) => {
-                          setTitleEn(e.target.value);
-                          if (errors.titleEn) setErrors((prev) => ({ ...prev, titleEn: "" }));
+                          setSlug(e.target.value.toLowerCase().replace(/\s+/g, "-"));
+                          if (errors.slug) setErrors((prev) => ({ ...prev, slug: "" }));
                         }}
-                        className={`w-full rounded-xl border p-3 focus:outline-none text-gray-900 transition ${errors.titleEn ? "border-red-500 bg-red-50 focus:border-red-600" : "border-gray-200 bg-white focus:border-[#0B4EA2]"}`}
+                        className={`w-full border px-4 py-3 rounded-xl text-sm font-mono focus:outline-none transition-all ${
+                          errors.slug ? "border-red-500 bg-red-50 text-red-900 focus:border-red-600" : "border-slate-200 bg-slate-100 text-gray-500"
+                        }`}
                       />
-                      {errors.titleEn && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.titleEn}</p>}
+                      {errors.slug && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.slug}</p>}
                     </div>
 
+                    {/* 💡 حقل اختيار السيكتور مدمج برمجياً وبنفس التصميم */}
                     <div>
-                      <label className={`block text-xs font-bold mb-1 ${errors.titleAr ? "text-red-600" : "text-gray-500"}`}>Arabic Title *</label>
-                      <input
-                        type="text"
-                        placeholder="أدخل العنوان العربي"
-                        value={titleAr}
-                        onChange={(e) => {
-                          setTitleAr(e.target.value);
-                          if (errors.titleAr) setErrors((prev) => ({ ...prev, titleAr: "" }));
-                        }}
-                        className={`w-full rounded-xl border p-3 focus:outline-none text-gray-900 transition ${errors.titleAr ? "border-red-500 bg-red-50 focus:border-red-600" : "border-gray-200 bg-white focus:border-[#0B4EA2]"}`}
-                      />
-                      {errors.titleAr && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.titleAr}</p>}
+                      <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${errors.sector ? "text-red-600" : "text-gray-500"}`}>
+                        Sector *
+                      </label>
+                      <select 
+                        value={sector} 
+                        onChange={(e) => { 
+                          setSector(e.target.value); 
+                          if (errors.sector) setErrors((prev) => ({ ...prev, sector: "" })); 
+                        }} 
+                        className={`w-full border px-4 py-3 rounded-xl text-sm focus:outline-none transition-all cursor-pointer ${
+                          errors.sector ? "border-red-500 bg-red-50 text-red-900 focus:border-red-600" : "border-slate-200 bg-slate-50 text-gray-800 focus:border-[#0B4EA2]"
+                        }`}
+                      >
+                        <option value="">-- Select Sector --</option>
+                        <option value="Construction">Construction</option>
+                        <option value="Industrial">Industrial</option>
+                        <option value="Agriculture">Agriculture</option>
+                      </select>
+                      {errors.sector && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.sector}</p>}
                     </div>
-
+                  </div>
+                  {/* حقول الـ Category والـ Manufacturer */}
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className={`block text-xs font-bold mb-1 ${errors.titleJa ? "text-red-600" : "text-gray-500"}`}>Japanese Title *</label>
-                      <input
-                        type="text"
-                        placeholder="日本語のタイトルを入力してください"
-                        value={titleJa}
-                        onChange={(e) => {
-                          setTitleJa(e.target.value);
-                          if (errors.titleJa) setErrors((prev) => ({ ...prev, titleJa: "" }));
-                        }}
-                        className={`w-full rounded-xl border p-3 focus:outline-none text-gray-900 transition ${errors.titleJa ? "border-red-500 bg-red-50 focus:border-red-600" : "border-gray-200 bg-white focus:border-[#0B4EA2]"}`}
-                      />
-                      {errors.titleJa && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.titleJa}</p>}
-                    </div>
-
-                    <div>
-                      <label className={`block text-xs font-bold mb-1 ${errors.categoryId ? "text-red-600" : "text-gray-500"}`}>Category *</label>
+                      <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Category *</label>
                       <select
                         value={categoryId}
                         onChange={(e) => {
                           setCategoryId(e.target.value);
                           if (errors.categoryId) setErrors((prev) => ({ ...prev, categoryId: "" }));
                         }}
-                        className={`w-full rounded-xl border p-3 focus:outline-none text-gray-900 transition cursor-pointer ${errors.categoryId ? "border-red-500 bg-red-50 focus:border-red-600" : "border-gray-200 bg-white focus:border-[#0B4EA2]"}`}
+                        className="w-full border border-slate-200 px-4 py-3 rounded-xl text-sm bg-slate-50 text-gray-800 focus:border-[#0B4EA2] focus:outline-none"
                       >
-                        <option value="">Select Category</option>
-                        {categories.map((cat) => (
-                          <option key={cat.id} value={cat.id}>{cat.nameEn}</option>
+                        <option value="">-- Select --</option>
+                        {categories.map((c) => (
+                          <option key={c.id} value={c.id}>{c.nameEn || c.name}</option>
                         ))}
                       </select>
-                      {errors.categoryId && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.categoryId}</p>}
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold mb-1 text-gray-500">Stock Number</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. ST-2016"
-                      value={stockNo}
-                      onChange={(e) => setStockNo(e.target.value)}
-                      className="w-full rounded-xl border border-gray-200 p-3 focus:outline-none focus:border-[#0B4EA2] text-gray-900 bg-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold mb-1 text-gray-500">Year</label>
-                    <input
-                      type="number"
-                      placeholder="e.g. 2016"
-                      value={year}
-                      onChange={(e) => setYear(e.target.value)}
-                      className="w-full rounded-xl border border-gray-200 p-3 focus:outline-none focus:border-[#0B4EA2] text-gray-900 bg-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold mb-1 text-gray-500">Hours</label>
-                    <input
-                      type="number"
-                      placeholder="e.g. 5458"
-                      value={hour}
-                      onChange={(e) => setHour(e.target.value)}
-                      className="w-full rounded-xl border border-gray-200 p-3 focus:outline-none focus:border-[#0B4EA2] text-gray-900 bg-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold mb-1 text-gray-500">Price ($)</label>
-                    <input
-                      type="number"
-                      placeholder="Leave empty for 'Ask Price'"
-                      value={price}
-                      onChange={(e) => setPrice(e.target.value)}
-                      className="w-full rounded-xl border border-gray-200 p-3 focus:outline-none focus:border-[#0B4EA2] text-gray-900 bg-white"
-                    />
-                  </div>
-
-                  <div className="md:col-span-2 space-y-4">
-                    <div>
-                      <label className="block text-xs font-bold mb-1 text-gray-500">English Description</label>
-                      <textarea
-                        rows={2}
-                        placeholder="Description in English"
-                        value={descriptionEn}
-                        onChange={(e) => setDescriptionEn(e.target.value)}
-                        className="w-full rounded-xl border border-gray-200 p-3 focus:outline-none focus:border-[#0B4EA2] text-gray-900 bg-white resize-none"
-                      />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold mb-1 text-gray-500">Arabic Description</label>
-                      <textarea
-                        rows={2}
-                        placeholder="الوصف باللغة العربية"
-                        value={descriptionAr}
-                        onChange={(e) => setDescriptionAr(e.target.value)}
-                        className="w-full rounded-xl border border-gray-200 p-3 focus:outline-none focus:border-[#0B4EA2] text-gray-900 bg-white resize-none"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold mb-1 text-gray-500">Japanese Description</label>
-                      <textarea
-                        rows={2}
-                        placeholder="日本語の説明"
-                        value={descriptionJa}
-                        onChange={(e) => setDescriptionJa(e.target.value)}
-                        className="w-full rounded-xl border border-gray-200 p-3 focus:outline-none focus:border-[#0B4EA2] text-gray-900 bg-white resize-none"
-                      />
-                    </div>
-
-                    <div className="flex items-center gap-2 p-1">
-                      <input
-                        type="checkbox"
-                        id="featured"
-                        checked={featured}
-                        onChange={(e) => setFeatured(e.target.checked)}
-                        className="h-4 w-4 rounded border-gray-300 text-[#0B4EA2] focus:ring-[#0B4EA2] cursor-pointer"
-                      />
-                      <label htmlFor="featured" className="text-sm font-bold text-gray-700 cursor-pointer">Feature this machinery on homepage</label>
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className={`block text-xs font-bold mb-1 ${errors.files ? "text-red-600" : "text-gray-500"}`}>Machinery Images *</label>
-                      <div className={`rounded-xl border p-4 transition ${errors.files ? "border-red-500 bg-red-50" : "border-gray-200 bg-zinc-50"}`}>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          multiple
-                          onChange={(e) => {
-                            if (!e.target.files) return;
-                            const chosenFiles = Array.from(e.target.files);
-                            setFiles((prev) => [...prev, ...chosenFiles]);
-                            if (errors.files) setErrors((prev) => ({ ...prev, files: "" }));
-                          }}
-                          className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-[#0B4EA2] hover:file:bg-blue-100 cursor-pointer mb-4"
-                        />
-
-                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-                          {previews.map((url, index) => (
-                            <div key={`existing-${index}`} className="relative h-20 w-full rounded-xl border overflow-hidden group shadow-sm bg-white">
-                              <img src={url} alt="Existing" className="h-full w-full object-cover" />
-                              <button
-                                type="button"
-                                onClick={() => removeExistingImage(url)}
-                                className="absolute top-1 right-1 bg-red-600 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs font-bold shadow hover:bg-red-700 transition"
-                              >
-                                ×
-                              </button>
-                            </div>
-                          ))}
-
-                          {files.map((file, index) => {
-                            const objectUrl = URL.createObjectURL(file);
-                            return (
-                              <div key={`new-${index}`} className="relative h-20 w-full rounded-xl border border-dashed border-[#0B4EA2] overflow-hidden group shadow-sm bg-blue-50/50">
-                                <img src={objectUrl} alt="New Preview" className="h-full w-full object-cover" />
-                                <button
-                                  type="button"
-                                  onClick={() => removeNewFile(index)}
-                                  className="absolute top-1 right-1 bg-gray-800 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs font-bold shadow hover:bg-gray-900 transition"
-                                >
-                                  ×
-                                </button>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                      {errors.files && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.files}</p>}
+                      <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Manufacturer *</label>
+                      <select
+                        value={manufacturerId}
+                        onChange={(e) => {
+                          setManufacturerId(e.target.value);
+                          if (errors.manufacturerId) setErrors((prev) => ({ ...prev, manufacturerId: "" }));
+                        }}
+                        className="w-full border border-slate-200 px-4 py-3 rounded-xl text-sm bg-slate-50 text-gray-800 focus:border-[#0B4EA2] focus:outline-none"
+                      >
+                        <option value="">-- Select --</option>
+                        {manufacturers.map((m) => (
+                          <option key={m.id} value={m.id}>{m.name}</option>
+                        ))}
+                      </select>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex justify-end gap-2 pt-6 border-t mt-auto shrink-0 bg-white">
-                  <button
-                    type="button"
-                    onClick={handleClose}
-                    className="rounded-xl bg-slate-100 px-5 py-2 text-gray-700 font-medium hover:bg-slate-200 transition"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="rounded-xl bg-[#0B4EA2] px-5 py-2 text-white font-medium disabled:opacity-50 hover:bg-[#093d80] transition"
-                  >
-                    {loading ? "Saving..." : "Save"}
-                  </button>
+                {/* حقول الأرقام: التفاصيل والموقع */}
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Stock No</label>
+                    <input type="text" value={stockNo} onChange={(e) => setStockNo(e.target.value)} className="w-full border border-slate-200 px-4 py-3 rounded-xl text-sm bg-slate-50 text-gray-800 focus:outline-none" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Year</label>
+                    <input type="number" value={year} onChange={(e) => setYear(e.target.value)} className="w-full border border-slate-200 px-4 py-3 rounded-xl text-sm bg-slate-50 text-gray-800 focus:outline-none" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Hours</label>
+                    <input type="number" value={hour} onChange={(e) => setHour(e.target.value)} className="w-full border border-slate-200 px-4 py-3 rounded-xl text-sm bg-slate-50 text-gray-800 focus:outline-none" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Price</label>
+                    <input type="number" step="any" value={price} onChange={(e) => setPrice(e.target.value)} className="w-full border border-slate-200 px-4 py-3 rounded-xl text-sm bg-slate-50 text-gray-800 focus:outline-none" />
+                  </div>
+                  <div>
+                    <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${errors.location ? "text-red-600" : "text-gray-500"}`}>Location *</label>
+                    <input type="text" value={location} onChange={(e) => { setLocation(e.target.value); if (errors.location) setErrors((prev) => ({ ...prev, location: "" })); }} className={`w-full border px-4 py-3 rounded-xl text-sm focus:outline-none transition-all ${errors.location ? "border-red-500 bg-red-50 text-red-900" : "border-slate-200 bg-slate-50 text-gray-800 focus:border-[#0B4EA2]"}`} />
+                    {errors.location && <p className="mt-1 text-xs text-red-600 font-medium">🚨 {errors.location}</p>}
+                  </div>
                 </div>
 
-              </form>
-            </div>
+                {/* تقدير الأسعار الثلاثية */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Estimated Min Price</label>
+                    <input type="number" step="any" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} className="w-full border border-slate-200 px-4 py-3 rounded-xl text-sm bg-white text-gray-800 focus:outline-none" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Estimated Avg Price</label>
+                    <input
+                      type="number"
+                      step="any"
+                      value={avgPrice}
+                      readOnly 
+                      className="w-full border border-slate-200 px-4 py-3 rounded-xl text-sm bg-slate-100 text-gray-500 focus:outline-none cursor-not-allowed font-semibold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Estimated Max Price</label>
+                    <input type="number" step="any" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} className="w-full border border-slate-200 px-4 py-3 rounded-xl text-sm bg-white text-gray-800 focus:outline-none" />
+                  </div>
+                </div>
+
+                {/* حقول الأوصاف النصية باللغات الثلاث */}
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Description English</label>
+                    <textarea value={descriptionEn} onChange={(e) => setDescriptionEn(e.target.value)} rows={3} className="w-full border border-slate-200 bg-slate-50 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#0B4EA2] text-gray-800" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Description Arabic</label>
+                    <textarea value={descriptionAr} onChange={(e) => setDescriptionAr(e.target.value)} rows={3} className="w-full border border-slate-200 bg-slate-50 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#0B4EA2] text-gray-800" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Description Japanese</label>
+                    <textarea value={descriptionJa} onChange={(e) => setDescriptionJa(e.target.value)} rows={3} className="w-full border border-slate-200 bg-slate-50 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#0B4EA2] text-gray-800" />
+                  </div>
+                </div>
+
+                {/* المواصفات الفرعية ورفع الصور الإضافية */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4 border-t">
+                  <div className="bg-slate-50/60 p-5 rounded-2xl border border-slate-100">
+                    <MachinerySpecsForm 
+                      availableSpecs={availableSpecs} 
+                      availableUnits={availableUnits} 
+                      selectedSpecs={selectedSpecs} 
+                      onChange={setSelectedSpecs} 
+                    />
+                  </div>
+                  <div className="bg-slate-50/60 p-5 rounded-2xl border border-slate-100">
+                    <ImageUploader images={images} onChange={setImages} />
+                  </div>
+                </div>
+
+                {/* خيار تثبيت الآلة مميزة */}
+                <div className="pt-4 border-t flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="edit-featured"
+                    checked={featured}
+                    onChange={(e) => setFeatured(e.target.checked)}
+                    className="h-4 w-4 rounded border-slate-300 text-[#0B4EA2] focus:ring-[#0B4EA2]"
+                  />
+                  <label htmlFor="edit-featured" className="text-sm font-bold text-gray-700 select-none cursor-pointer">
+                    Feature this machinery on the landing page
+                  </label>
+                </div>
+
+              </div>
+
+              {/* أزرار الحفظ والإلغاء وإغلاق النموذج بالكامل */}
+              <div className="border-t pt-4 mt-5 flex items-center justify-end gap-3 shrink-0">
+                <button type="button" onClick={handleClose} className="px-5 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition cursor-pointer">
+                  Cancel
+                </button>
+                <button type="submit" disabled={loading} className="px-6 py-2.5 rounded-xl bg-[#0B4EA2] text-sm font-semibold text-white hover:bg-blue-700 transition disabled:opacity-50 cursor-pointer">
+                  {loading ? "Updating..." : "Update Machinery"}
+                </button>
+              </div>
+            </form>
+
           </div>
         </div>
       )}

@@ -93,3 +93,37 @@ export async function POST(req: Request) {
     );
   }
 }
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const sector = searchParams.get("sector") || "";
+    const sort = searchParams.get("sort") || "";
+
+    const whereClause: any = {};
+    if (sector) {
+      whereClause.sector = { contains: sector };
+    }
+
+    let orderByClause: any = { nameEn: "asc" };
+    if (sort === "za") {
+      orderByClause = { nameEn: "desc" };
+    }
+
+    const categories = await prisma.category.findMany({
+      where: whereClause,
+      include: {
+        _count: {
+          select: { machinery: true }
+        }
+      },
+      orderBy: orderByClause
+    });
+
+    return Response.json(categories, { status: 200 });
+  } catch (error) {
+    console.error("Fetch Categories Error:", error);
+    return Response.json({ error: "Failed to fetch categories" }, { status: 500 });
+  }
+}
+
+
