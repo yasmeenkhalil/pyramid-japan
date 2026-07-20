@@ -30,7 +30,7 @@ interface MachineryUpdateRequestBody {
   hour?: string | number;
   price?: string | number;
   location?: string;
-  sector?: string; // 💡 تم إضافة حقل السيكتور هنا في الـ Interface الخاص بالتحديث
+  sector?: string; 
   minPrice?: string | number;
   avgPrice?: string | number;
   maxPrice?: string | number;
@@ -42,6 +42,7 @@ interface MachineryUpdateRequestBody {
   manufacturerId?: string;
   specifications?: any[];
   images?: string[];
+  isAvailableForExport?: boolean;
 }
 
 export async function GET(req: Request, { params }: RouteParams) {
@@ -61,6 +62,7 @@ export async function GET(req: Request, { params }: RouteParams) {
         },
         category: true,
         manufacturer: true,
+       
       },
     });
 
@@ -87,7 +89,6 @@ export async function PUT(req: Request, { params }: RouteParams) {
     const id = resolvedParams.id;
     const body = (await req.json()) as MachineryUpdateRequestBody;
 
-    // 💡 تعديل شرط الفحص: تم إضافة body.sector ليكون إلزامياً (Mandatory) في عملية التحديث
     if (!body.titleEn || !body.titleAr || !body.titleJa || !body.categoryId || !body.manufacturerId || !body.location || !body.sector) {
       return Response.json(
         { error: "Core fields including titles, category, manufacturer, location, and sector are required." },
@@ -101,9 +102,8 @@ export async function PUT(req: Request, { params }: RouteParams) {
     const categoryIdStr = body.categoryId.trim();
     const manufacturerIdStr = body.manufacturerId.trim();
     const locationStr = body.location.trim();
-    const sectorStr = body.sector.trim(); // 💡 تنظيف نص السيكتور المستقبل
+    const sectorStr = body.sector.trim(); 
 
-    // 💡 منع تمرير حقل القطاع كمسافات فارغة
     if (!titleEnStr || !titleArStr || !titleJaStr || !categoryIdStr || !manufacturerIdStr || !locationStr || !sectorStr) {
       return Response.json(
         { error: "Required fields cannot contain only spaces." },
@@ -161,6 +161,8 @@ export async function PUT(req: Request, { params }: RouteParams) {
         where: { machineryId: id },
       });
 
+   
+
       return await tx.machinery.update({
         where: { id },
         data: {
@@ -183,6 +185,7 @@ export async function PUT(req: Request, { params }: RouteParams) {
           featured: Boolean(body.featured),
           categoryId: categoryIdStr,
           manufacturerId: manufacturerIdStr,
+          isAvailableForExport: body.isAvailableForExport !== undefined ? Boolean(body.isAvailableForExport) : true,
           images: {
             create: uploadedImageUrls.map((url: string) => ({
               imageUrl: url,

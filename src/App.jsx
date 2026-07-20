@@ -23,6 +23,8 @@ import AllMachineryPage from './components/AllMachineryPage';
 export default function App() {
   const [recommendedMachines, setRecommendedMachines] = useState([]);
   const [newArrivals, setNewArrivals] = useState([]);
+  const [loadingRec, setLoadingRec] = useState(true);
+  const [loadingNew, setLoadingNew] = useState(true);
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSector, setSelectedSector] = useState("");
@@ -46,6 +48,8 @@ export default function App() {
 
   useEffect(() => {
     async function fetchHomeData() {
+      setLoadingRec(true);
+      setLoadingNew(true);
       try {
         let recUrl = '/api/machinery/recommended';
         let newUrl = '/api/machinery/new-arrivals';
@@ -65,14 +69,18 @@ export default function App() {
           const dataRec = await resRec.json();
           setRecommendedMachines(transformData(dataRec));
         }
+        setLoadingRec(false);
 
         const resNew = await fetch(newUrl);
         if (resNew.ok) {
           const dataNew = await resNew.json();
           setNewArrivals(transformData(dataNew));
         }
+        setLoadingNew(false);
       } catch (err) {
         console.error(err);
+        setLoadingRec(false);
+        setLoadingNew(false);
       }
     }
     fetchHomeData();
@@ -128,12 +136,14 @@ export default function App() {
                       title="Pick Up Recommended Used Construction Machine!" 
                       badgeColor="bg-[#0E4A86]" 
                       data={recommendedMachines}
+                      loading={loadingRec}
                     />
 
                     <EquipmentSection 
                       title="New Arrival Used Construction Machine" 
                       badgeColor="bg-[#0E4A86]" 
                       data={newArrivals}
+                      loading={loadingNew}
                     />
                     
                     <MakerSeaction /> 

@@ -1,11 +1,30 @@
 import { FileText, PlayCircle, ShieldCheck } from 'lucide-react';
 
 export default function SidebarBanners() {
+  const handleDownloadStockList = async () => {
+    try {
+      const response = await fetch('/api/machinery/export', {
+        method: 'GET',
+      });
+      if (!response.ok) throw new Error("Failed to download file");
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Pyramid_Japan_Stock_List.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error exporting excel:", error);
+    }
+  };
+
   return (
     <div className="w-full flex flex-col gap-4 text-left" dir="ltr">
       
-      {/* 1. STOCK LIST BANNER */}
-      <div className="bg-white p-5 rounded-2xl border border-amber-200 shadow-sm transition-all duration-300 hover:shadow-md hover:border-red-500 group cursor-pointer">
+      <div className="bg-white p-5 rounded-2xl border border-amber-200 shadow-sm transition-all duration-300 hover:shadow-md hover:border-red-500 group cursor-pointer" onClick={handleDownloadStockList}>
         <div className="flex items-center gap-3 border-b border-gray-100 pb-3 mb-4">
           <FileText className="w-4 h-4 text-red-600 transition-transform duration-300 group-hover:scale-110" />
           <h3 className="text-xs font-bold tracking-wider uppercase text-gray-800">
@@ -18,7 +37,7 @@ export default function SidebarBanners() {
             Complete Inventory
           </label>
           <p className="text-[11px] text-gray-500 leading-relaxed font-light">
-            Browse and download our fully updated heavy machinery spreadsheet directly from Japan.
+            Bownload our fully updated heavy machinery spreadsheet directly from Japan.
           </p>
           <button className="w-full bg-gray-900 hover:bg-red-600 text-white py-2.5 rounded-xl text-[10px] font-bold tracking-widest uppercase transition-all duration-300 mt-4 cursor-pointer">
             View Stock List →
@@ -26,7 +45,6 @@ export default function SidebarBanners() {
         </div>
       </div>
 
-      {/* 2. COMPANY VIDEO BANNER */}
       <div className="bg-white p-5 rounded-2xl border border-amber-200 shadow-sm transition-all duration-300 hover:shadow-md hover:border-red-500 group cursor-pointer">
         <div className="flex items-center gap-3 border-b border-gray-100 pb-3 mb-4">
           <PlayCircle className="w-4 h-4 text-red-600 transition-transform duration-300 group-hover:scale-110" />
@@ -48,7 +66,6 @@ export default function SidebarBanners() {
         </div>
       </div>
 
-      {/* 3. QUALITY ASSURANCE BANNER */}
       <div className="bg-white p-5 rounded-2xl border border-amber-200 shadow-sm transition-all duration-300 hover:shadow-md hover:border-red-500 group">
         <div className="flex items-center gap-3 border-b border-gray-100 pb-3 mb-4">
           <ShieldCheck className="w-4 h-4 text-red-600" />

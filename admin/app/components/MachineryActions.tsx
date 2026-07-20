@@ -31,6 +31,10 @@ interface MachinerySpecRelation {
   unitId: string | null;
 }
 
+interface MachineryExportCountryRelation {
+  exportCountryId: string;
+}
+
 interface Machinery {
   id: string;
   titleEn: string;
@@ -42,7 +46,7 @@ interface Machinery {
   hour: number | null;
   price: number | null;
   location: string;
-  sector: string; // 💡 تم إضافة حقل القطاع هنا ليمرر لمودال التعديل بشكل صحيح
+  sector: string;
   minPrice: number | null;
   avgPrice: number | null;
   maxPrice: number | null;
@@ -52,6 +56,7 @@ interface Machinery {
   featured: boolean;
   categoryId: string;
   manufacturerId: string;
+  isAvailableForExport: boolean;
   images: { id: string; imageUrl: string }[];
   specifications: MachinerySpecRelation[];
 }
@@ -89,6 +94,7 @@ export default function MachineryActions({
       alert("Something went wrong during deletion");
     }
   }
+
   return (
     <>
       <div className="flex items-center justify-start gap-2 h-full my-auto">

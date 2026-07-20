@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import MachineCard from './MachineCard';
 
-export default function EquipmentSection({ title, data }) {
+export default function EquipmentSection({ title, data, loading }) {
   const words = title.split(' ');
   const firstTwoWords = words.slice(0, 2).join(' ');
   const restOfTitle = words.slice(2).join(' ');
@@ -46,9 +46,29 @@ export default function EquipmentSection({ title, data }) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
-        {data.map((machine) => (
-          <MachineCard key={machine.id} machine={machine} />
-        ))}
+        {loading ? (
+          Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm space-y-4 p-4 animate-pulse">
+              <div className="w-full h-40 bg-slate-200 rounded-xl" />
+              <div className="space-y-2">
+                <div className="h-4 bg-slate-200 rounded-md w-3/4" />
+                <div className="h-3 bg-slate-200 rounded-md w-1/2" />
+              </div>
+              <div className="pt-2 border-t border-slate-100 flex justify-between items-center">
+                <div className="h-5 bg-slate-200 rounded-md w-1/3" />
+                <div className="h-4 bg-slate-200 rounded-md w-1/4" />
+              </div>
+            </div>
+          ))
+        ) : data && data.length > 0 ? (
+          data.map((machine) => (
+            <MachineCard key={machine.id} machine={machine} />
+          ))
+        ) : (
+          <div className="col-span-full text-center py-10 text-sm text-slate-400 italic bg-white border border-slate-100 rounded-2xl">
+            No machinery found matching your criteria.
+          </div>
+        )}
       </div>
 
     </div>

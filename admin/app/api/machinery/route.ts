@@ -21,12 +21,13 @@ interface MachineryRequestBody {
   titleEn?: string;
   titleAr?: string;
   titleJa?: string;
+  slug?: string;
   stockNo?: string;
   year?: string | number;
   hour?: string | number;
   price?: string | number;
   location?: string;
-  sector?: string; // 💡 تم إضافة حقل السيكتور في الـ Interface
+  sector?: string; 
   minPrice?: string | number;
   avgPrice?: string | number;
   maxPrice?: string | number;
@@ -38,16 +39,17 @@ interface MachineryRequestBody {
   manufacturerId?: string;
   specifications?: any[];
   images?: string[];
+  isAvailableForExport?: boolean;
+  exportCountryIds?: string[];
 }
 
 export async function POST(req: Request) {
   try {
     const body = (await req.json()) as MachineryRequestBody;
 
-    // 💡 تعديل شرط الفحص: تم إضافة body.sector ليكون إلزامياً (Mandatory)
     if (!body.titleEn || !body.titleAr || !body.titleJa || !body.categoryId || !body.manufacturerId || !body.location || !body.sector) {
       return Response.json(
-        { error: "Core fields including titles, category, manufacturer, location, and sector are required." },
+        { message: "Core fields including titles, category, manufacturer, location, and sector are required." },
         { status: 400 }
       );
     }
@@ -58,34 +60,34 @@ export async function POST(req: Request) {
     const categoryIdStr = body.categoryId.trim();
     const manufacturerIdStr = body.manufacturerId.trim();
     const locationStr = body.location.trim();
-    const sectorStr = body.sector.trim(); // 💡 تنظيف النص القادم من السيكتور
+    const sectorStr = body.sector.trim(); 
 
-    // 💡 منع إرسال السيكتور على هيئة مسافات فارغة فقط
     if (!titleEnStr || !titleArStr || !titleJaStr || !categoryIdStr || !manufacturerIdStr || !locationStr || !sectorStr) {
       return Response.json(
-        { error: "Required fields cannot contain only spaces." },
+        { message: "Required fields cannot contain only spaces." },
         { status: 400 }
       );
     }
 
     if (!/^[A-Za-z0-9\s\-_,.:()]+$/.test(titleEnStr)) {
       return Response.json(
-        { error: "English title must contain English characters only." },
+        { message: "English title must contain English characters only." },
         { status: 400 }
       );
     }
 
     if (!/^[\u0600-\u06FF0-9\s\-_,.:()]+$/.test(titleArStr)) {
       return Response.json(
-        { error: "Arabic title must contain Arabic characters only." },
+        { message: "Arabic title must contain Arabic characters only." },
         { status: 400 }
       );
     }
 
-    let machinerySlug = slugify(titleEnStr);
+    let machinerySlug = body.slug?.trim() || slugify(titleEnStr);
     if (!machinerySlug) {
       machinerySlug = slugify(titleArStr) || `machinery-${Date.now()}`;
     }
+
     const uploadedImageUrls: string[] = [];
     if (body.images && Array.isArray(body.images)) {
       for (const img of body.images) {
@@ -99,7 +101,7 @@ export async function POST(req: Request) {
           } catch (uploadError) {
             console.error("Cloudinary Upload Error:", uploadError);
             return Response.json(
-              { error: "Failed to upload images to the cloud." },
+              { message: "Failed to upload images to the cloud." },
               { status: 500 }
             );
           }
@@ -130,6 +132,7 @@ export async function POST(req: Request) {
         featured: Boolean(body.featured),
         categoryId: categoryIdStr,
         manufacturerId: manufacturerIdStr,
+        isAvailableForExport: body.isAvailableForExport !== undefined ? Boolean(body.isAvailableForExport) : true,
         images: {
           create: uploadedImageUrls.map((url: string) => ({
             imageUrl: url,
@@ -144,6 +147,7 @@ export async function POST(req: Request) {
               }))
             : [],
         },
+       
       },
       include: {
         images: true,
@@ -158,13 +162,13 @@ export async function POST(req: Request) {
       const prismaError = error as { code: string };
       if (prismaError.code === 'P2002') {
         return Response.json(
-          { error: "A machinery item with this title or slug already exists." },
+          { message: "A machinery item with this title or slug already exists." },
           { status: 400 }
         );
       }
     }
     return Response.json(
-      { error: "Failed to create machinery due to a server error." },
+      { message: "Failed to create machinery due to a server error." },
       { status: 500 }
     );
   }
@@ -189,7 +193,7 @@ export async function GET() {
     return Response.json(machineryList, { status: 200 });
   } catch (error) {
     return Response.json(
-      { error: "Failed to fetch machinery list due to a server error." },
+      { message: "Failed to fetch machinery list due to a server error." },
       { status: 500 }
     );
   }

@@ -7,40 +7,56 @@ export async function GET(req: Request) {
     const categorySlug = searchParams.get("category") || "";
     const search = searchParams.get("search") || "";
     const maker = searchParams.get("maker") || "";
+    const sector = searchParams.get("sector") || ""; 
+    const isExport = searchParams.get("export") || "";
     
     const specId = searchParams.get("specId") || "";
-    const specOperator = searchParams.get("specOp") || "";
+    const specOperator = searchParams.get("specOp") || "eq"; 
     const specValue = searchParams.get("specVal") || "";
 
-    const whereClause: any = {};
+    const andClauses: any[] = [];
+
+    if (sector && sector !== "All Sectors") {
+      andClauses.push({
+        sector: { equals: sector } 
+      });
+    }
 
     if (categorySlug && categorySlug !== "all") {
-      whereClause.category = {
-        slug: categorySlug,
-      };
+      andClauses.push({
+        category: {
+          slug: categorySlug,
+        }
+      });
+    }
+
+    if (maker && maker !== "All Makers") {
+      andClauses.push({
+        manufacturer: {
+          name: { contains: maker },
+        }
+      });
+    }
+
+    if (isExport === "true") {
+      andClauses.push({
+        isAvailableForExport: { equals: true }
+      });
     }
 
     if (search) {
-      whereClause.OR = [
-        { titleEn: { contains: search, mode: "insensitive" } },
-        { titleAr: { contains: search, mode: "insensitive" } },
-        { titleJa: { contains: search, mode: "insensitive" } },
-        {
-          manufacturer: {
-            name: { contains: search, mode: "insensitive" }
-          }
-        }
-      ];
-    }
-
-    if (maker) {
-      whereClause.manufacturer = {
-        name: { contains: maker, mode: "insensitive" },
-      };
+      andClauses.push({
+        OR: [
+          { titleEn: { contains: search } },
+          { titleAr: { contains: search } },
+          { titleJa: { contains: search } },
+          { stockNo: { contains: search } }
+        ]
+      });
     }
 
     if (specId && specValue) {
-      const cleanUserVal = specValue.replace(/,/g, "");
+      const cleanUserVal = specValue.replace(/,/g, "").trim();
       const userNumericValue = parseFloat(cleanUserVal);
 
       if (!isNaN(userNumericValue)) {
@@ -50,7 +66,7 @@ export async function GET(req: Request) {
 
         const matchingMachineryIds = allSpecRecords
           .filter((rec) => {
-            const cleanDbVal = rec.value.replace(/,/g, "");
+            const cleanDbVal = rec.value.replace(/,/g, "").trim();
             const dbNumericValue = parseFloat(cleanDbVal);
             if (isNaN(dbNumericValue)) return false;
 
@@ -60,16 +76,22 @@ export async function GET(req: Request) {
           })
           .map((rec) => rec.machineryId);
 
-        whereClause.id = matchingMachineryIds.length > 0 ? { in: matchingMachineryIds } : { equals: "none-matched-id" };
+        andClauses.push({
+          id: { in: matchingMachineryIds }
+        });
       } else {
-        whereClause.specifications = {
-          some: {
-            specificationId: specId,
-            value: { contains: specValue, mode: "insensitive" }
+        andClauses.push({
+          specifications: {
+            some: {
+              specificationId: specId,
+              value: { contains: specValue }
+            }
           }
-        };
+        });
       }
     }
+
+    const whereClause = andClauses.length > 0 ? { AND: andClauses } : {};
 
     const machineryList = await prisma.machinery.findMany({
       where: whereClause,

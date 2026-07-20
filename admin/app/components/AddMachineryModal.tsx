@@ -31,7 +31,6 @@ export default function AddMachineryModal({ categories, manufacturers, available
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  // حالات الإدخال (States)
   const [titleEn, setTitleEn] = useState("");
   const [titleAr, setTitleAr] = useState("");
   const [titleJa, setTitleJa] = useState("");
@@ -41,7 +40,7 @@ export default function AddMachineryModal({ categories, manufacturers, available
   const [hour, setHour] = useState("");
   const [price, setPrice] = useState("");
   const [location, setLocation] = useState("");
-  const [sector, setSector] = useState(""); // 💡 حقل السيكتور الجديد
+  const [sector, setSector] = useState(""); 
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState(""); 
   const avgPrice = (minPrice && maxPrice) ? ((parseFloat(minPrice) + parseFloat(maxPrice)) / 2).toString() : "";
@@ -53,15 +52,18 @@ export default function AddMachineryModal({ categories, manufacturers, available
   const [manufacturerId, setManufacturerId] = useState("");
   const [selectedSpecs, setSelectedSpecs] = useState<SelectedSpec[]>([]);
   const [images, setImages] = useState<string[]>([]);
+  
+  const [isAvailableForExport, setIsAvailableForExport] = useState<boolean>(true);
+  const [exportCountryIds, setExportCountryIds] = useState<string[]>([]);
 
   const handleTitleEnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value; setTitleEn(value);
+    const value = e.target.value; 
+    setTitleEn(value);
     if (errors.titleEn) setErrors(prev => ({ ...prev, titleEn: "" }));
     if (errors.slug) setErrors(prev => ({ ...prev, slug: "" }));
     setSlug(value.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-"));
   };
 
-  // دالة التحقق الإلزامية (Validation)
   const validateForm = (): boolean => {
     const newErrors: { [key: string]: string } = {};
     if (!titleEn.trim()) newErrors.titleEn = "English title is required.";
@@ -69,11 +71,17 @@ export default function AddMachineryModal({ categories, manufacturers, available
     if (!titleJa.trim()) newErrors.titleJa = "Japanese title is required.";
     if (!slug.trim()) newErrors.slug = "Slug is required.";
     if (!location.trim()) newErrors.location = "Location is required.";
-    if (!sector) newErrors.sector = "Sector is required. Please select one."; // 💡 السيكتور إلزامي هنا
+    if (!sector) newErrors.sector = "Sector is required. Please select one."; 
     if (!categoryId) newErrors.categoryId = "Please select a category.";
     if (!manufacturerId) newErrors.manufacturerId = "Please select a manufacturer.";
     setErrors(newErrors); 
     return Object.keys(newErrors).length === 0;
+  };
+
+  const handleCountryToggle = (id: string) => {
+    setExportCountryIds(prev => 
+      prev.includes(id) ? prev.filter(cId => cId !== id) : [...prev, id]
+    );
   };
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); 
@@ -93,7 +101,7 @@ export default function AddMachineryModal({ categories, manufacturers, available
           hour: hour ? parseInt(hour) : null, 
           price: price ? parseFloat(price) : null,
           location: location.trim(), 
-          sector, // 💡 إرسال القطاع المختار وجعله إجبارياً
+          sector, 
           minPrice: minPrice ? parseFloat(minPrice) : null, 
           avgPrice: avgPrice ? parseFloat(avgPrice) : null, 
           maxPrice: maxPrice ? parseFloat(maxPrice) : null,
@@ -105,6 +113,8 @@ export default function AddMachineryModal({ categories, manufacturers, available
           manufacturerId, 
           specifications: selectedSpecs, 
           images: images,
+          isAvailableForExport,
+          exportCountryIds,
         }),
       });
       if (res.ok) { 
@@ -137,7 +147,7 @@ export default function AddMachineryModal({ categories, manufacturers, available
     setHour(""); 
     setPrice(""); 
     setLocation(""); 
-    setSector(""); // 💡 تصفير حقل القطاع عند الإغلاق
+    setSector(""); 
     setMinPrice("");  
     setMaxPrice(""); 
     setDescriptionEn(""); 
@@ -148,6 +158,8 @@ export default function AddMachineryModal({ categories, manufacturers, available
     setManufacturerId(""); 
     setSelectedSpecs([]); 
     setImages([]);
+    setIsAvailableForExport(true);
+    setExportCountryIds([]);
   };
 
   return (
@@ -159,6 +171,7 @@ export default function AddMachineryModal({ categories, manufacturers, available
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="w-full max-w-[94vw] xl:max-w-[85vw] h-[92vh] rounded-3xl bg-white p-6 shadow-xl border border-slate-100 flex flex-col overflow-hidden">
+            
             <div className="flex items-center justify-between border-b pb-4 mb-5 shrink-0">
               <h3 className="text-xl font-bold text-gray-900">Add New Machinery</h3>
               <button onClick={handleClose} className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"><X size={20} /></button>
@@ -166,7 +179,7 @@ export default function AddMachineryModal({ categories, manufacturers, available
 
             <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden" noValidate>
               <div className="space-y-4 overflow-y-auto flex-1 pr-1 pb-4 text-left">
-                {/* صف العناوين باللغات الثلاث */}
+                
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${errors.titleEn ? "text-red-600" : "text-gray-500"}`}>Title English *</label>
@@ -185,7 +198,6 @@ export default function AddMachineryModal({ categories, manufacturers, available
                   </div>
                 </div>
 
-                {/* صف الـ Slug، الـ Sector الإلزامي، الـ Category، والـ Manufacturer */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -193,7 +205,6 @@ export default function AddMachineryModal({ categories, manufacturers, available
                       <input type="text" value={slug} onChange={(e) => { setSlug(e.target.value.toLowerCase().replace(/\s+/g, "-")); if (errors.slug) setErrors(prev => ({ ...prev, slug: "" })); }} className={`w-full border px-4 py-3 rounded-xl text-sm font-mono focus:outline-none transition-all ${errors.slug ? "border-red-500 bg-red-50 text-red-900 focus:border-red-600" : "border-slate-200 bg-slate-100 text-gray-500"}`} />
                       {errors.slug && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.slug}</p>}
                     </div>
-                    {/* 💡 قائمة الـ Sector الإلزامية الجديدة */}
                     <div>
                       <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${errors.sector ? "text-red-600" : "text-gray-500"}`}>Sector *</label>
                       <select 
@@ -227,7 +238,6 @@ export default function AddMachineryModal({ categories, manufacturers, available
                     </div>
                   </div>
                 </div>
-                {/* صف تفاصيل الآلة: رقم المخزون، السنة، الساعات، السعر، والموقع */}
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Stock No</label>
@@ -252,7 +262,6 @@ export default function AddMachineryModal({ categories, manufacturers, available
                   </div>
                 </div>
 
-                {/* حقول تقدير الأسعار الثلاثة */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100">
                   <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Estimated Min Price</label>
@@ -260,13 +269,7 @@ export default function AddMachineryModal({ categories, manufacturers, available
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Estimated Avg Price</label>
-                    <input
-                      type="number"
-                      step="any"
-                      value={avgPrice}
-                      readOnly 
-                      className="w-full border border-slate-200 px-4 py-3 rounded-xl text-sm bg-slate-100 text-gray-500 focus:outline-none cursor-not-allowed font-semibold"
-                    />
+                    <input type="number" step="any" value={avgPrice} readOnly className="w-full border border-slate-200 px-4 py-3 rounded-xl text-sm bg-slate-100 text-gray-500 focus:outline-none cursor-not-allowed font-semibold" />
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Estimated Max Price</label>
@@ -274,35 +277,53 @@ export default function AddMachineryModal({ categories, manufacturers, available
                   </div>
                 </div>
 
-                {/* حقول النصوص والوصف باللغات الثلاث */}
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Description English</label>
-                    <textarea value={descriptionEn} onChange={(e) => setDescriptionEn(e.target.value)} rows={3} className="w-full border border-slate-200 bg-slate-50 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#0B4EA2] text-gray-800" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex items-center gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                    <input type="checkbox" id="featured" checked={featured} onChange={(e) => setFeatured(e.target.checked)} className="w-4 h-4 text-[#0B4EA2] border-slate-300 rounded focus:ring-[#0B4EA2] cursor-pointer" />
+                    <label htmlFor="featured" className="text-sm font-bold text-gray-700 cursor-pointer select-none">Mark as Featured Machinery</label>
                   </div>
-                  <div>
-                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Description Arabic</label>
-                    <textarea value={descriptionAr} onChange={(e) => setDescriptionAr(e.target.value)} rows={3} className="w-full border border-slate-200 bg-slate-50 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#0B4EA2] text-gray-800" />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Description Japanese</label>
-                    <textarea value={descriptionJa} onChange={(e) => setDescriptionJa(e.target.value)} rows={3} className="w-full border border-slate-200 bg-slate-50 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#0B4EA2] text-gray-800" />
+
+                  <div className="flex items-center gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                    <input type="checkbox" id="isAvailableForExport" checked={isAvailableForExport} onChange={(e) => setIsAvailableForExport(e.target.checked)} className="w-4 h-4 text-[#0B4EA2] border-slate-300 rounded focus:ring-[#0B4EA2] cursor-pointer" />
+                    <label htmlFor="isAvailableForExport" className="text-sm font-bold text-gray-700 cursor-pointer select-none">Available for International Export</label>
                   </div>
                 </div>
 
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Description English</label>
+                    <textarea value={descriptionEn} onChange={(e) => setDescriptionEn(e.target.value)} rows={3} className="w-full border border-slate-200 bg-slate-50 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#0B4EA2] text-gray-800 resize-none" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Description Arabic</label>
+                    <textarea value={descriptionAr} onChange={(e) => setDescriptionAr(e.target.value)} rows={3} className="w-full border border-slate-200 bg-slate-50 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#0B4EA2] text-gray-800 resize-none" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Description Japanese</label>
+                    <textarea value={descriptionJa} onChange={(e) => setDescriptionJa(e.target.value)} rows={3} className="w-full border border-slate-200 bg-slate-50 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#0B4EA2] text-gray-800 resize-none" />
+                  </div>
+                </div>
+
+                <div>
+                  <ImageUploader images={images} onChange={setImages} />
+                </div>
+
+                <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                  <label className="block text-xs font-bold uppercase tracking-wider mb-3 text-gray-700">Machinery Specifications</label>
+                  <MachinerySpecsForm 
+                    availableSpecs={availableSpecs} 
+                    availableUnits={availableUnits} 
+                    selectedSpecs={selectedSpecs}
+                    onChange={setSelectedSpecs}
+                  />
+                </div>
               </div>
 
-              {/* أزرار الحفظ والإلغاء السفلية للنموذج */}
-              <div className="border-t pt-4 mt-5 flex items-center justify-end gap-3 shrink-0">
-                <button type="button" onClick={handleClose} className="px-5 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition cursor-pointer">
-                  Cancel
-                </button>
-                <button type="submit" disabled={loading} className="px-6 py-2.5 rounded-xl bg-[#0B4EA2] text-sm font-semibold text-white hover:bg-blue-700 transition disabled:opacity-50 cursor-pointer">
-                  {loading ? "Saving..." : "Save Machinery"}
-                </button>
+              <div className="border-t pt-4 mt-5 flex justify-end gap-3 shrink-0">
+                <button type="button" onClick={handleClose} className="px-5 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-gray-600 hover:bg-slate-50 transition cursor-pointer">Cancel</button>
+                <button type="submit" disabled={loading} className="px-5 py-2.5 rounded-xl bg-[#0B4EA2] text-sm font-semibold text-white shadow-md hover:bg-blue-700 transition disabled:opacity-50 cursor-pointer">{loading ? "Saving..." : "Save Machinery"}</button>
               </div>
             </form>
-
           </div>
         </div>
       )}

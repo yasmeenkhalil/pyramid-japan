@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import MachineCard from './MachineCard';
@@ -6,18 +8,22 @@ import { Search, Grid, LayoutGrid } from 'lucide-react';
 
 export default function AllMachineryPage() {
   const { category } = useParams();
-  const [searchParams] = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeSearch, setActiveSearch] = useState(''); 
-  const [machines, setCategoriesMachines] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [viewMode, setViewMode] = useState('grid-4');
-  const [sortBy, setSortBy] = useState('newest');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
 
+  const searchFilter = searchParams.get('search') || '';
+  const sectorFilter = searchParams.get('sector') || ''; 
   const specId = searchParams.get('specId') || '';
   const specOp = searchParams.get('specOp') || '';
   const specVal = searchParams.get('specVal') || '';
   const makerFilter = searchParams.get('maker') || '';
+  const exportFilter = searchParams.get('export') || '';
+
+
+  const [machines, setCategoriesMachines] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState('grid-4');
+  const [sortBy, setSortBy] = useState('newest');
 
   const transformData = (items) => {
     if (!items || !Array.isArray(items)) return [];
@@ -37,6 +43,43 @@ export default function AllMachineryPage() {
     }));
   };
 
+  const handleSearchSubmit = (value) => {
+    const currentParams = new URLSearchParams(searchParams);
+    if (value.trim()) {
+      currentParams.set("search", value.trim());
+    } else {
+      currentParams.delete("search");
+    }
+    setSearchParams(currentParams);
+  };
+  const handleExportToggle = (checked) => {
+  const currentParams = new URLSearchParams(searchParams);
+  if (checked) {
+    currentParams.set("export", "true");
+  } else {
+    currentParams.delete("export");
+  }
+  setSearchParams(currentParams);
+};
+
+
+  useEffect(() => {
+    setSearchQuery(searchParams.get('search') || '');
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (searchQuery === "") {
+      handleSearchSubmit("");
+      return;
+    }
+
+    const delayDebounceFn = setTimeout(() => {
+      handleSearchSubmit(searchQuery);
+    }, 800);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
+
   useEffect(() => {
     async function fetchFilteredMachines() {
       try {
@@ -45,11 +88,14 @@ export default function AllMachineryPage() {
         const params = new URLSearchParams();
         
         if (category && category !== 'all') params.append("category", category);
-        if (activeSearch) params.append("search", activeSearch);
+        if (searchFilter) params.append("search", searchFilter);
         if (makerFilter) params.append("maker", makerFilter);
+        if (sectorFilter) params.append("sector", sectorFilter); 
         if (specId) params.append("specId", specId);
         if (specOp) params.append("specOp", specOp);
         if (specVal) params.append("specVal", specVal);
+        if (exportFilter) params.append("export", exportFilter);
+
 
         const queryString = params.toString();
         if (queryString) url += `?${queryString}`;
@@ -58,19 +104,21 @@ export default function AllMachineryPage() {
         if (res.ok) {
           const data = await res.json();
           setCategoriesMachines(transformData(data));
+        } else {
+          console.error("Server responded with an error status:", res.status);
         }
       } catch (err) {
-        console.error(err);
+        console.error("Fetch error:", err);
       } finally {
         setLoading(false);
       }
     }
     fetchFilteredMachines();
-  }, [category, activeSearch, specId, specOp, specVal, makerFilter]);
+  }, [category, searchFilter, specId, specOp, specVal, makerFilter, sectorFilter, searchParams]); 
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      setActiveSearch(searchQuery);
+      handleSearchSubmit(searchQuery);
     }
   };
 
@@ -104,27 +152,29 @@ export default function AllMachineryPage() {
           </div>
 
           <div className="relative z-10 w-full md:max-w-md shrink-0">
-            <div className="relative group">
-              <button 
-                onClick={() => setActiveSearch(searchQuery)}
-                className="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400 hover:text-[#C47B36] transition-colors"
-              >
-                <Search size={20} />
-              </button>
+            <div className="relative flex items-center bg-slate-900/60 rounded-2xl border border-slate-700 p-1 pl-4 focus-within:border-[#C47B36] focus-within:bg-slate-900 transition-all duration-300 shadow-inner">
               <input
                 type="text"
-                placeholder="Search & press Enter..."
+                placeholder="Search machinery..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
-                className="w-full h-14 pl-12 pr-6 rounded-2xl border border-slate-700 bg-slate-900/60 text-white placeholder-slate-500 text-sm shadow-inner focus:outline-none focus:border-[#C47B36] focus:bg-slate-900 transition-all duration-300"
+                className="w-full h-12 bg-transparent text-white placeholder-slate-500 text-sm focus:outline-none pr-4"
               />
+              <button 
+                type="button"
+                onClick={() => handleSearchSubmit(searchQuery)}
+                className="h-12 px-5 bg-[#C47B36] hover:bg-[#b26f30] text-white rounded-xl flex items-center justify-center gap-2 font-bold text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer shrink-0"
+              >
+                <Search size={16} />
+                Search
+              </button>
             </div>
           </div>
         </div>
 
         <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-8 flex flex-col gap-4">
-          <SidebarMachineFilters />
+          <SidebarMachineFilters /> 
         </div>
 
         <div className="flex items-center justify-between mb-8 border-b border-slate-100 pb-4">
@@ -133,11 +183,24 @@ export default function AllMachineryPage() {
               Available Inventory
             </h2>
             <p className="text-xs font-semibold text-slate-400 mt-0.5 uppercase tracking-wider">
-              {sortedMachines.length} Units Found
+              {loading ? "..." : sortedMachines.length} Units Found
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+                   <div className="flex items-center gap-4">
+            {/* زر التبديل الاحترافي للتصدير الدولي */}
+            <label className="flex items-center gap-2 px-3 py-2 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 shadow-sm cursor-pointer select-none transition-all duration-200">
+              <input 
+                type="checkbox" 
+                checked={exportFilter === "true"}
+                onChange={(e) => handleExportToggle(e.target.checked)}
+                className="w-4 h-4 rounded text-[#C47B36] border-slate-300 focus:ring-[#C47B36] cursor-pointer"
+              />
+              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                Export Fleet Only
+              </span>
+            </label>
+
             <div className="hidden sm:flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200/60">
               <button 
                 onClick={() => setViewMode('grid-4')}
@@ -152,6 +215,7 @@ export default function AllMachineryPage() {
                 <Grid size={16} />
               </button>
             </div>
+            
             <select 
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
@@ -165,8 +229,22 @@ export default function AllMachineryPage() {
         </div>
 
         {loading ? (
-          <div className="text-center py-24 text-slate-500 font-semibold">Loading fleet data...</div>
-        ) : sortedMachines.length === 0 ? (
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${viewMode === 'grid-4' ? 'xl:grid-cols-4' : 'xl:grid-cols-3'}`}>
+            {Array.from({ length: viewMode === 'grid-4' ? 4 : 3 }).map((_, i) => (
+              <div key={i} className="bg-white border border-slate-200 rounded-[24px] overflow-hidden shadow-sm space-y-4 p-4 animate-pulse">
+                <div className="w-full h-44 bg-slate-200 rounded-xl" />
+                <div className="space-y-2">
+                  <div className="h-4 bg-slate-200 rounded-md w-3/4" />
+                  <div className="h-3 bg-slate-200 rounded-md w-1/2" />
+                </div>
+                <div className="pt-2 border-t border-slate-100 flex justify-between items-center">
+                  <div className="h-5 bg-slate-200 rounded-md w-1/3" />
+                  <div className="h-4 bg-slate-200 rounded-md w-1/4" />
+                </div>
+              </div>
+            ))}
+          </div>
+         ) : sortedMachines.length === 0 ? (
           <div className="bg-white rounded-3xl p-20 text-center border border-slate-100 shadow-sm text-slate-400 font-medium">
             No active machinery matching your filter options.
           </div>
@@ -177,7 +255,6 @@ export default function AllMachineryPage() {
             ))}
           </div>
         )}
-
       </div>
     </section>
   );

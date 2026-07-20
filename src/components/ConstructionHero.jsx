@@ -5,16 +5,12 @@ export default function ConstructionHero() {
     <section className="relative overflow-hidden bg-[#0b192e] px-4 pt-0">
       <div className="mx-auto mt-0 max-w-[1300px] bg-[#07162c] rounded-[40px] relative overflow-hidden shadow-2xl min-h-[500px] md:min-h-[550px] flex items-center">
         
-        {/* SOLID BACKGROUND LAYER WITHOUT IMAGE */}
         <div className="absolute inset-0 z-0 bg-[#07162c]" />
 
-        {/* CONTENT CONTAINER */}
         <div className="relative z-10 w-full p-5 md:p-12 grid items-center gap-12 lg:grid-cols-12">
           
-          {/* LEFT SIDE: TEXT CONTENT */}
           <div className="lg:col-span-7 max-w-2xl">
 
-            {/* Badge */}
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#d9a441]/20 bg-[#d9a441]/10 px-4 py-1.5">
               <Hammer className="h-3.5 w-3.5 text-[#d9a441]" />
               <span className="text-[11px] font-bold tracking-[0.2em] text-[#d9a441] uppercase">
@@ -22,7 +18,6 @@ export default function ConstructionHero() {
               </span>
             </div>
 
-            {/* Heading */}
             <h1 className="text-3xl md:text-4xl lg:text-[46px] font-black leading-[1.15] text-white">
               Premium Equipment{" "}
               <span className="text-[#d9a441] block sm:inline">
@@ -31,12 +26,10 @@ export default function ConstructionHero() {
               Construction Projects
             </h1>
 
-            {/* Description */}
             <p className="mt-4 text-sm md:text-base leading-relaxed text-slate-400">
               Explore Japan's most reliable and strictly inspected used construction equipment. From heavy-duty excavators to high-capacity loaders, we deliver machinery built to conquer any job site.
             </p>
 
-            {/* Buttons */}
             <div className="mt-8 flex flex-wrap gap-3">
               <button className="group flex items-center gap-2.5 rounded-xl bg-[#d9a441] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#c49335]">
                 Explore Fleet Inventory
@@ -48,7 +41,6 @@ export default function ConstructionHero() {
               </button>
             </div>
 
-            {/* Stats */}
             <div className="mt-10 grid grid-cols-3 gap-4 border-t border-white/5 pt-6 max-w-md">
               <div>
                 <h3 className="text-2xl font-black text-[#d9a441]">24+</h3>
@@ -73,10 +65,8 @@ export default function ConstructionHero() {
             </div>
           </div>
 
-          {/* RIGHT SIDE: ENLARGED FLOATING CARDS */}
           <div className="lg:col-span-5 hidden lg:flex flex-col gap-4 justify-center items-end">
             
-            {/* Card 1 */}
             <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#112240]/50 p-5 backdrop-blur-md w-full max-w-[320px] shadow-xl transition hover:border-white/20">
               <div className="h-12 w-12 rounded-xl bg-[#d9a441]/10 flex items-center justify-center shrink-0">
                 <HardHat className="h-6 w-6 text-[#d9a441]" />
@@ -87,7 +77,6 @@ export default function ConstructionHero() {
               </div>
             </div>
 
-            {/* Card 2 */}
             <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#112240]/50 p-5 backdrop-blur-md w-full max-w-[320px] shadow-xl transition hover:border-white/20">
               <div className="h-12 w-12 rounded-xl bg-[#d9a441]/10 flex items-center justify-center shrink-0">
                 <ShieldAlert className="h-6 w-6 text-[#d9a441]" />
@@ -97,9 +86,7 @@ export default function ConstructionHero() {
                 <p className="text-xs text-slate-400 mt-1">Direct sourcing with transparent service logs</p>
               </div>
             </div>
-
           </div>
-
         </div>
       </div>
     </section>

@@ -28,7 +28,6 @@ model Category {
   createdAt DateTime    @default(now())
 }
 
-// 1. إضافة جدول المصنعين (الماركات مثل كوماتسو، كوبهيلكو)
 model Manufacturer {
   id        String      @id @default(cuid())
   name      String      @unique
@@ -37,7 +36,6 @@ model Manufacturer {
   createdAt DateTime    @default(now())
 }
 
-// 2. إضافة جدول تعريف أسماء المواصفات الفرعية (مثل وزن التشغيل، طول الذراع)
 model Specification {
   id        String                   @id @default(cuid())
   nameEn    String
@@ -68,37 +66,35 @@ model MachinerySpecification {
   @@unique([machineryId, specificationId])
 }
 
-
 model Machinery {
-  id              String                   @id @default(cuid())
-  titleEn         String
-  titleAr         String
-  titleJa         String
-  slug            String                   @unique
-  stockNo         String?
-  year            Int?
-  hour            Int?
-  price           Float?
-  location        String
-  sector          String                   
-  minPrice        Float?                   
-  avgPrice        Float?                   
-  maxPrice        Float?                   
-  descriptionEn   String?
-  descriptionAr   String?
-  descriptionJa   String?
-  featured        Boolean                  @default(false)
-  categoryId      String
-  category        Category                 @relation(fields: [categoryId], references: [id])
-  images          MachineryImage[]
-  views           MachineryView[]
-  manufacturerId  String
-  manufacturer    Manufacturer             @relation(fields: [manufacturerId], references: [id])
-  specifications  MachinerySpecification[]
-  exportCountries MachineryExportCountry[]
-  createdAt       DateTime                 @default(now())
+  id                   String                   @id @default(cuid())
+  titleEn              String
+  titleAr              String
+  titleJa              String
+  slug                 String                   @unique
+  stockNo              String?
+  year                 Int?
+  hour                 Int?
+  price                Float?
+  location             String
+  sector               String                   
+  minPrice             Float?                   
+  avgPrice             Float?                   
+  maxPrice             Float?                   
+  descriptionEn        String?
+  descriptionAr        String?
+  descriptionJa        String?
+  featured             Boolean                  @default(false)
+  isAvailableForExport Boolean                  @default(true)
+  categoryId           String
+  category             Category                 @relation(fields: [categoryId], references: [id])
+  images               MachineryImage[]
+  views                MachineryView[]
+  manufacturerId       String
+  manufacturer         Manufacturer             @relation(fields: [manufacturerId], references: [id])
+  specifications       MachinerySpecification[]
+  createdAt            DateTime                 @default(now())
 }
-
 
 model MachineryImage {
   id          String    @id @default(cuid())
@@ -128,22 +124,18 @@ model MachineryView {
 
   @@index([machineryId, ipAddress])
 }
+
 model ExportCountry {
   id        String                 @id @default(cuid())
   nameEn    String                 @unique 
   nameAr    String                 @unique 
   nameJa    String                 @unique 
   slug      String                 @unique 
-  machinery MachineryExportCountry[]
+  countryCode String?              @unique
   createdAt DateTime               @default(now())
 }
 
-model MachineryExportCountry {
-  id              String        @id @default(cuid())
-  machineryId     String
-  machinery       Machinery     @relation(fields: [machineryId], references: [id], onDelete: Cascade)
-  exportCountryId String
-  exportCountry   ExportCountry @relation(fields: [exportCountryId], references: [id], onDelete: Cascade)
-
-  @@unique([machineryId, exportCountryId])
+model Setting {
+  key   String @id 
+  value String 
 }
