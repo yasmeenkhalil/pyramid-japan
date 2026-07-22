@@ -65,7 +65,6 @@ export default async function AdminDashboard() {
   const stats = await getDashboardStats();
 
   return (
-    <AuthProvider>
       <div className="space-y-8">
         {/* Hero Section */}
         <div className="rounded-[28px] bg-gradient-to-r from-[#0B4EA2] to-[#2563EB] p-8 text-white shadow-xl">
@@ -156,7 +155,6 @@ export default async function AdminDashboard() {
           </div>
         </div>
       </div>
-    </AuthProvider>
   );
 }
 

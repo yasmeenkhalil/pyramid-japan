@@ -1,18 +1,18 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
-// تصدير دالة الـ proxy بالاسم الصارم الجديد المطلوب للنظام
-export const proxy = withAuth(
+// 1. يجب تصدير الدالة باسم middleware حصراً ليقرأها Next.js
+export default withAuth(
   function middleware(req) {
     const token = req.nextauth.token;
     const isApiRoute = req.nextUrl.pathname.startsWith("/api");
 
-    // حماية لوحة التحكم ومنع أي مستخدم عادي من تصفح بيانات الإدارة والآليات
+    // 2. إذا لم يكن المستخدم أدمن
     if (token?.role !== "admin") {
       if (isApiRoute) {
         return NextResponse.json({ message: "Not Authorized" }, { status: 403 });
       }
-      return NextResponse.redirect(new URL("/", req.url));
+      return NextResponse.redirect(new URL("/login", req.url));
     }
   },
   {
@@ -20,7 +20,7 @@ export const proxy = withAuth(
       authorized: ({ token }) => !!token,
     },
     pages: {
-      signIn: "/login",
+      signIn: "/login", 
     }
   }
 );
