@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
   FileText,
   Receipt,
@@ -5,59 +6,55 @@ import {
   ClipboardList,
 } from "lucide-react";
 
-const docs = [
-  {
-    icon: Receipt,
-    title: "Commercial Invoice",
-  },
-  {
-    icon: FileText,
-    title: "Bill Of Lading",
-  },
-  {
-    icon: ClipboardList,
-    title: "Packing List",
-  },
-  {
-    icon: FileCheck,
-    title: "Inspection Report",
-  },
-];
-
 export default function ExportDocuments() {
+  const { t } = useTranslation();
+
+  const docs = [
+    {
+      icon: Receipt,
+      titleKey: "export_docs.doc1_title",
+    },
+    {
+      icon: FileText,
+      titleKey: "export_docs.doc2_title",
+    },
+    {
+      icon: ClipboardList,
+      titleKey: "export_docs.doc3_title",
+    },
+    {
+      icon: FileCheck,
+      titleKey: "export_docs.doc4_title",
+    },
+  ];
+
   return (
-    /* مسافة رأسية متوسطة ومتناسقة py-16 لتفادي الفراغات المبالغ فيها */
     <section className="bg-white py-16 px-4">
       <div className="mx-auto max-w-[1300px]">
 
-        {/* HEADER SECTION (حجم عنوان رئيسي ممتاز وموزون متناسق مع الأقسام السابقة) */}
         <div className="text-center">
           <span className="text-xs font-bold tracking-[0.25em] uppercase text-[#D9A441]">
-            Documentation
+            {t("export_docs.badge")}
           </span>
 
           <h2 className="mt-2 text-4xl font-black text-[#081F3F] leading-tight">
-            Export Documentation
+            {t("export_docs.title")}
           </h2>
         </div>
 
-        {/* 4-COLUMN GRID (تعديل المسافات وأبعاد الكروت الداخلية) */}
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto">
-
-          {docs.map((doc) => {
+          {docs.map((doc, idx) => {
             const Icon = doc.icon;
 
             return (
               <div
-                key={doc.title}
+                key={idx}
                 className="rounded-3xl border border-slate-200 bg-white p-7 text-center shadow-md transition hover:-translate-y-1 hover:shadow-lg"
               >
-                {/* حجم أيقونة متوسط وواضح h-10 بدلاً من h-12 */}
                 <Icon className="mx-auto h-10 w-10 text-[#D9A441]" />
 
-                {/* حجم عنوان الكرت الداخلي text-lg مناسب وجذاب لمقاس كروت الـ 4 أعمدة */}
                 <h3 className="mt-4 text-lg font-bold text-[#081F3F] leading-snug">
-                  {doc.title}
+                  {t(doc.titleKey)}
                 </h3>
               </div>
             );

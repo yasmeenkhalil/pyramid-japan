@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import MachineCard from './MachineCard';
 
 export default function EquipmentSection({ title, data, loading }) {
+  const { t, i18n } = useTranslation();
+
   const words = title.split(' ');
   const firstTwoWords = words.slice(0, 2).join(' ');
   const restOfTitle = words.slice(2).join(' ');
@@ -33,7 +36,7 @@ export default function EquipmentSection({ title, data, loading }) {
           to={`/machinery-all/${initialCategory}`}
           className="group bg-[#16110F] hover:bg-[#E5C193] text-[#E5C193] hover:text-[#110E0D] text-xs font-semibold px-4 py-2 rounded-lg border border-[#E5C193]/30 hover:border-[#E5C193] transition-all duration-300 flex items-center gap-2 cursor-pointer shrink-0 shadow-lg shadow-black/20 block"
         >
-          <span>View All Equipment</span>
+          <span>{t("eq_section.view_all")}</span>
           <svg 
             className="w-3 h-3 transform group-hover:translate-x-1 transition-transform duration-300" 
             fill="none" 
@@ -66,7 +69,7 @@ export default function EquipmentSection({ title, data, loading }) {
           ))
         ) : (
           <div className="col-span-full text-center py-10 text-sm text-slate-400 italic bg-white border border-slate-100 rounded-2xl">
-            No machinery found matching your criteria.
+            {t("eq_section.no_data")}
           </div>
         )}
       </div>

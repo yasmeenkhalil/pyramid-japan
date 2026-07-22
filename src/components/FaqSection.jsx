@@ -1,29 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ChevronDown } from "lucide-react";
 
-const faqs = [
-  {
-    q: "How long does shipping take?",
-    a: "Shipping times vary depending on destination and shipping method.",
-  },
-  {
-    q: "Can I receive inspection photos?",
-    a: "Yes, we provide detailed photos, videos and reports.",
-  },
-  {
-    q: "What payment methods are accepted?",
-    a: "International bank transfer is the most common payment method.",
-  },
-  {
-    q: "Do you arrange shipping?",
-    a: "Yes, we manage the complete export and logistics process.",
-  },
-];
-
 export default function FaqSection() {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(0);
+
+  const faqs = t("faq_section.questions", { returnObjects: true }) || [];
 
   return (
     <section className="bg-[#F8F9FB] py-32">
@@ -31,25 +16,22 @@ export default function FaqSection() {
 
         <div className="text-center">
           <span className="text-sm font-bold tracking-[0.3em] uppercase text-[#D9A441]">
-            FAQ
+            {t("faq_section.badge")}
           </span>
 
           <h2 className="mt-4 text-5xl font-black text-[#081F3F]">
-            Frequently Asked Questions
+            {t("faq_section.title")}
           </h2>
         </div>
 
         <div className="mt-16 space-y-5">
-
-          {faqs.map((faq, index) => (
+          {Array.isArray(faqs) && faqs.map((faq, index) => (
             <div
-              key={faq.q}
+              key={index}
               className="overflow-hidden rounded-3xl border border-slate-200 bg-white"
             >
               <button
-                onClick={() =>
-                  setOpen(open === index ? null : index)
-                }
+                onClick={() => setOpen(open === index ? null : index)}
                 className="flex w-full items-center justify-between p-7 text-left"
               >
                 <span className="text-lg font-bold text-[#081F3F]">
@@ -57,9 +39,7 @@ export default function FaqSection() {
                 </span>
 
                 <ChevronDown
-                  className={`transition ${
-                    open === index ? "rotate-180" : ""
-                  }`}
+                  className={`transition ${open === index ? "rotate-180" : ""}`}
                 />
               </button>
 
@@ -70,7 +50,6 @@ export default function FaqSection() {
               )}
             </div>
           ))}
-
         </div>
       </div>
     </section>

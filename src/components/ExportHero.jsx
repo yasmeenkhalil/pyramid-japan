@@ -1,9 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"; 
+import { useTranslation } from "react-i18next";
 import { ArrowRight, Ship, Globe, ShieldCheck } from "lucide-react";
 
 export default function ExportHero() {
+  const { t } = useTranslation();
   const [stats, setStats] = useState({
     yearsExperience: "13+",
     countriesServed: "40+",
@@ -28,6 +30,7 @@ export default function ExportHero() {
     }
     fetchStats();
   }, []);
+
   return (
     <section className="relative overflow-hidden bg-[#0b192e] px-4 pt-0">
       <div className="mx-auto mt-0 max-w-[1300px] bg-[#07162c] rounded-[40px] relative overflow-hidden shadow-2xl min-h-[500px] md:min-h-[550px] flex items-center">
@@ -41,28 +44,28 @@ export default function ExportHero() {
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#d9a441]/20 bg-[#d9a441]/10 px-4 py-1.5">
               <Ship className="h-3.5 w-3.5 text-[#d9a441]" />
               <span className="text-[11px] font-bold tracking-[0.2em] text-[#d9a441] uppercase">
-                Worldwide Export Services
+                {t("export_hero.badge")}
               </span>
             </div>
 
             <h1 className="text-3xl md:text-4xl lg:text-[46px] font-black leading-[1.15] text-white">
-              Export Heavy{" "}
+              {t("export_hero.title1")}{" "}
               <span className="text-[#d9a441] block sm:inline">
-                Machinery Directly
+                {t("export_hero.title2")}
               </span>{" "}
-              From Japan
+              {t("export_hero.title3")}
             </h1>
 
             <p className="mt-4 text-sm md:text-base leading-relaxed text-slate-400">
-              Professional inspection, export documentation, logistics management and worldwide shipping for construction and agricultural machinery.
+              {t("export_hero.desc")}
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Link 
-                to="/contact" 
+                to="/contact?inquiry=export" 
                 className="group inline-flex items-center gap-2.5 rounded-xl bg-[#d9a441] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#c49335]"
               >
-                Get Export Quote
+                {t("export_hero.btn_quote")}
                 <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
               </Link>
 
@@ -70,7 +73,7 @@ export default function ExportHero() {
                 to="/machinery-all/all?export=true" 
                 className="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/5 px-6 py-3 text-sm font-bold text-white backdrop-blur-md transition hover:bg-white/10"
               >
-                Browse Inventory
+                {t("export_hero.btn_inventory")}
               </Link>
             </div>
 
@@ -78,21 +81,21 @@ export default function ExportHero() {
               <div>
                 <h3 className="text-2xl font-black text-[#d9a441]">{stats.yearsExperience}</h3>
                 <p className="mt-1 text-[11px] font-medium text-slate-400 uppercase tracking-wider">
-                  Years Experience
+                  {t("export_hero.stat_experience")}
                 </p>
               </div>
 
               <div>
                 <h3 className="text-2xl font-black text-[#d9a441]">{stats.countriesServed}</h3>
                 <p className="mt-1 text-[11px] font-medium text-slate-400 uppercase tracking-wider">
-                  Countries Served
+                  {t("export_hero.stat_countries")}
                 </p>
               </div>
 
               <div>
                 <h3 className="text-2xl font-black text-[#d9a441]">{stats.machinesExported}</h3>
                 <p className="mt-1 text-[11px] font-medium text-slate-400 uppercase tracking-wider">
-                  Machines Exported
+                  {t("export_hero.stat_machines")}
                 </p>
               </div>
             </div>
@@ -105,8 +108,8 @@ export default function ExportHero() {
                 <ShieldCheck className="h-6 w-6 text-[#d9a441]" />
               </div>
               <div className="leading-tight">
-                <h4 className="text-base font-bold text-white">Verified Machinery</h4>
-                <p className="text-xs text-slate-400 mt-1">Full inspection reports included</p>
+                <h4 className="text-base font-bold text-white">{t("export_hero.card1_title")}</h4>
+                <p className="text-xs text-slate-400 mt-1">{t("export_hero.card1_desc")}</p>
               </div>
             </div>
 
@@ -115,8 +118,8 @@ export default function ExportHero() {
                 <Globe className="h-6 w-6 text-[#d9a441]" />
               </div>
               <div className="leading-tight">
-                <h4 className="text-base font-bold text-white">Global Shipping</h4>
-                <p className="text-xs text-slate-400 mt-1">Worldwide reliable logistics support</p>
+                <h4 className="text-base font-bold text-white">{t("export_hero.card2_title")}</h4>
+                <p className="text-xs text-slate-400 mt-1">{t("export_hero.card2_desc")}</p>
               </div>
             </div>
 

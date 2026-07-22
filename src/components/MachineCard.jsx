@@ -1,6 +1,10 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function MachineCard({ machine }) {
+  const { t } = useTranslation();
+
   return (
     <Link 
       to={`/machinery/${machine.id || machine.model}`} 
@@ -10,10 +14,10 @@ export default function MachineCard({ machine }) {
         <img
           src={machine.image}
           alt={machine.title}
-          className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#C47B36] text-white text-[10px] font-semibold uppercase tracking-wide">
-          {machine.tag}
+          {t(`machine.tags.${machine.tag?.toLowerCase()}`, machine.tag)}
         </span>
       </div>
 
@@ -25,22 +29,29 @@ export default function MachineCard({ machine }) {
           {machine.title}
         </p>
 
+        {/* المواصفات المترجمة */}
         <div className="flex items-center justify-between text-sm mb-3">
-          <span className="text-slate-500">Year</span>
+          <span className="text-slate-500">{t('machine.year')}</span>
           <span className="font-semibold text-[#0F172A]">{machine.year}</span>
         </div>
+        
         <div className="flex items-center justify-between text-sm mb-3">
-          <span className="text-slate-500">Hours</span>
-          <span className="font-semibold text-[#0F172A]">{machine.hours} hr</span>
+          <span className="text-slate-500">{t('machine.hours')}</span>
+          <span className="font-semibold text-[#0F172A]">
+            {machine.hours} {t('machine.hours_unit')}
+          </span>
         </div>
+        
         <div className="flex items-center justify-between text-sm mb-5">
-          <span className="text-slate-500">Location</span>
-          <span className="font-semibold text-[#0F172A]">{machine.location}</span>
+          <span className="text-slate-500">{t('machine.location')}</span>
+          <span className="font-semibold text-[#0F172A]">
+            {t(`machine.locations.${machine.location?.toLowerCase()}`, machine.location)}
+          </span>
         </div>
 
         <div className="flex items-center justify-between border-t pt-4">
           <span className="text-[#C47B36] font-bold text-sm">
-            {machine.price}
+            {machine.price?.toLowerCase() === 'inquire' ? t('machine.inquire') : machine.price}
           </span>
           <button 
             onClick={(e) => {
@@ -49,7 +60,7 @@ export default function MachineCard({ machine }) {
             }}
             className="px-4 py-2 rounded-lg bg-[#0F172A] text-white text-sm font-medium hover:bg-[#C47B36] transition-colors relative z-10"
           >
-            Get Quote
+            {t('machine.btn_quote')}
           </button>
         </div>
       </div>

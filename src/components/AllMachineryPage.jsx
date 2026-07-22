@@ -2,11 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import MachineCard from './MachineCard';
 import SidebarMachineFilters from './SidebarMachineFilters';
 import { Search, Grid, LayoutGrid } from 'lucide-react';
 
 export default function AllMachineryPage() {
+  const { t, i18n } = useTranslation();
   const { category } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
@@ -19,7 +21,6 @@ export default function AllMachineryPage() {
   const makerFilter = searchParams.get('maker') || '';
   const exportFilter = searchParams.get('export') || '';
 
-
   const [machines, setCategoriesMachines] = useState([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('grid-4');
@@ -27,22 +28,27 @@ export default function AllMachineryPage() {
 
   const transformData = (items) => {
     if (!items || !Array.isArray(items)) return [];
-    return items.map((item) => ({
-      id: item.id,
-      title: item.titleEn || item.titleAr || item.titleJa,
-      model: item.model || "",
-      hours: item.hour ? item.hour.toLocaleString() : "0",
-      rawHours: item.hour || 0,
-      year: item.year ? item.year.toString() : "",
-      rawYear: item.year || 0,
-      location: item.location || "AOCHI Yard",
-      tag: item.featured ? "Featured" : "",
-      price: item.price ? `${item.price.toLocaleString()} JPY` : "Ask Price",
-      image: item.images && item.images.length > 0 ? item.images[0].imageUrl : '/assets/images/Crushers_Wood_Chippers.png',
-      createdAt: item.createdAt ? new Date(item.createdAt).getTime() : 0
-    }));
-  };
+    return items.map((item) => {
+      let finalTitle = item.titleEn || item.title || "";
+      if (i18n.language === "ar" && item.titleAr) finalTitle = item.titleAr;
+      if (i18n.language === "ja" && item.titleJa) finalTitle = item.titleJa;
 
+      return {
+        id: item.id,
+        title: finalTitle,
+        model: item.model || "",
+        hours: item.hour ? item.hour.toLocaleString() : "0",
+        rawHours: item.hour || 0,
+        year: item.year ? item.year.toString() : "",
+        rawYear: item.year || 0,
+        location: item.location || "AOCHI Yard",
+        tag: item.featured ? t("machinery.featured_tag") : "",
+        price: item.price ? `${item.price.toLocaleString()} JPY` : t("machinery.ask_price"),
+        image: item.images && item.images.length > 0 ? item.images[0].imageUrl : '/assets/images/Crushers_Wood_Chippers.png',
+        createdAt: item.createdAt ? new Date(item.createdAt).getTime() : 0
+      };
+    });
+  };
   const handleSearchSubmit = (value) => {
     const currentParams = new URLSearchParams(searchParams);
     if (value.trim()) {
@@ -52,16 +58,16 @@ export default function AllMachineryPage() {
     }
     setSearchParams(currentParams);
   };
-  const handleExportToggle = (checked) => {
-  const currentParams = new URLSearchParams(searchParams);
-  if (checked) {
-    currentParams.set("export", "true");
-  } else {
-    currentParams.delete("export");
-  }
-  setSearchParams(currentParams);
-};
 
+  const handleExportToggle = (checked) => {
+    const currentParams = new URLSearchParams(searchParams);
+    if (checked) {
+      currentParams.set("export", "true");
+    } else {
+      currentParams.delete("export");
+    }
+    setSearchParams(currentParams);
+  };
 
   useEffect(() => {
     setSearchQuery(searchParams.get('search') || '');
@@ -95,7 +101,6 @@ export default function AllMachineryPage() {
         if (specOp) params.append("specOp", specOp);
         if (specVal) params.append("specVal", specVal);
         if (exportFilter) params.append("export", exportFilter);
-
 
         const queryString = params.toString();
         if (queryString) url += `?${queryString}`;
@@ -131,7 +136,6 @@ export default function AllMachineryPage() {
   };
 
   const sortedMachines = getSortedMachines();
-
   return (
     <section className="bg-[#FAFBFD] min-h-screen py-12">
       <div className="max-w-[1600px] mx-auto px-4 md:px-8">
@@ -144,10 +148,10 @@ export default function AllMachineryPage() {
               Pyramid Japan Co.
             </span>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">
-              Premium Machinery Fleet
+              {t("machinery.hero_title")}
             </h1>
             <p className="text-slate-400 text-sm">
-              Discover certified high-performance equipment imported directly from Japan.
+              {t("machinery.hero_desc")}
             </p>
           </div>
 
@@ -155,7 +159,7 @@ export default function AllMachineryPage() {
             <div className="relative flex items-center bg-slate-900/60 rounded-2xl border border-slate-700 p-1 pl-4 focus-within:border-[#C47B36] focus-within:bg-slate-900 transition-all duration-300 shadow-inner">
               <input
                 type="text"
-                placeholder="Search machinery..."
+                placeholder={t("machinery.search_placeholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
@@ -167,7 +171,7 @@ export default function AllMachineryPage() {
                 className="h-12 px-5 bg-[#C47B36] hover:bg-[#b26f30] text-white rounded-xl flex items-center justify-center gap-2 font-bold text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer shrink-0"
               >
                 <Search size={16} />
-                Search
+                {t("machinery.search_btn")}
               </button>
             </div>
           </div>
@@ -180,15 +184,14 @@ export default function AllMachineryPage() {
         <div className="flex items-center justify-between mb-8 border-b border-slate-100 pb-4">
           <div>
             <h2 className="text-xl font-black text-[#0B1B3A] tracking-tight">
-              Available Inventory
+              {t("machinery.inventory_title")}
             </h2>
             <p className="text-xs font-semibold text-slate-400 mt-0.5 uppercase tracking-wider">
-              {loading ? "..." : sortedMachines.length} Units Found
+              {loading ? "..." : `${sortedMachines.length} ${t("machinery.units_found")}`}
             </p>
           </div>
 
-                   <div className="flex items-center gap-4">
-            {/* زر التبديل الاحترافي للتصدير الدولي */}
+          <div className="flex items-center gap-4">
             <label className="flex items-center gap-2 px-3 py-2 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 shadow-sm cursor-pointer select-none transition-all duration-200">
               <input 
                 type="checkbox" 
@@ -197,7 +200,7 @@ export default function AllMachineryPage() {
                 className="w-4 h-4 rounded text-[#C47B36] border-slate-300 focus:ring-[#C47B36] cursor-pointer"
               />
               <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                Export Fleet Only
+                {t("machinery.export_toggle")}
               </span>
             </label>
 
@@ -221,9 +224,9 @@ export default function AllMachineryPage() {
               onChange={(e) => setSortBy(e.target.value)}
               className="border border-slate-200 rounded-xl px-4 py-2.5 bg-white text-xs font-bold text-slate-700 focus:outline-none focus:border-[#C47B36] transition cursor-pointer shadow-sm"
             >
-              <option value="newest">Latest Arrivals</option>
-              <option value="oldest">Oldest</option>
-              <option value="year">Manufacture Year</option>
+              <option value="newest">{t("machinery.sort_newest")}</option>
+              <option value="oldest">{t("machinery.sort_oldest")}</option>
+              <option value="year">{t("machinery.sort_year")}</option>
             </select>
           </div>
         </div>
@@ -246,7 +249,7 @@ export default function AllMachineryPage() {
           </div>
          ) : sortedMachines.length === 0 ? (
           <div className="bg-white rounded-3xl p-20 text-center border border-slate-100 shadow-sm text-slate-400 font-medium">
-            No active machinery matching your filter options.
+            {t("machinery.no_machines")}
           </div>
         ) : (
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${viewMode === 'grid-4' ? 'xl:grid-cols-4' : 'xl:grid-cols-3'}`}>

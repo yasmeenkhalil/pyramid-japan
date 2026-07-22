@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     const nameArStr = body.nameAr.trim();
     const nameJaStr = body.nameJa.trim();
     const imageUrlStr = body.imageUrl.trim();
-    const sectorStr = body.sector.trim();
+    const sectorStr = body.sector.trim().toLowerCase();
 
     if (!nameEnStr || !nameArStr || !nameJaStr || !imageUrlStr || !sectorStr) {
       return Response.json(
@@ -96,7 +96,7 @@ export async function POST(req: Request) {
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const sector = searchParams.get("sector") || "";
+    const sector = searchParams.get("sector")?.trim().toLowerCase() || "";
     const sort = searchParams.get("sort") || "";
 
     const whereClause: any = {};
@@ -119,11 +119,14 @@ export async function GET(req: Request) {
       orderBy: orderByClause
     });
 
-    return Response.json(categories, { status: 200 });
+    const categoriesWithCount = categories.map((cat) => ({
+      ...cat,
+      machineryCount: cat._count?.machinery || 0,
+    }));
+
+    return Response.json(categoriesWithCount, { status: 200 });
   } catch (error) {
     console.error("Fetch Categories Error:", error);
     return Response.json({ error: "Failed to fetch categories" }, { status: 500 });
   }
 }
-
-

@@ -1,6 +1,6 @@
 import MaintenanceHero from '../components/MaintenanceHero';
-import ServiceCapabilities from '../components/ServiceCapabilities'; // كروت الخدمات الأساسية
-import PartsSupport from '../components/PartsSupport'; // دعم قطع الغيار الأصلية
+import ServiceCapabilities from '../components/ServiceCapabilities'; 
+import PartsSupport from '../components/PartsSupport'; 
 import MaintenanceCTA from '../components/MaintenanceCTA';
 import MaintenanceFaq from '../components/MaintenanceFaq';
 

@@ -216,6 +216,8 @@ export default function AddMachineryModal({ categories, manufacturers, available
                         <option value="Construction">Construction</option>
                         <option value="Industrial">Industrial</option>
                         <option value="Agriculture">Agriculture</option>
+                        <option value="maintenance">Maintenance & Support</option>
+
                       </select>
                       {errors.sector && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.sector}</p>}
                     </div>

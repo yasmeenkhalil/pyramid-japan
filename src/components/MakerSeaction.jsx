@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const BRAND_COLORS = {
   KOMATSU: "text-[#003B8E]",
@@ -27,6 +28,8 @@ const FALLBACK_COLORS = [
 ];
 
 export default function MakerSection() {
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.dir() === "rtl";
   const [makers, setMakers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -62,15 +65,15 @@ export default function MakerSection() {
     <section className="w-full">
       <div className="mb-8 text-center">
         <span className="inline-flex items-center px-5 py-2 rounded-full bg-[#FFF7ED] border border-[#D6A06A]/40 text-[#C47B36] text-xs font-semibold tracking-[0.25em] uppercase">
-          Trusted Brands
+          {t("maker_section.badge")}
         </span>
 
         <h2 className="mt-4 text-3xl md:text-4xl font-extrabold text-[#0F172A]">
-          Leading Japanese Manufacturers
+          {t("maker_section.title")}
         </h2>
 
         <p className="mt-3 text-slate-500 max-w-2xl mx-auto">
-          Browse equipment from Japan's most trusted construction, agricultural and industrial machinery brands.
+          {t("maker_section.desc")}
         </p>
       </div>
 
@@ -94,7 +97,7 @@ export default function MakerSection() {
               return (
                 <button
                   key={maker.id || index}
-                  className="group h-20 rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50 hover:border-[#D6A06A] hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                  className="group h-20 rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50 hover:border-[#D6A06A] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex items-center justify-center"
                 >
                   <span
                     className={`text-sm font-extrabold tracking-wide transition-all duration-300 group-hover:scale-105 ${colorClass}`}
@@ -107,7 +110,7 @@ export default function MakerSection() {
           </div>
         ) : (
           <div className="text-center py-10 text-sm text-slate-400 italic">
-            No brands found.
+            {t("maker_section.no_brands")}
           </div>
         )}
 

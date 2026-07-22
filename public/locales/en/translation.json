@@ -1,0 +1,749 @@
+{
+  "about": {
+    "badge": "Agricultural Machinery Experts",
+    "sub_title": "Premier Exporter of Premium Used Agricultural Equipment",
+    "p1": "Based in Japan, Pyramid Japan Corp. stands as a trusted global supplier of elite used agricultural machinery. We specialize in sourcing and exporting high-capacity tractors, precision combine harvesters, specialized sugar harvesters, and high-tech field implements tailored to worldwide farming standards.",
+    "p2": "Our engineering team carefully screens each piece of heavy equipment to ensure peak hydraulic performance and field readiness. We bridge the gap between premium Japanese equipment sources and international agricultural enterprises.",
+    "feature1": "Heavy-Duty Farm Tractors",
+    "feature2": "High-Capacity Harvesters",
+    "feature3": "100% Field-Tested in Japan",
+    "feature4": "Custom Dismantling & Shipping",
+    "card_title": "Global Standard",
+    "card_desc": "Field-ready machinery exported directly from professional Japanese agricultural hubs.",
+    "adv1_title": "Certified Ag-Tech Quality",
+    "adv1_desc": "Every tractor, combine harvester, and sugarcane rig undergoes intensive multi-point mechanical and hydraulic testing before export.",
+    "adv2_title": "Global Machinery Logistics",
+    "adv2_desc": "Expert handling of oversized farm machinery, including professional dismantling, heavy container loading, and ocean freight.",
+    "adv3_title": "Top Japanese Brands",
+    "adv3_desc": "Direct sourcing from premium Japanese dealer networks and auction houses, ensuring genuine parts and pristine operational hours."
+  },
+  "ag_cat": {
+    "badge": "Browse by Farming Equipment",
+    "title": "Agricultural Sectors",
+    "desc": "Select a specialized farming category to explore our live Japanese inventory for your specific project needs.",
+    "no_data": "No categories found for this sector.",
+    "no_img": "No Image",
+    "units": "Units Available",
+    "btn": "View Equipment"
+  },
+  "ag_cta": {
+    "badge": "Empower Your Harvest",
+    "title": "Ready to Have Your Next Japanese Tractor?",
+    "desc": "We streamline the entire export pipeline for agricultural machinery. From complete PTO testing to secure seaport container loading, get farm-ready units delivered directly to your region.",
+    "box1_title": "Request Stock List",
+    "box1_desc": "Receive our complete live agricultural catalog including multi-angle field photos and complete engine test documentation.",
+    "box1_btn": "Get Tractor List",
+    "box2_title": "PTO Custom Inquiries",
+    "box2_desc": "Need a specific horse-power (HP) rating or specialized rotary attachments? Connect with our sourcing experts in Japan.",
+    "box2_btn": "Consult Sourcing Expert"
+  },
+  "ag_faq": {
+    "badge": "Farming Insights",
+    "title": "Agriculture Machinery FAQ",
+    "questions": [
+      {
+        "q": "What technical checks do you perform on Japanese used tractors?",
+        "a": "Every tractor undergoes a comprehensive multi-point inspection, including full Power Take-Off (PTO) operational tests, hydraulic lift load-testing, 4WD engagement checks, and a complete analysis of engine compression and fluid levels."
+      },
+      {
+        "q": "Are the rotary tillers and farm attachments included in the price?",
+        "a": "Many of our Japanese used tractors come directly with their original rotary tillers attached. The exact pricing and inclusion of tillers or backhoes will be clearly labeled on each specific machinery stock sheet."
+      },
+      {
+        "q": "Which agricultural machinery brands do you primarily export?",
+        "a": "We specialize in exporting Japan's most reliable and universally trusted farm brands, primarily focusing on Kubota, Yanmar, Iseki, and Mitsubishi machinery, ensuring high parts availability worldwide."
+      },
+      {
+        "q": "Can you pack additional farming components or spare parts inside the shipment?",
+        "a": "Yes. For wholesale buyers and farm cooperatives, we can source and secure extra replacement filters, tines, blades, and basic maintenance kits directly inside the container or tractor cabin to help optimize your shipping costs."
+      }
+    ]
+  },
+  "ag_hero": {
+    "badge": "High-Efficiency Agricultural Fleet",
+    "title1": "Premium Japanese",
+    "title2": "Tractors & Machinery",
+    "title3": "For Modern Farming",
+    "desc": "Source highly reliable, multi-functional, and fuel-efficient used agricultural equipment directly from Japan. Tailored for maximum harvest productivity and small-to-large scale farming.",
+    "btn1": "Explore Agriculture Inventory",
+    "btn2": "Browse Tractor Stock",
+    "stat1": "Tractors In Stock",
+    "stat2": "Total Agri Units",
+    "stat3": "PTO Tested",
+    "card1_title": "PTO & Engine Tested",
+    "card1_desc": "Full operational rotary test reports",
+    "card2_title": "Farm-Ready Units",
+    "card2_desc": "Serviced, lubricated and completely operational"
+  },
+  "machinery": {
+    "hero_title": "Premium Machinery Fleet",
+    "hero_desc": "Discover certified high-performance equipment imported directly from Japan.",
+    "search_placeholder": "Search machinery...",
+    "search_btn": "Search",
+    "inventory_title": "Available Inventory",
+    "units_found": "Units Found",
+    "export_toggle": "Export Fleet Only",
+    "sort_newest": "Latest Arrivals",
+    "sort_oldest": "Oldest",
+    "sort_year": "Manufacture Year",
+    "no_machines": "No active machinery matching your filter options.",
+    "featured_tag": "Featured",
+    "ask_price": "Ask Price"
+  },
+  "cat_grid": {
+    "badge": "Our Machinery",
+    "title": "Browse Equipment Categories",
+    "machines_available": "Machines Available"
+  },
+  "categories_section": {
+    "badge": "Our Categories",
+    "title": "Explore Equipment Categories",
+    "desc": "Browse our wide range of construction, agricultural and industrial machinery ready for export worldwide.",
+    "machines_count": "Machines",
+    "btn_text": "View Equipment"
+  },
+  "categories_list": {
+    "excavators": "Excavators",
+    "aerial_platforms": "Aerial Work Platforms",
+    "heavy_cranes": "Heavy Cranes",
+    "foundation_systems": "Foundation Systems",
+    "logistic_trucks": "Logistic Trucks",
+    "road_rollers": "Road Rollers"
+  },
+  "con_cat": {
+    "badge": "Browse by Machinery Type",
+    "title": "Construction Sectors",
+    "desc": "Select a specialized category to filter our live Japanese inventory for your specific project needs.",
+    "loading": "Loading construction categories...",
+    "no_data": "No categories found for this sector.",
+    "no_img": "No Image",
+    "units": "Units Available",
+    "btn": "View Machinery"
+  },
+  "con_faq": {
+    "badge": "Questions & Answers",
+    "title": "Construction Machinery FAQ",
+    "questions": [
+      {
+        "q": "How do you verify the actual working hours of the machinery?",
+        "a": "Every machine listed in our construction inventory undergoes strict digital and mechanical hour-meter checks. We also verify the historical service logs from the original Japanese owners to ensure 100% data authenticity."
+      },
+      {
+        "q": "Can you provide specific detail reports on hydraulic and engine pressure?",
+        "a": "Yes. For every piece of heavy equipment (Excavators, Loaders, Dozers), we provide comprehensive hydraulic pressure tests, engine blow-by inspection reports, and operational high-definition videos before procurement."
+      },
+      {
+        "q": "Are undercarriage and track conditions inspected?",
+        "a": "Absolutely. Undercarriage links, pins, bushings, rollers, and shoes are carefully measured and documented. The remaining life expectancy (percentage) of the undercarriage or rubber tracks is detailed in the item sheet."
+      },
+      {
+        "q": "Do you offer spare parts support for the construction machinery sold?",
+        "a": "Yes, Pyramid Japan Co. Ltd provides genuine spare parts backup and support. We can pack critical replacement filters, seals, and wear parts inside the machinery cabin or container prior to international shipment."
+      }
+    ]
+  },
+  "con_hero": {
+    "badge": "Heavy Machinery Sector",
+    "title1": "Premium Equipment",
+    "title2": "For High-Performance",
+    "title3": "Construction Projects",
+    "desc": "Explore Japan's most reliable and strictly inspected used construction equipment. From heavy-duty excavators to high-capacity loaders, we deliver machinery built to conquer any job site.",
+    "btn1": "Explore Fleet Inventory",
+    "btn2": "Request Construction Quote",
+    "loading_cats": "Loading categories...",
+    "no_cats": "No categories found",
+    "card1_title": "Job-Site Ready",
+    "card1_desc": "Rigorous hydraulic pressure and structural tests included",
+    "card2_title": "Japanese Quality",
+    "card2_desc": "Direct sourcing with transparent service logs"
+  },
+  "contact_page": {
+    "badge": "Get In Touch",
+    "toast_success": "Thank you! Your inquiry has been sent successfully.",
+    "err_auth": "Sorry, you must log in first to be able to submit this form.",
+    "title_export": "Request Machinery Export Quote",
+    "desc_export": "Get institutional shipping rates, export clearing documentation, and custom container loading support directly from Tokyo.",
+    "title_construction": "Inquire About Construction Fleet Auctions",
+    "desc_construction": "Secure heavy excavators, wheel loaders, and specialized Japanese engineering machinery tailored to your infrastructure project.",
+    "title_test": "Schedule Custom Inspection Test",
+    "desc_test": "Request specific cylinder pressure diagnostics or engine blow-by verification videos before shipment.",
+    "title_maintenance": "Book Certified Maintenance Service",
+    "desc_maintenance": "Schedule a complete diagnostic overhaul or engine calibration with our senior Japanese engineers.",
+    "title_parts": "Inquire About Genuine Spare Parts",
+    "desc_parts": "Submit your required OEM numbers. Our yard team will instantly locate and pre-pack your order.",
+    "title_agri_source": "Custom Agricultural Sourcing",
+    "desc_agri_source": "Specify your required tractor horse-power (HP) or specialized rotary attachments to our Japanese yard team.",
+    "title_custom_source": "Request Custom Machinery Sourcing",
+    "desc_custom_source": "Can't find your model? Let our team inspect and secure your specific heavy machinery from Japanese fleet auctions.",
+    "title_consult": "Request Technical Engineering Consultation",
+    "desc_consult": "Speak directly with our workshop foreman regarding parts compatibility or regional modification compliance.",
+    "title_general": "Connect With Pyramid Japan",
+    "desc_general": "Have questions about our inventory, export procedures, or technical services? Reach out to our team in Japan today.",
+    "wa_title": "Fast Track Communication",
+    "wa_desc": "Need immediate response regarding machinery live status or shipping rates? Chat directly with our sales desk on WhatsApp.",
+    "wa_btn": "Chat on WhatsApp",
+    "info_title": "Headquarters Info",
+    "info_addr_label": "Office Address",
+    "info_addr_val": "Tokyo, Chiyoda-ku, Japan",
+    "info_phone_label": "Telephone",
+    "info_email_label": "Email Address",
+    "info_hours_label": "Business Hours",
+    "info_hours_val": "Mon - Fri: 9:00 AM - 6:00 PM (JST)",
+    "lock_title": "Secure Inquiry Locked",
+    "lock_desc": "To request official support and check local stock status in Japan yards, please sign in.",
+    "form_title": "Send a Message",
+    "form_desc": "Fill out the secure form below and our logistics coordinator will contact you within 24 business hours.",
+    "label_name": "Full Name",
+    "label_email": "Email Address",
+    "label_phone": "Phone Number",
+    "label_dept": "Inquiry Department",
+    "label_msg": "Message / Requirements",
+    "placeholder_msg": "Detail your request, destination country, or targeted machinery stock reference number...",
+    "opt_general": "General Inquiry",
+    "opt_export": "Export Support",
+    "opt_construction": "Construction Machinery",
+    "opt_agriculture": "Agriculture Equipment",
+    "opt_parts": "Spare Parts Support",
+    "opt_maintenance": "Technical Maintenance",
+    "btn_sending": "Sending Message...",
+    "btn_submit": "Send Secure Message"
+  },
+  "countries_section": {
+    "badge": "Global Reach",
+    "title": "Countries We Export To",
+    "desc": "Delivering Japanese machinery to customers around the world with trusted logistics partners.",
+    "loading": "Loading Countries...",
+    "no_data": "No regions registered at the moment.",
+    "stat_countries": "Countries Served",
+    "stat_machines": "Machines Exported",
+    "stat_experience": "Years Experience"
+  },
+  "eq_section": {
+    "view_all": "View All Equipment",
+    "no_data": "No machinery found matching your criteria."
+  },
+  "sidebar": {
+    "header_top": "Used Heavy Equipment",
+    "header_bottom": "Construction Machines Stock",
+    "excavators": "Excavators",
+    "exc_sub1": "Excavator (0.25m3)",
+    "exc_sub2": "Excavator (0.45m3)",
+    "exc_sub3": "Excavator (0.7m3~)",
+    "mini_excavators": "Mini-Excavators",
+    "mini_sub1": "Mini Excavator (1t)",
+    "mini_sub2": "Mini Excavator (2-3t)",
+    "mini_sub3": "Mini Excavator (4-5t)",
+    "cranes": "Cranes",
+    "crane_sub1": "Rough Terrain Crane",
+    "crane_sub2": "Truck Crane",
+    "crane_sub3": "Crawler Crane",
+    "crane_sub4": "Spider Cranes",
+    "foundation_machines": "Foundation Machines",
+    "found_sub1": "Pile Driving Machine",
+    "found_sub2": "Vibro Hammer"
+  },
+  "export_cta": {
+    "badge": "Get Started",
+    "title1": "Ready To Import",
+    "title2": "Machinery From Japan?",
+    "desc": "Receive a personalized quotation and export plan within 24 hours.",
+    "btn_request": "Request Quote",
+    "btn_browse": "Browse Inventory"
+  },
+  "export_docs": {
+    "badge": "Documentation",
+    "title": "Export Documentation",
+    "doc1_title": "Commercial Invoice",
+    "doc2_title": "Bill Of Lading",
+    "doc3_title": "Packing List",
+    "doc4_title": "Inspection Report"
+  },
+  "export_hero": {
+    "badge": "Worldwide Export Services",
+    "title1": "Export Heavy",
+    "title2": "Machinery Directly",
+    "title3": "From Japan",
+    "desc": "Professional inspection, export documentation, logistics management and worldwide shipping for construction and agricultural machinery.",
+    "btn_quote": "Get Export Quote",
+    "btn_inventory": "Browse Inventory",
+    "stat_experience": "Years Experience",
+    "stat_countries": "Countries Served",
+    "stat_machines": "Machines Exported",
+    "card1_title": "Verified Machinery",
+    "card1_desc": "Full inspection reports included",
+    "card2_title": "Global Shipping",
+    "card2_desc": "Worldwide reliable logistics support"
+  },
+  "export_process": {
+    "badge": "Export Process",
+    "title": "Simple & Transparent Process",
+    "desc": "We handle everything from machine selection to international shipping and export documentation.",
+    "step_label": "STEP",
+    "step1_title": "Submit Inquiry",
+    "step1_desc": "Tell us which machine you're looking for and your destination country.",
+    "step2_title": "Receive Quotation",
+    "step2_desc": "We provide machine availability, specifications and CIF estimate.",
+    "step3_title": "Inspection Report",
+    "step3_desc": "Detailed photos, videos and condition reports before purchase.",
+    "step4_title": "Secure Payment",
+    "step4_desc": "Safe international payment process with complete transparency.",
+    "step5_title": "Shipping",
+    "step5_desc": "Container or RoRo shipment arranged by our logistics team.",
+    "step6_title": "Delivery",
+    "step6_desc": "Receive your machinery at the destination port."
+  },
+  "faq_section": {
+    "badge": "FAQ",
+    "title": "Frequently Asked Questions",
+    "questions": [
+      {
+        "q": "How long does shipping take?",
+        "a": "Shipping times vary depending on destination and shipping method."
+      },
+      {
+        "q": "Can I receive inspection photos?",
+        "a": "Yes, we provide detailed photos, videos and reports."
+      },
+      {
+        "q": "What payment methods are accepted?",
+        "a": "International bank transfer is the most common payment method."
+      },
+      {
+        "q": "Do you arrange shipping?",
+        "a": "Yes, we manage the complete export and logistics process."
+      }
+    ]
+  },
+  "featured_agri": {
+    "badge": "In-Stock Fleet",
+    "title": "Featured Agricultural Machinery",
+    "desc": "Directly sourced from trusted Japanese farms, fully PTO-tested and ready for immediate deployment.",
+    "no_data": "No featured machinery available at the moment.",
+    "hrs": "hrs",
+    "condition_val": "Verified",
+    "ask_price": "Ask Price",
+    "ref_label": "Ref",
+    "year_label": "Year",
+    "hours_label": "Hours",
+    "price_label": "Price",
+    "btn_details": "View Details"
+  },
+  "featured_con": {
+    "badge": "In-Stock Machinery",
+    "title": "Featured Construction Equipment",
+    "desc": "Directly sourced from Japanese construction fleets, fully inspected and job-site ready.",
+    "no_data": "No featured machinery available at the moment.",
+    "toast_success": "Thank you! Your inquiry has been sent successfully.",
+    "hrs": "hrs",
+    "condition_val": "Verified",
+    "ask_price": "Ask Price",
+    "ref_label": "Ref",
+    "year_label": "Year",
+    "hours_label": "Hours",
+    "price_label": "Price",
+    "btn_details": "View Details",
+    "modal_title": "Inquire About Machinery",
+    "modal_equip": "Equipment",
+    "label_name": "Full Name",
+    "label_email": "Email Address",
+    "label_phone": "Phone Number",
+    "label_msg": "Message",
+    "placeholder_msg": "Ask about shipping, pricing, or inspection files...",
+    "btn_submit": "Submit Inquiry"
+  },
+  "featured_export": {
+    "badge": "Available Inventory",
+    "title": "Ready for Worldwide Export",
+    "no_data": "No machinery currently listed for export.",
+    "verified": "Verified",
+    "ref_label": "Ref",
+    "year_label": "Year",
+    "hours_label": "Hours",
+    "btn_details": "View Details",
+    "btn_all": "View All Inventory"
+  },
+  "contact_bar": {
+    "text": "Looking for a specific machine?",
+    "link": "Contact us",
+    "btn": "Request"
+  },
+  "nav": {
+    "home": "Home",
+    "export": "Export",
+    "construction": "Construction",
+    "agriculture": "Agriculture",
+    "maintenance": "Maintenance",
+    "about": "About Us",
+    "contact": "Contact",
+    "sub_logo": "Used Equipment & Spare Parts",
+    "admin_panel": "Admin Panel",
+    "search_placeholder": "Search by Model..",
+    "search_title": "Click to Search",
+    "btn_auth": "Register / Login",
+    "sign_out": "Sign Out"
+  },
+  "hero": {
+    "since": "Since 2013",
+    "title_highlight": "Trusted",
+    "title_rest": "Partner in Heavy Equipment Export",
+    "subtitle": "Quality Used Construction & Agricultural Machinery From Japan"
+  },
+  "inspection": {
+    "badge_text": "Inspected Before Export",
+    "tag": "Quality Control",
+    "title_start": "Every Machine Is",
+    "title_highlight": "Fully Inspected",
+    "title_end": "Before Shipping",
+    "description": "We follow a strict inspection process to ensure every machine meets the highest quality standards and is ready for work.",
+    "card1_title": "Detailed Reports",
+    "card1_desc": "Comprehensive inspection reports for full transparency.",
+    "card2_title": "HD Photos",
+    "card2_desc": "High resolution photos from all important angles.",
+    "card3_title": "Operational Videos",
+    "card3_desc": "Machine operation videos for your peace of mind.",
+    "card4_title": "Export Ready",
+    "card4_desc": "Quality assured and ready for safe international shipping."
+  },
+  "inventory": {
+    "subtitle": "Pyramid Japan Fleet",
+    "title": "Live Machinery Inventory",
+    "search_placeholder": "Search by model, maker or Stock No...",
+    "all_sectors": "All Sectors",
+    "construction": "Construction",
+    "agriculture": "Agriculture",
+    "all_makers": "All Makers",
+    "no_results": "No machinery matches your search criteria.",
+    "verified": "Verified",
+    "ref_no": "Ref",
+    "year": "Year",
+    "hours": "Hours",
+    "hrs_unit": "hrs",
+    "fob_price": "FOB Price",
+    "inquire": "Inquire",
+    "btn_details": "Details",
+    "types": {
+      "excavator": "Excavator",
+      "bulldozer": "Bulldozer",
+      "tractor": "Tractor",
+      "wheel_loader": "Wheel Loader"
+    }
+  },
+  "machine": {
+    "year": "Year",
+    "hours": "Hours",
+    "hours_unit": "hr",
+    "location": "Location",
+    "inquire": "Inquire",
+    "btn_quote": "Get Quote",
+    "fob_price": "FOB Price",
+    "btn_quote_login_required": "Login to Request Quote",
+    "tags": {
+      "verified": "Verified",
+      "new": "New",
+      "used": "Used"
+    },
+    "locations": {
+      "japan": "Japan",
+      "tokyo": "Tokyo",
+      "yokohama": "Yokohama",
+      "kobe": "Kobe"
+    }
+  },
+  "details": {
+    "toast_success": "Thank you! Your quote request has been sent successfully.",
+    "stock_id": "Stock ID",
+    "published": "Published",
+    "price_ranges": "Estimated Price Ranges",
+    "min_price": "MIN PRICE",
+    "avg_price": "AVG PRICE",
+    "max_price": "MAX PRICE",
+    "specs_title": "Specifications & Attachments",
+    "modal_title": "Request a Quote",
+    "fetch_error": "An error occurred while fetching machine details from the server.",
+    "loading_machine": "Loading machine details from fleet...",
+    "not_found": "Machine Not Found",
+    "not_found_desc": "Sorry, this machine might have been sold or removed from our inventory database.",
+    "specs_labels": {
+      "engine_power": "Engine Power",
+      "operating_weight": "Operating Weight",
+      "bucket_capacity": "Bucket Capacity",
+      "fuel_type": "Fuel Type",
+      "boom_length": "Boom Length",
+      "diesel": "Diesel"
+    },
+    "form": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "message": "Message",
+      "request_subtitle": "You are requesting details for:",
+      "message_placeholder": "Enter any specific questions...",
+      "submit_btn": "Submit Quote Request",
+      "submitting": "Submitting Request...",
+      "api_error_fallback": "Failed to connect to the server. Please try again later."
+    },
+    "contact_page": {
+      "err_auth": "You must log in first to be able to submit a request for the machine."
+    }
+  },
+  "footer": {
+    "company_name": "PYRAMID JAPAN",
+    "company_suffix": "Co.LTD",
+    "company_desc": "Trusted partner in heavy equipment export, supplying quality Japanese machinery worldwide since 2013.",
+    "title_links": "Quick Links",
+    "title_services": "Services",
+    "title_contact": "Contact Info",
+    "copyright": "© 2026 Pyramid Japan Co.LTD All Rights Reserved.",
+    "links": {
+      "home": "Home",
+      "about": "About Us",
+      "stock": "Stock List",
+      "contact": "Contact"
+    },
+    "services": {
+      "construction": "Construction Machinery",
+      "agricultural": "Agricultural Equipment",
+      "maintenance": "Maintenance Services",
+      "export": "Worldwide Export"
+    },
+    "contact": {
+      "address": "Kasugai City, Aichi 480-0305, Japan",
+      "phone_val": "+81-568-88-7980"
+    }
+  },
+  "maintenance_cta": {
+  "badge": "Uncompromised Reliability",
+  "title": "Need a Custom Inspection Report Before Shipping?",
+  "desc": "Our team of senior Japanese engineers is ready to prepare custom diagnostic reports for your target machinery. Ensure your field operations stay 100% efficient from day one.",
+  "card1": {
+    "title": "Schedule Custom Test",
+    "desc": "Request specific cylinder pressure tests, engine blow-by videos, or digital multi-point diagnostics for your fleet.",
+    "btn": "Book Test Service"
+  },
+  "card2": {
+    "title": "Technical Consultation",
+    "desc": "Unsure about parts compatibility or modification requirements for your local climate? Speak to our workshop foreman.",
+    "btn": "Talk to an Engineer"
+  }
+},
+"maintenance_faq": {
+  "badge": "Support Center",
+  "title": "Maintenance & Parts FAQ",
+  "items": {
+    "faq1": {
+      "q": "Are your workshop engineers officially certified in Japan?",
+      "a": "Yes. All maintenance and diagnostic overhauls at Pyramid Japan are conducted by senior mechanics certified under strict Japanese automotive and heavy machinery engineering standards, ensuring world-class execution."
+    },
+    "faq2": {
+      "q": "Do you supply non-OEM or aftermarket spare parts if requested?",
+      "a": "Our standard inventory is 100% genuine OEM to maximize machinery lifetime. However, upon specific enterprise customer requests, we can source high-grade, certified Japanese aftermarket components to suit your budget."
+    },
+    "faq3": {
+      "q": "Can I get a live video feed of my machine's hydraulic pressure test?",
+      "a": "Absolutely. Transparency is our core value. Once a maintenance or pre-export check is ordered, we can arrange a live streaming session or send high-definition unedited video reports of the gauge meters at maximum load."
+    },
+    "faq4": {
+      "q": "What is your typical turnaround time for air-freighting critical spare parts?",
+      "a": "For in-stock components, parts are packed and dispatched via premium air couriers (DHL/FedEx) within 48 hours of payment verification, reaching most global main ports and hubs within 5 to 7 business days."
+    }
+  }
+},"maintenance_hero": {
+  "badge": "Certified Technical Support",
+  "title_start": "Expert Maintenance",
+  "title_highlight": "& Genuine Parts",
+  "title_end": "For Heavy Machinery",
+  "desc": "Ensure long-term operational uptime. Our certified Japanese engineers perform complete diagnostic overhauls, engine calibrations, and hydraulic rebuilding before any machine leaves our yards.",
+  "btn_service": "Book Inspection Service",
+  "btn_parts": "Inquire Spare Parts",
+  "stats": {
+    "stat1_num": "100%",
+    "stat1_lbl": "Inspected Fleet",
+    "stat2_num": "Certified",
+    "stat2_lbl": "JAO Engineers",
+    "stat3_num": "Genuine",
+    "stat3_lbl": "OEM Components"
+  },
+  "cards": {
+    "card1_title": "Preventative Overhaul",
+    "card1_desc": "Full structural stress and crack testing",
+    "card2_title": "Hydraulic Rebuilding",
+    "card2_desc": "Main pump pressure tests and resealing"
+  }
+},"maker_section": {
+  "badge": "Trusted Brands",
+  "title": "Leading Japanese Manufacturers",
+  "desc": "Browse equipment from Japan's most trusted construction, agricultural and industrial machinery brands.",
+  "no_brands": "No brands found."
+},
+"parts_form": {
+  "part_no_label": "Part Number / OEM Ref",
+  "part_no_placeholder": "e.g. 1R-0716, 708-2L-00420",
+  "machine_model_label": "Machine Model & Brand",
+  "machine_model_placeholder": "e.g. Komatsu PC200-8",
+  "details_label": "Additional Details",
+  "details_placeholder": "Describe the required condition or specific component section...",
+  "btn_submit": "Submit Parts Request",
+  "btn_loading": "Processing Request..."
+},
+"parts": {
+    "toast_success": "Inquiry saved and sent successfully! Opening WhatsApp...",
+    "sub_title": "Genuine OEM Components",
+    "main_title_1": "Global Spare Parts",
+    "main_title_2": "Supply & Logistics",
+    "description": "Don't let downtime stall your projects. Pyramid Japan maintains a massive local inventory of genuine parts for Caterpillar, Komatsu, Hitachi, and Kubota machinery. Ready for immediate global air-freight.",
+    "feature_1_title": "100% Genuine Parts",
+    "feature_1_desc": "Direct from original Japanese equipment manufacturers (OEM).",
+    "feature_2_title": "Pre-Packed Delivery",
+    "feature_2_desc": "We can secure replacement filters, seals, and teeth inside your purchased machine's cabin before shipping.",
+    "locked_title": "Secure Inquiry Locked",
+    "locked_desc": "To request official OEM spare parts support and check local stock status in Japan yards, please sign in.",
+    "form_title": "Quick Parts Inquiry",
+    "form_desc": "Can't find the component? Submit the serial number and our yard team will locate it instantly.",
+    "label_name": "Your Name",
+    "placeholder_name": "John Doe",
+    "label_phone": "Phone Number",
+    "label_part_no": "Part Number / OEM Ref",
+    "label_machine_model": "Machine Model & Brand",
+    "label_details": "Additional Details",
+    "placeholder_details": "Describe the required condition or specific component section...",
+    "btn_loading": "Processing Request...",
+    "btn_submit": "Submit Parts Request",
+    "placeholder_part_no": "e.g. 1R-0716, 708-2L-00420"
+  },
+  "cta": {
+    "sub_title": "Flexible Procurement Options",
+    "main_title": "Looking for Direct Purchase or Custom Machinery Sourcing?",
+    "description": "We provide flexible acquisition solutions tailored to your fleet size and construction project timelines. Get verified heavy machinery on your job site with comprehensive support.",
+    "card_1_title": "Buy Machinery",
+    "card_1_desc": "Browse our inspected, owned Japanese fleet. Full customs clearance and logistics documentation included.",
+    "card_1_btn": "View Sales Inventory",
+    "card_2_title": "Custom Sourcing",
+    "card_2_desc": "Can't find the exact model you need? Let our team inspect and source your specific machinery directly from upcoming Japanese fleet auctions.",
+    "card_2_btn": "Inquire About Custom Orders"
+  },
+  "services": {
+    "sub_title": "Technical Excellence",
+    "main_title": "Workshop Capabilities",
+    "description": "Our specialized repair centers are staffed by certified engineers dedicated to extending your fleet's working lifespan.",
+    "no_data": "No categories found for this sector.",
+    "no_image": "No Image",
+    "btn_details": "Service Details"
+  },
+  "shipping": {
+    "main_title": "Shipping Methods",
+    "roro_title": "RoRo Shipping",
+    "roro_feature_1": "Cost Effective",
+    "roro_feature_2": "Fast Loading",
+    "roro_feature_3": "Ideal For Large Equipment",
+    "roro_feature_4": "Worldwide Routes",
+    "container_title": "Container Shipping",
+    "container_feature_1": "Maximum Protection",
+    "container_feature_2": "Secure Transport",
+    "container_feature_3": "Small Machinery",
+    "container_feature_4": "Spare Parts Included"
+  },
+  "sidebar": {
+    "stock_title": "Stock Operations",
+    "stock_subtitle": "Complete Inventory",
+    "stock_desc": "Download our fully updated heavy machinery spreadsheet directly from Japan.",
+    "stock_btn": "View Stock List",
+    "media_title": "Corporate Media",
+    "media_subtitle": "Company Profile Video",
+    "media_desc": "Take a virtual video tour inside our certified Japanese inspection and deployment yards.",
+    "media_btn": "Watch Tour Video",
+    "guarantee_title": "Pyramid Guarantee",
+    "guarantee_subtitle": "Quality Assurance",
+    "guarantee_desc": "Every technical asset undergoes a rigorous, fully documented inspection protocol prior to global shipment.",
+    "guarantee_badge": "Certified Japanese Standards"
+  },
+  "filters": {
+    "main_title": "Category Filters",
+    "sector_label": "Sector / Industry",
+    "sector_all": "All Sectors",
+    "sector_construction": "Construction",
+    "sector_industrial": "Industrial",
+    "sector_agriculture": "Agriculture",
+    "sector_maintenance": "Maintenance & Support",
+    "sort_label": "Sort By",
+    "sort_default": "Most Machines Available",
+    "sort_az": "Alphabetical A-Z",
+    "sort_za": "Alphabetical Z-A",
+    "btn_apply": "Apply Filters"
+  },
+  "machinery_filters": {
+    "title": "Filters",
+    "sub_title": "Find Machinery",
+    "sector_label": "Sector",
+    "sector_all": "All Sectors",
+    "sector_construction": "Construction",
+    "sector_industrial": "Industrial",
+    "sector_agriculture": "Agriculture",
+    "sector_maintenance": "Maintenance & Support",
+    "category_label": "Category",
+    "category_all": "All Categories",
+    "spec_label": "Specification",
+    "spec_default": "Select Spec",
+    "condition_label": "Condition",
+    "value_label": "Value",
+    "value_placeholder": "e.g. 20",
+    "maker_label": "Manufacturer",
+    "maker_all": "All Makers",
+    "btn_apply": "Apply",
+    "btn_reset": "Reset"
+  },
+  "auth": {
+    "brand_name": "Pyramid Japan",
+    "signin_title": "Welcome Back",
+    "signin_desc": "Sign in to access your account.",
+    "label_email": "Email",
+    "label_password": "Password",
+    "btn_signin": "Sign In",
+    "btn_signing_in": "Signing in...",
+    "no_account": "Don't have an account?",
+    "btn_register_toggle": "Register",
+    "error_invalid_credentials": "Invalid email or password.",
+    "error_session_failed": "Login session could not be created.",
+    "error_generic": "Something went wrong. Please try again.",
+    "signup_title": "Create Account",
+    "signup_desc": "Register corporate profile for official machinery purchasing logs.",
+    "label_name": "Full Name",
+    "placeholder_name": "John Doe / Company Name",
+    "label_email_addr": "Email Address",
+    "label_secure_password": "Secure Password",
+    "btn_register": "Register & Verify Account",
+    "btn_registering": "Creating Business Account...",
+    "has_account": "Already have a business account?",
+    "btn_login_toggle": "Sign In Here",
+    "error_register_failed": "Registration failed. Try again."
+  },
+  "topbar": {
+    "feature_1": "Quality Inspected Machinery",
+    "feature_2": "Global Export Services",
+    "feature_3": "Genuine Spare Parts Support"
+  },"shipping_map": {
+    "tag": "Worldwide Export Network",
+    "main_title": "Shipping From Japan To The World",
+    "description": "Delivering quality construction and agricultural machinery from Japan to customers across Asia, Africa, Europe, Oceania and the Americas.",
+    "stat_countries": "Countries Served",
+    "stat_years": "Years Experience",
+    "stat_machines": "Machines Exported",
+    "stat_global_title": "Global",
+    "stat_global_desc": "Shipping Network",
+    "countries_list_title": "Countries We Export To",
+    "no_countries": "No countries added yet."
+  },  "app": {
+    "default_location": "AOCHI Yard",
+    "tag_featured": "Featured",
+    "ask_price": "Ask Price",
+    "sections": {
+      "recommended_title": "Pick Up Recommended Used Construction Machine!",
+      "new_arrivals_title": "New Arrival Used Construction Machine"
+    }
+  }
+
+
+
+
+
+
+}

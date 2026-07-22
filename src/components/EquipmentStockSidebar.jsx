@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronDown, HardHat, Settings, Compass, Layers } from 'lucide-react';
 
 export default function EquipmentStockSidebar() {
+  const { t, i18n } = useTranslation();
   const [openSection, setOpenSection] = useState('Excavators');
 
   const stockData = [
@@ -9,25 +11,45 @@ export default function EquipmentStockSidebar() {
       name: 'Excavators',
       count: 44,
       icon: HardHat,
-      subItems: ['Excavator (0.25m3)', 'Excavator (0.45m3)', 'Excavator (0.7m3~)']
+      titleKey: "sidebar.excavators",
+      subItems: [
+        { label: 'Excavator (0.25m3)', key: "sidebar.exc_sub1" },
+        { label: 'Excavator (0.45m3)', key: "sidebar.exc_sub2" },
+        { label: 'Excavator (0.7m3~)', key: "sidebar.exc_sub3" }
+      ]
     },
     {
       name: 'Mini-Excavators',
       count: 83,
       icon: Settings,
-      subItems: ['Mini Excavator (1t)', 'Mini Excavator (2-3t)', 'Mini Excavator (4-5t)']
+      titleKey: "sidebar.mini_excavators",
+      subItems: [
+        { label: 'Mini Excavator (1t)', key: "sidebar.mini_sub1" },
+        { label: 'Mini Excavator (2-3t)', key: "sidebar.mini_sub2" },
+        { label: 'Mini Excavator (4-5t)', key: "sidebar.mini_sub3" }
+      ]
     },
     {
       name: 'Cranes',
       count: 3,
       icon: Compass,
-      subItems: ['Rough Terrain Crane', 'Truck Crane', 'Crawler Crane', 'Spider Cranes']
+      titleKey: "sidebar.cranes",
+      subItems: [
+        { label: 'Rough Terrain Crane', key: "sidebar.crane_sub1" },
+        { label: 'Truck Crane', key: "sidebar.crane_sub2" },
+        { label: 'Crawler Crane', key: "sidebar.crane_sub3" },
+        { label: 'Spider Cranes', key: "sidebar.crane_sub4" }
+      ]
     },
     {
       name: 'Foundation Machines',
       count: 6,
       icon: Layers,
-      subItems: ['Pile Driving Machine', 'Vibro Hammer']
+      titleKey: "sidebar.foundation_machines",
+      subItems: [
+        { label: 'Pile Driving Machine', key: "sidebar.found_sub1" },
+        { label: 'Vibro Hammer', key: "sidebar.found_sub2" }
+      ]
     }
   ];
 
@@ -36,10 +58,10 @@ export default function EquipmentStockSidebar() {
       
       <div className="bg-[#005BAC] text-pure-white p-4 border-b border-gold-light/20">
         <h3 className="text-[11px] font-bold tracking-wider uppercase leading-tight font-mono">
-          Used Heavy Equipment <span className="text-gold-light/60">・</span>
+          {t("sidebar.header_top")} <span className="text-gold-light/60">・</span>
         </h3>
         <h3 className="text-[11px] font-bold tracking-wider uppercase leading-tight font-mono mt-0.5">
-          Construction Machines Stock
+          {t("sidebar.header_bottom")}
         </h3>
       </div>
 
@@ -58,8 +80,8 @@ export default function EquipmentStockSidebar() {
                 <div className="flex items-center gap-2">
                   <IconComponent className="w-4 h-4 text-gold-base group-hover:text-sun-red transition-colors stroke-[1.5]" />
                   <span className="text-xs font-bold text-charcoal group-hover:text-sun-red transition-colors font-sans">
-                    {item.name}
-                    <span className="text-gold-base font-mono text-[10px] ml-1">({item.count})</span>
+                    {t(item.titleKey)}
+                    <span className="text-gold-base font-mono text-[10px] mx-1">({item.count})</span>
                   </span>
                 </div>
                 <ChevronDown className={`w-3.5 h-3.5 text-gold-base transition-transform duration-300 ${isCurrentOpen ? 'rotate-180' : ''}`} />
@@ -70,10 +92,10 @@ export default function EquipmentStockSidebar() {
                   {item.subItems.map((sub, sIdx) => (
                     <a 
                       key={sIdx} 
-                      href={`#${sub.replace(/\s+/g, '-').toLowerCase()}`}
-                      className="text-gold-base hover:text-sun-red transition-colors block font-medium py-0.5 before:content-['▸'] before:mr-2 before:text-gold-light"
+                      href={`#${sub.label.replace(/\s+/g, '-').toLowerCase()}`}
+                      className="text-gold-base hover:text-sun-red transition-colors block font-medium py-0.5 before:content-['▸'] before:mx-2 before:text-gold-light"
                     >
-                      {sub}
+                      {t(sub.key)}
                     </a>
                   ))}
                 </div>

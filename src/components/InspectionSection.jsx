@@ -1,3 +1,5 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ShieldCheck,
   Video,
@@ -7,6 +9,8 @@ import {
 } from "lucide-react";
 
 export default function InspectionSection() {
+  const { t } = useTranslation();
+
   return (
     <section className="bg-[#0b192e] px-4 md:px-10">
       <div className="mx-auto max-w-[1300px] bg-[#07162c] rounded-[40px] p-8 md:p-16 relative overflow-hidden shadow-2xl">
@@ -14,10 +18,8 @@ export default function InspectionSection() {
         <div className="grid items-center gap-12 lg:grid-cols-12">
 
           {/* SECTION: LEFT SIDE (IMAGE & CHECKLIST CONTAINER) */}
-          <div className="lg:col-span-6 relative flex flex-col md:flex-row items-stretch gap-4 bg-[#051022]  rounded-[32px] border border-white/5">
+          <div className="lg:col-span-6 relative flex flex-col md:flex-row items-stretch gap-4 bg-[#051022] rounded-[32px] border border-white/5">
             
-          
-
             {/* MAIN IMAGE & 100% BADGE */}
             <div className="relative flex-1 min-h-[300px] md:min-h-auto rounded-2xl overflow-hidden group">
               <img
@@ -32,7 +34,7 @@ export default function InspectionSection() {
                 <div className="leading-tight">
                   <span className="text-lg font-black text-white block">100%</span>
                   <span className="text-[9px] font-medium text-slate-300 uppercase tracking-wider">
-                    Inspected Before Export
+                    {t('inspection.badge_text')}
                   </span>
                 </div>
               </div>
@@ -44,17 +46,17 @@ export default function InspectionSection() {
           <div className="lg:col-span-6 lg:pl-6">
             
             <span className="text-xs font-bold tracking-[0.25em] uppercase text-[#d9a441]">
-              Quality Control
+              {t('inspection.tag')}
             </span>
 
             <h2 className="mt-4 text-3xl md:text-4xl lg:text-[42px] font-black leading-[1.15] text-white">
-              Every Machine Is{" "}
-              <span className="text-[#d9a441]">Fully Inspected</span>{" "}
-              Before Shipping
+              {t('inspection.title_start')}{" "}
+              <span className="text-[#d9a441]">{t('inspection.title_highlight')}</span>{" "}
+              {t('inspection.title_end')}
             </h2>
 
             <p className="mt-4 text-sm md:text-base leading-relaxed text-slate-400 max-w-xl">
-              We follow a strict inspection process to ensure every machine meets the highest quality standards and is ready for work.
+              {t('inspection.description')}
             </p>
 
             {/* 2x2 FEATURE CARDS */}
@@ -66,9 +68,9 @@ export default function InspectionSection() {
                   <Camera className="h-5 w-5 text-[#d9a441]" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-base">Detailed Reports</h3>
+                  <h3 className="font-bold text-white text-base">{t('inspection.card1_title')}</h3>
                   <p className="mt-1 text-xs text-slate-400 leading-relaxed">
-                    Comprehensive inspection reports for full transparency.
+                    {t('inspection.card1_desc')}
                   </p>
                 </div>
               </div>
@@ -79,9 +81,9 @@ export default function InspectionSection() {
                   <Layers className="h-5 w-5 text-[#d9a441]" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-base">HD Photos</h3>
+                  <h3 className="font-bold text-white text-base">{t('inspection.card2_title')}</h3>
                   <p className="mt-1 text-xs text-slate-400 leading-relaxed">
-                    High resolution photos from all important angles.
+                    {t('inspection.card2_desc')}
                   </p>
                 </div>
               </div>
@@ -92,9 +94,9 @@ export default function InspectionSection() {
                   <Video className="h-5 w-5 text-[#d9a441]" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-base">Operational Videos</h3>
+                  <h3 className="font-bold text-white text-base">{t('inspection.card3_title')}</h3>
                   <p className="mt-1 text-xs text-slate-400 leading-relaxed">
-                    Machine operation videos for your peace of mind.
+                    {t('inspection.card3_desc')}
                   </p>
                 </div>
               </div>
@@ -105,9 +107,9 @@ export default function InspectionSection() {
                   <Globe className="h-5 w-5 text-[#d9a441]" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-base">Export Ready</h3>
+                  <h3 className="font-bold text-white text-base">{t('inspection.card4_title')}</h3>
                   <p className="mt-1 text-xs text-slate-400 leading-relaxed">
-                    Quality assured and ready for safe international shipping.
+                    {t('inspection.card4_desc')}
                   </p>
                 </div>
               </div>

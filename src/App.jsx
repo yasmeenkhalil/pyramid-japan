@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
 
 import TopBar from './components/TopBar';
 import Header from './components/Header';
@@ -19,8 +20,11 @@ import Maintenance from './components/MaintenancePage';
 import ContactPage from './components/ContactPage'; 
 import MachineryDetails from './components/MachineryDetails'; 
 import AllMachineryPage from './components/AllMachineryPage'; 
-
+import ScrollToTop from "./components/ScrollToTop"; 
+import AboutUs from  "./components/AboutUs"; 
+ 
 export default function App() {
+  const { t } = useTranslation();
   const [recommendedMachines, setRecommendedMachines] = useState([]);
   const [newArrivals, setNewArrivals] = useState([]);
   const [loadingRec, setLoadingRec] = useState(true);
@@ -39,9 +43,9 @@ export default function App() {
       model: item.model || "",
       hours: item.hour ? item.hour.toLocaleString() : "0",
       year: item.year ? item.year.toString() : "",
-      location: item.location || "AOCHI Yard",
-      tag: item.featured ? "Featured" : "",
-      price: item.price ? `${item.price.toLocaleString()} JPY` : "Ask Price",
+      location: item.location || t('app.default_location'),
+      tag: item.featured ? t('app.tag_featured') : "",
+      price: item.price ? `${item.price.toLocaleString()} JPY` : t('app.ask_price'),
       image: item.images && item.images.length > 0 ? item.images[0].imageUrl : '/assets/images/Crushers_Wood_Chippers.png'
     }));
   };
@@ -85,9 +89,9 @@ export default function App() {
     }
     fetchHomeData();
   }, [searchQuery, selectedCategory]);
-
   return (
-    <Router>
+    <Router> 
+      <ScrollToTop />
       <div className="min-h-screen bg-bg-base text-charcoal selection:bg-sun-red selection:text-pure-white antialiased overflow-x-hidden flex flex-col justify-between">
         
         <div>
@@ -95,7 +99,7 @@ export default function App() {
           <Header onSearch={setSearchQuery} />
           
           <Routes>
-            
+           
             <Route path="/" element={
               <>
                 <Hero onSearch={setSearchQuery} />
@@ -133,14 +137,14 @@ export default function App() {
 
                   <div className="w-full flex flex-col gap-8 md:gap-12">
                     <EquipmentSection 
-                      title="Pick Up Recommended Used Construction Machine!" 
+                      title={t('app.sections.recommended_title')} 
                       badgeColor="bg-[#0E4A86]" 
                       data={recommendedMachines}
                       loading={loadingRec}
                     />
 
                     <EquipmentSection 
-                      title="New Arrival Used Construction Machine" 
+                      title={t('app.sections.new_arrivals_title')} 
                       badgeColor="bg-[#0E4A86]" 
                       data={newArrivals}
                       loading={loadingNew}
@@ -155,6 +159,7 @@ export default function App() {
             } />
 
             <Route path="/export" element={<Export />} />
+            <Route path="/about" element={<AboutUs />} />
             <Route path="/construction" element={<Construction />} />
             <Route path="/agricultural" element={<Agriculture />} />
             <Route path="/maintenance" element={<Maintenance />} />

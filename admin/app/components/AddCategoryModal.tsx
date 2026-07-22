@@ -226,7 +226,9 @@ export default function CategoryModal({ category, onSuccess }: CategoryModalProp
                     >
                       <option value="">Select Sector</option>
                       <option value="construction">Construction Machinery (إنشائية)</option>
+                      <option value="Industrial">Industrial Machinery (صناعية )</option>
                       <option value="agricultural">Agricultural Machinery (زراعية)</option>
+                      <option value="maintenance">Maintenance & Support (صيانة ودعم فني)</option>
                     </select>
                     {errors.sector && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.sector}</p>}
                   </div>

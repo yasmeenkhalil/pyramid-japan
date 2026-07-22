@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // 👈 استورديه في الأعلى
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function CategoryGrid({ sector, sort }) {
+  const { t, i18n } = useTranslation();
   const [categories, setCategories] = useState([]);
-  const navigate = useNavigate(); // 👈 تفعيل دالة التوجيه
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchCategories() {
@@ -18,6 +20,8 @@ export default function CategoryGrid({ sector, sort }) {
         const res = await fetch(url);
         if (res.ok) {
           const data = await res.json();
+          console.log(data);
+          
           setCategories(data);
         }
       } catch (err) {
@@ -27,28 +31,46 @@ export default function CategoryGrid({ sector, sort }) {
     fetchCategories();
   }, [sector, sort]);
 
+  const getCategoryName = (cat) => {
+    if (i18n.language === "ar" && cat.nameAr) return cat.nameAr;
+    if (i18n.language === "ja" && cat.nameJa) return cat.nameJa;
+    return cat.nameEn || cat.name;
+  };
+
   return (
     <section className="w-full">
       <div className="mb-8">
-        <span className="inline-flex px-4 py-1 rounded-full bg-[#E0B15A]/10 text-[#C47B36] text-xs uppercase tracking-[0.25em] font-semibold">Our Machinery</span>
-        <h2 className="mt-3 text-3xl font-black text-[#0B1B3A]">Browse Equipment Categories</h2>
+        <span className="inline-flex px-4 py-1 rounded-full bg-[#E0B15A]/10 text-[#C47B36] text-xs uppercase tracking-[0.25em] font-semibold">
+          {t("cat_grid.badge")}
+        </span>
+        <h2 className="mt-3 text-3xl font-black text-[#0B1B3A]">
+          {t("cat_grid.title")}
+        </h2>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-5 gap-5">
         {categories.map((cat) => (
           <div
             key={cat.id}
-            onClick={() => navigate(`/machinery-all/${cat.slug}`)} // 👈 تعديل السطر لفتح الصفحة بالـ slug مصفاة فوراً
+            onClick={() => navigate(`/machinery-all/${cat.slug}`)}
             className="group bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-[#C47B36] transition-all duration-300 cursor-pointer hover:-translate-y-2 hover:shadow-xl"
           >
             <div className="relative w-full h-[210px] overflow-hidden bg-[#16110F]">
-              <img src={cat.imageUrl || "/assets/images/Crushers_Wood_Chippers.png"} alt={cat.nameEn} className="w-full h-full object-contain object-center transition-transform duration-750 ease-out group-hover:scale-105" />
+              <img 
+                src={cat.imageUrl || "/assets/images/Crushers_Wood_Chippers.png"} 
+                alt={getCategoryName(cat)} 
+                className="w-full h-full object-contain object-center transition-transform duration-750 ease-out group-hover:scale-105" 
+              />
               <div className="absolute inset-0 bg-gradient-to-b from-[#16110F]/40 via-transparent to-[#16110F] opacity-90" />
             </div>
 
             <div className="p-5 text-center">
-              <h3 className="text-[#111827] font-bold uppercase tracking-wide text-sm lg:text-base">{cat.nameEn}</h3>
-              <p className="mt-2 text-xs text-slate-500">{cat._count?.machinery || 0} Machines Available</p>
+              <h3 className="text-[#111827] font-bold uppercase tracking-wide text-sm lg:text-base">
+                {getCategoryName(cat)}
+              </h3>
+              <p className="mt-2 text-xs text-slate-500">
+                {cat._count?.machinery || 0} {t("cat_grid.machines_available")}
+              </p>
             </div>
           </div>
         ))}
