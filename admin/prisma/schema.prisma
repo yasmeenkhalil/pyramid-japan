@@ -21,6 +21,7 @@ model Category {
   nameEn    String
   nameAr    String
   nameJa    String
+  nameRu    String      // تم إضافة حقل اسم الفئة بالروسية
   slug      String      @unique
   imageUrl  String?
   sector    String
@@ -41,6 +42,7 @@ model Specification {
   nameEn    String
   nameAr    String
   nameJa    String
+  nameRu    String                   // تم إضافة حقل اسم الخاصية بالروسية
   slug      String                   @unique
   machinery MachinerySpecification[]
   createdAt DateTime                 @default(now())
@@ -71,6 +73,7 @@ model Machinery {
   titleEn              String
   titleAr              String
   titleJa              String
+  titleRu              String                   
   slug                 String                   @unique
   stockNo              String?
   year                 Int?
@@ -84,6 +87,7 @@ model Machinery {
   descriptionEn        String?
   descriptionAr        String?
   descriptionJa        String?
+  descriptionRu        String?                  // تم إضافة حقل الوصف بالروسية (اختياري)
   featured             Boolean                  @default(false)
   isAvailableForExport Boolean                  @default(true)
   categoryId           String
@@ -126,13 +130,14 @@ model MachineryView {
 }
 
 model ExportCountry {
-  id        String                 @id @default(cuid())
-  nameEn    String                 @unique 
-  nameAr    String                 @unique 
-  nameJa    String                 @unique 
-  slug      String                 @unique 
-  countryCode String?              @unique
-  createdAt DateTime               @default(now())
+  id          String                 @id @default(cuid())
+  nameEn      String                 @unique 
+  nameAr      String                 @unique 
+  nameJa      String                 @unique 
+  nameRu      String                 @unique // تم إضافة حقل اسم الدولة بالروسية
+  slug        String                 @unique 
+  countryCode String?                @unique
+  createdAt   DateTime               @default(now())
 }
 
 model Setting {

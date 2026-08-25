@@ -40,6 +40,7 @@ interface Machinery {
   titleEn: string;
   titleAr: string;
   titleJa: string;
+  titleRu: string | null;
   slug: string;
   stockNo: string | null;
   year: number | null;
@@ -53,6 +54,7 @@ interface Machinery {
   descriptionEn: string | null;
   descriptionAr: string | null;
   descriptionJa: string | null;
+  descriptionRu: string | null;
   featured: boolean;
   categoryId: string;
   manufacturerId: string;
@@ -94,7 +96,6 @@ export default function MachineryActions({
       alert("Something went wrong during deletion");
     }
   }
-
   return (
     <>
       <div className="flex items-center justify-start gap-2 h-full my-auto">

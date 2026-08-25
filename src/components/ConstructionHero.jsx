@@ -28,11 +28,16 @@ export default function ConstructionHero() {
   }, []);
 
   const getCategoryName = (cat) => {
-    if (i18n.language === "ar" && cat.nameAr) return cat.nameAr;
-    if (i18n.language === "ja" && cat.nameJa) return cat.nameJa;
-    return cat.nameEn || cat.name;
-  };
+    if (!cat) return "";
+    const currentLang = i18n.language;
 
+    if (cat[`name_${currentLang}`]) return cat[`name_${currentLang}`];
+
+    if (currentLang === "ar" && cat.nameAr) return cat.nameAr;
+    if (currentLang === "ja" && cat.nameJa) return cat.nameJa;
+    
+    return cat.nameEn || cat.name || "";
+  };
   return (
     <section className="relative overflow-hidden bg-[#0b192e] px-4 pt-0">
       <div className="mx-auto mt-0 max-w-[1300px] bg-[#07162c] rounded-[40px] relative overflow-hidden shadow-2xl min-h-[500px] md:min-h-[550px] flex items-center">

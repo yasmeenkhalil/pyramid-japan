@@ -17,6 +17,7 @@ export default function TopBar() {
         {[
           { code: "en", label: "EN" },
           { code: "ja", label: "JA" },
+          { code: "ru", label: "RU" }, 
           { code: "ar", label: "AR" }
         ].map((lang) => (
           <button

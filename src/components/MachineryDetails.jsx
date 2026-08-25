@@ -6,7 +6,7 @@ export default function MachineryDetails() {
   const { id } = useParams();
   const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === "rtl";
-  const currentLang = i18n.language; // لمعرفة اللغة الحالية (ar, en, ja)
+  const currentLang = i18n.language; // لمعرفة اللغة الحالية (ar, en, ja, ru)
 
   // حالات التحكم بالبيانات القادمة من الباك إند
   const [machineData, setMachineData] = useState(null); 
@@ -18,52 +18,51 @@ export default function MachineryDetails() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [apiError, setApiError] = useState(null);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
-const [session, setSession] = useState(null);
-const [status, setStatus] = useState("loading");
-const [errorMessage, setErrorMessage] = useState("");
+  const [session, setSession] = useState(null);
+  const [status, setStatus] = useState("loading");
+  const [errorMessage, setErrorMessage] = useState("");
 
-useEffect(() => {
-  async function checkAuth() {
-    try {
-      const response = await fetch("/api/auth/session", {
-        credentials: "include",
-        cache: "no-store",
-      });
+  useEffect(() => {
+    async function checkAuth() {
+      try {
+        const response = await fetch("/api/auth/session", {
+          credentials: "include",
+          cache: "no-store",
+        });
 
-      if (response.ok) {
-        const data = await response.json();
-        if (data?.user) {
-          setSession(data);
-          setStatus("authenticated");
-          setFormData(prev => ({
-            ...prev,
-            name: data.user.name || "",
-            email: data.user.email || ""
-          }));
-        } else {
-          setStatus("unauthenticated");
+        if (response.ok) {
+          const data = await response.json();
+          if (data?.user) {
+            setSession(data);
+            setStatus("authenticated");
+            setFormData(prev => ({
+              ...prev,
+              name: data.user.name || "",
+              email: data.user.email || ""
+            }));
+          } else {
+            setStatus("unauthenticated");
+          }
         }
+      } catch {
+        setStatus("unauthenticated");
       }
-    } catch {
-      setStatus("unauthenticated");
     }
-  }
 
-  checkAuth();
-  window.addEventListener("auth-change", checkAuth);
-  window.addEventListener("focus", checkAuth);
+    checkAuth();
+    window.addEventListener("auth-change", checkAuth);
+    window.addEventListener("focus", checkAuth);
 
-  return () => {
-    window.removeEventListener("auth-change", checkAuth);
-    window.removeEventListener("focus", checkAuth);
-  };
-}, []);
+    return () => {
+      window.removeEventListener("auth-change", checkAuth);
+      window.removeEventListener("focus", checkAuth);
+    };
+  }, []);
 
-const isAuthenticated = status === "authenticated";
+  const isAuthenticated = status === "authenticated";
 
-  // جلب البيانات من الـ API بأسلوب fetch المعتمد لديك
+  // جلب البيانات من الـ API بأسلوب fetch
   useEffect(() => {
     async function fetchMachineDetails() {
       setIsLoading(true);
@@ -73,7 +72,6 @@ const isAuthenticated = status === "authenticated";
         
         if (res.ok) {
           const data = await res.json();
-          console.log(data);
           setMachineData(data);
           
           if (data.images && data.images.length > 0) {
@@ -101,46 +99,44 @@ const isAuthenticated = status === "authenticated";
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  setErrorMessage("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage("");
 
-  if (!isAuthenticated) {
-    setErrorMessage(t("contact_page.err_auth"));
-    return;
-  }
-
-  try {
-    setIsSubmitting(true);
-    const response = await fetch("/api/inquiries", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...formData,
-        type: "machinery_quote", // لتحديد نوع الاستفسار في الباك إند
-        userId: session?.user?.email || null,
-        machineId: machineData?.id,
-        machineSlug: machineData?.slug
-      }),
-    });
-
-    if (response.ok) {
-      setShowToast(true);
-      setFormData({ name: session?.user?.name || "", email: session?.user?.email || "", phone: "", message: "" });
-      setIsModalOpen(false);
-      setTimeout(() => setShowToast(false), 4000);
-    } else {
-      const errorData = await response.json();
-      setErrorMessage(errorData.message || t('details.form.api_error_fallback'));
+    if (!isAuthenticated) {
+      setErrorMessage(t("contact_page.err_auth"));
+      return;
     }
-  } catch (error) {
-    console.error("Error submitting quote request:", error);
-  } finally {
-    setIsSubmitting(false);
-  }
-};
 
+    try {
+      setIsSubmitting(true);
+      const response = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          type: "machinery_quote",
+          userId: session?.user?.email || null,
+          machineId: machineData?.id,
+          machineSlug: machineData?.slug
+        }),
+      });
 
+      if (response.ok) {
+        setShowToast(true);
+        setFormData({ name: session?.user?.name || "", email: session?.user?.email || "", phone: "", message: "" });
+        setIsModalOpen(false);
+        setTimeout(() => setShowToast(false), 4000);
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(errorData.message || t('details.form.api_error_fallback'));
+      }
+    } catch (error) {
+      console.error("Error submitting quote request:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -161,10 +157,11 @@ const isAuthenticated = status === "authenticated";
     );
   }
 
-  // فرز العناوين والوصف بناءً على اللغة الحالية المفعّلة في الموقع ديناميكياً
-  const displayTitle = currentLang === 'ar' ? machineData.titleAr : currentLang === 'ja' ? machineData.titleJa : machineData.titleEn;
-  const displayDescription = currentLang === 'ar' ? machineData.descriptionAr : currentLang === 'ja' ? machineData.descriptionJa : machineData.descriptionEn;
-  const displayCategory = currentLang === 'ar' ? machineData.category?.nameAr : currentLang === 'ja' ? machineData.category?.nameJa : machineData.category?.nameEn;
+  // فرز العناوين والوصف بناءً على اللغة الحالية المفعّلة في الموقع ديناميكياً بما فيها الروسية
+  const displayTitle = currentLang === 'ar' ? machineData.titleAr : currentLang === 'ja' ? machineData.titleJa : currentLang === 'ru' ? machineData.titleRu : machineData.titleEn;
+  const displayDescription = currentLang === 'ar' ? machineData.descriptionAr : currentLang === 'ja' ? machineData.descriptionJa : currentLang === 'ru' ? machineData.descriptionRu : machineData.descriptionEn;
+  const displayCategory = currentLang === 'ar' ? machineData.category?.nameAr : currentLang === 'ja' ? machineData.category?.nameJa : currentLang === 'ru' ? machineData.category?.nameRu : machineData.category?.nameEn;
+
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 font-sans relative">
       
@@ -190,7 +187,7 @@ const isAuthenticated = status === "authenticated";
             {machineData.images && machineData.images.length > 0 && (
               <div className="flex gap-3 overflow-x-auto pb-2 scroll-smooth select-none cursor-grab active:cursor-grabbing snap-x whitespace-nowrap scrollbar-thin scrollbar-thumb-slate-300 stroke-transparent">
                 {machineData.images.map((img, index) => {
-                  const imgUrl = img.imageUrl || img; // معالجة إذا كانت الصورة أوبجكت أو نص عادي
+                  const imgUrl = img.imageUrl || img;
                   return (
                     <button
                       key={index}
@@ -204,8 +201,7 @@ const isAuthenticated = status === "authenticated";
               </div>
             )}
           </div>
-
-          {/* تفاصيل الموديل والمواصفات الأساسية الراجعة من الـ Object */}
+          {/* تفاصيل الموديل والمواصفات الأساسية */}
           <div className="w-full lg:w-1/2 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between text-sm text-slate-500 mb-2">
@@ -263,116 +259,109 @@ const isAuthenticated = status === "authenticated";
                   {machineData.price > 0 ? `¥ ${machineData.price.toLocaleString()}` : t('machine.inquire')}
                 </span>
               </div>
-             <button 
-  onClick={() => {
-    if (isAuthenticated) {
-      setIsModalOpen(true);
-    }
-  }}
-  disabled={!isAuthenticated}
-  className="w-full sm:w-auto px-8 py-3.5 rounded-xl text-white font-semibold text-sm transition-all duration-300
-    disabled:bg-slate-300 disabled:cursor-not-allowed disabled:text-slate-500
-    bg-[#0F172A] hover:bg-[#C47B36]"
->
-  {isAuthenticated ? t('machine.btn_quote') : t('machine.btn_quote_login_required')}
-</button>
-
+              <button 
+                onClick={() => {
+                  if (isAuthenticated) {
+                    setIsModalOpen(true);
+                  }
+                }}
+                disabled={!isAuthenticated}
+                className="w-full sm:w-auto px-8 py-3.5 rounded-xl text-white font-semibold text-sm transition-all duration-300
+                  disabled:bg-slate-300 disabled:cursor-not-allowed disabled:text-slate-500
+                  bg-[#0F172A] hover:bg-[#C47B36]"
+              >
+                {isAuthenticated ? t('machine.btn_quote') : t('machine.btn_quote_login_required')}
+              </button>
             </div>
           </div>
         </div>
 
-{machineData.specifications && machineData.specifications.length > 0 && (
-  <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-    <h2 className="text-xl font-bold text-[#0F172A] mb-4 pb-2 border-b border-slate-100">
-      {t('details.specs_title')}
-    </h2>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 text-sm">
-      {machineData.specifications.map((item, index) => {
-        const specName = 
-          currentLang === 'ar' ? item.specification?.nameAr : 
-          currentLang === 'ja' ? item.specification?.nameJa : 
-          item.specification?.nameEn;
+        {machineData.specifications && machineData.specifications.length > 0 && (
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+            <h2 className="text-xl font-bold text-[#0F172A] mb-4 pb-2 border-b border-slate-100">
+              {t('details.specs_title')}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 text-sm">
+              {machineData.specifications.map((item, index) => {
+                const specName = 
+                  currentLang === 'ar' ? item.specification?.nameAr : 
+                  currentLang === 'ja' ? item.specification?.nameJa : 
+                  currentLang === 'ru' ? item.specification?.nameRu : 
+                  item.specification?.nameEn;
 
-        // 2. استخراج اسم الوحدة القياسية إن وجدت (مثل kg أو HP)
-        const unitName = item.unit?.name || '';
+                const unitName = item.unit?.name || '';
 
-        return (
-          <div key={index} className="flex justify-between py-2 border-b border-slate-50 last:border-0 md:last:border-b">
-            {/* اسم المواصفة المترجم */}
-            <span className="text-slate-500 font-medium">
-              {specName || `${t('details.spec_label')} ${index + 1}`}
-            </span>
-            
-            {/* القيمة متبوعة بالوحدة */}
-            <span className="font-semibold text-[#0F172A]">
-              {item.value} {unitName}
-            </span>
+                return (
+                  <div key={index} className="flex justify-between py-2 border-b border-slate-50 last:border-0 md:last:border-b">
+                    <span className="text-slate-500 font-medium">
+                      {specName || `${t('details.spec_label')} ${index + 1}`}
+                    </span>
+                    <span className="font-semibold text-[#0F172A]">
+                      {item.value} {unitName}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        );
-      })}
-    </div>
-  </div>
-)}
+        )}
+      </div>
+      {/* المودال ونموذج التواصل المحمي من الباك إند */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 border border-slate-200 shadow-2xl relative" dir={isRtl ? "rtl" : "ltr"}>
+            <button onClick={() => { if(!isSubmitting) setIsModalOpen(false); }} className={`absolute top-4 text-slate-400 hover:text-slate-600 text-xl ${isRtl ? 'left-4' : 'right-4'}`} disabled={isSubmitting}>✕</button>
+            <div className="mb-5">
+              <h2 className="text-xl font-bold text-[#0F172A]">{t('details.modal_title')}</h2>
+              <p className="text-xs text-slate-500 mt-1">{t('details.form.request_subtitle')} <span className="font-semibold text-[#C47B36]">{displayTitle}</span></p>
+            </div>
+            
+            {!isAuthenticated && status !== "loading" && (
+              <div className="mb-4 p-3.5 bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium rounded-xl">
+                ⚠️ {t("contact_page.err_auth")}
+              </div>
+            )}
 
-      </div>
-{/* المودال ونموذج التواصل المحمي من الباك إند */}
-{isModalOpen && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
-    <div className="bg-white rounded-2xl max-w-lg w-full p-6 border border-slate-200 shadow-2xl relative" dir={isRtl ? "rtl" : "ltr"}>
-      <button onClick={() => { if(!isSubmitting) setIsModalOpen(false); }} className={`absolute top-4 text-slate-400 hover:text-slate-600 text-xl ${isRtl ? 'left-4' : 'right-4'}`} disabled={isSubmitting}>✕</button>
-      <div className="mb-5">
-        <h2 className="text-xl font-bold text-[#0F172A]">{t('details.modal_title')}</h2>
-        <p className="text-xs text-slate-500 mt-1">{t('details.form.request_subtitle')} <span className="font-semibold text-[#C47B36]">{displayTitle}</span></p>
-      </div>
-      
-      {/* 1. حماية التوثيق التلقائية مثل صفحة الاتصال */}
-      {!isAuthenticated && status !== "loading" && (
-        <div className="mb-4 p-3.5 bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium rounded-xl">
-          ⚠️ {t("contact_page.err_auth")}
+            {errorMessage && <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-xs font-medium rounded-xl">⚠️ {errorMessage}</div>}
+            
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t('details.form.name')}</label>
+                <input type="text" name="name" required value={formData.name} onChange={handleInputChange} disabled={isSubmitting} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#C47B36] text-[#0F172A] disabled:bg-slate-50" placeholder="John Doe" />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t('details.form.email')}</label>
+                <input type="email" name="email" required value={formData.email} onChange={handleInputChange} disabled={isSubmitting} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#C47B36] text-[#0F172A] disabled:bg-slate-50" placeholder="john@example.com" />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t('details.form.phone')}</label>
+                <input type="tel" name="phone" required value={formData.phone} onChange={handleInputChange} disabled={isSubmitting} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#C47B36] text-[#0F172A] disabled:bg-slate-50" placeholder="+81 90-1234-5678" />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t('details.form.message')}</label>
+                <textarea name="message" rows="3" value={formData.message} onChange={handleInputChange} disabled={isSubmitting} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#C47B36] text-[#0F172A] resize-none disabled:bg-slate-50" placeholder={t('details.form.message_placeholder')}></textarea>
+              </div>
+              
+              <div className="pt-2">
+                <button 
+                  type="submit" 
+                  disabled={!isAuthenticated || isSubmitting} 
+                  className="w-full py-3 rounded-xl bg-[#0F172A] hover:bg-[#C47B36] text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 disabled:bg-slate-300 disabled:text-slate-500 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+                      <span>{t('details.form.submitting')}</span>
+                    </>
+                  ) : (
+                    <span>{t('details.form.submit_btn')}</span>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
-
-      {errorMessage && <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-xs font-medium rounded-xl">⚠️ {errorMessage}</div>}
-      
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t('details.form.name')}</label>
-          <input type="text" name="name" required value={formData.name} onChange={handleInputChange} disabled={isSubmitting} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#C47B36] text-[#0F172A] disabled:bg-slate-50" placeholder="John Doe" />
-        </div>
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t('details.form.email')}</label>
-          <input type="email" name="email" required value={formData.email} onChange={handleInputChange} disabled={isSubmitting} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#C47B36] text-[#0F172A] disabled:bg-slate-50" placeholder="john@example.com" />
-        </div>
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t('details.form.phone')}</label>
-          <input type="tel" name="phone" required value={formData.phone} onChange={handleInputChange} disabled={isSubmitting} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#C47B36] text-[#0F172A] disabled:bg-slate-50" placeholder="+81 90-1234-5678" />
-        </div>
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t('details.form.message')}</label>
-          <textarea name="message" rows="3" value={formData.message} onChange={handleInputChange} disabled={isSubmitting} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#C47B36] text-[#0F172A] resize-none disabled:bg-slate-50" placeholder={t('details.form.message_placeholder')}></textarea>
-        </div>
-        
-        {/* 2. قفل وتفعيل زر الإرسال بناءً على حالة تسجيل الدخول الفورية */}
-        <div className="pt-2">
-          <button 
-            type="submit" 
-            disabled={!isAuthenticated || isSubmitting} 
-            className="w-full py-3 rounded-xl bg-[#0F172A] hover:bg-[#C47B36] text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 disabled:bg-slate-300 disabled:text-slate-500 disabled:cursor-not-allowed"
-          >
-            {isSubmitting ? (
-              <>
-                <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
-                <span>{t('details.form.submitting')}</span>
-              </>
-            ) : (
-              <span>{t('details.form.submit_btn')}</span>
-            )}
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-)}
       
     </div>
   );

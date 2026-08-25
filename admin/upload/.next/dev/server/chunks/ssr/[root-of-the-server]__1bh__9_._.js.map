@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 13, "column": 0}, "map": {"version":3,"sources":["file:///D:/dev/pyramid-japan-co/admin/app/icon.jpg.mjs%20%28structured%20image%20object%29"],"sourcesContent":["import src from \"IMAGE\";\nexport default { src, width: 1149, height: 1369 }\n"],"names":["src","width","height"],"mappings":";;;;AAAA;;uCACe;IAAEA,KAAAA,gIAAG;IAAEC,OAAO;IAAMC,QAAQ;AAAK"}},
+    {"offset": {"line": 82, "column": 0}, "map": {"version":3,"sources":["file:///D:/dev/pyramid-japan-co/admin/app/page.tsx"],"sourcesContent":["import { getServerSession } from \"next-auth/next\";\nimport { redirect } from \"next/navigation\";\n\n \n\nexport default async function Home() {\n  const session = await getServerSession(); \n\n  if (session) {\n    redirect('/admin/dashboard');\n  } else {\n    redirect('/admin/login'); \n  }\n}\n"],"names":["Home","session"],"mappings":";;;;AAAA;AACA;AAAA;;;AAIe,eAAeA;IAC5B,MAAMC,UAAU,MAAM,IAAA,iKAAgB;IAEtC,IAAIA,SAAS;QACX,IAAA,iMAAQ,EAAC;IACX,OAAO;QACL,IAAA,iMAAQ,EAAC;IACX;AACF"}}]
+}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next"; // استيراد مكتبة الترجمة
 
@@ -99,7 +99,6 @@ export default function SignInForm({ onToggleView, onSuccess }) {
           </label>
 
           <div className="relative">
-            {/* تم دعم تبديل موقع الأيقونات تلقائياً حسب اتجاه اللغة */}
             <Mail className="absolute left-4 rtl:left-auto rtl:right-4 top-3.5 h-4 w-4 text-slate-400" />
 
             <input
@@ -160,10 +159,10 @@ export default function SignInForm({ onToggleView, onSuccess }) {
 
       {/* FOOTER TOGGLE */}
       <div className="mt-6 text-center text-xs text-slate-500">
-        {t('auth.no_account')}
+        {t('auth.no_account')}{" "}
         <button
           onClick={onToggleView}
-          className="ml-1 rtl:ml-0 rtl:mr-1 text-[#D9A441] font-bold cursor-pointer"
+          className="ml-1 rtl:ml-0 rtl:mr-1 text-[#D9A441] font-bold cursor-pointer hover:underline"
         >
           {t('auth.btn_register_toggle')}
         </button>

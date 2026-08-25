@@ -6,9 +6,10 @@ import { Plus, X } from "lucide-react";
 
 export default function AddSpecificationModal() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [nameAr, setNameAr] = useState<string>("");
+  const [nameAr, setNameAr] = useState<string>( "");
   const [nameEn, setNameEn] = useState<string>("");
   const [nameJa, setNameJa] = useState<string>("");
+  const [nameRu, setNameRu] = useState<string>("");
   const [slug, setSlug] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -26,14 +27,14 @@ export default function AddSpecificationModal() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!nameAr || !nameEn || !nameJa || !slug) return;
+    if (!nameAr || !nameEn || !nameJa || !nameRu || !slug) return;
 
     setLoading(true);
     try {
       const res = await fetch("/api/specifications", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nameAr, nameEn, nameJa, slug }),
+        body: JSON.stringify({ nameAr, nameEn, nameJa, nameRu, slug }),
       });
 
       if (res.ok) {
@@ -41,6 +42,7 @@ export default function AddSpecificationModal() {
         setNameAr("");
         setNameEn("");
         setNameJa("");
+        setNameRu("");
         setSlug("");
         router.refresh();
       } else {
@@ -53,7 +55,6 @@ export default function AddSpecificationModal() {
       setLoading(false);
     }
   };
-
   return (
     <>
       <button
@@ -116,6 +117,20 @@ export default function AddSpecificationModal() {
                   placeholder="e.g. 運転整備重量"
                   value={nameJa}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setNameJa(e.target.value)}
+                  className="w-full border border-slate-200 px-4 py-3 rounded-xl text-sm bg-slate-50 text-gray-800 focus:border-[#0B4EA2] focus:bg-white focus:outline-none transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                  Name Russian
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Например: Эксплуатационный вес"
+                  value={nameRu}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setNameRu(e.target.value)}
                   className="w-full border border-slate-200 px-4 py-3 rounded-xl text-sm bg-slate-50 text-gray-800 focus:border-[#0B4EA2] focus:bg-white focus:outline-none transition-all"
                 />
               </div>

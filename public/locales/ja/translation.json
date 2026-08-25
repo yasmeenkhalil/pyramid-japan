@@ -210,6 +210,7 @@
     "opt_parts": "スペアパーツサポート",
     "opt_maintenance": "技術メンテナンス",
     "btn_sending": "メッセージ送信中...",
+    "btn_send": "メッセージを送信",
     "btn_submit": "安全なメッセージを送信"
   },
   
@@ -516,8 +517,8 @@
     "export": "世界各国への輸出"
   },
   "contact": {
-    "address": "愛知県春日井市 480-0305、日本",
-    "phone_val": "+81-568-88-7980"
+    "address": "〒323-0822 栃木県小山市駅南町1-1-2",
+    "phone_val": "080-4346-6222 / 080-3000-3879"
   }
 },
 "maintenance_cta": {
@@ -750,6 +751,20 @@
       "recommended_title": "厳選されたおすすめ中古建設機械！",
       "new_arrivals_title": "新着中古建設機械"
     }
+  },
+   "card_info": {
+    "company_name": "ピラミッド・ジャパン株式会社",
+    "license_label": "許可番号",
+    "business_label": "事業内容",
+    "business_val": "中古車・自動車部品の輸出入業",
+    "manager_label": "氏名",
+    "manager_val": "エルハティブ・アブデルハディ",
+    "office_label": "事務所住所",
+    "office_val": "〒323-0822 栃木県小山市駅南町1-1-2",
+    "yard_label": "ヤード住所",
+    "yard_val": "〒307-0036 茨城県結城市北那須諸並木西369-3",
+    "tel_fax_label": "電話/FAX",
+    "phones_label": "携帯電話"
   }
 
 

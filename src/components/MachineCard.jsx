@@ -55,7 +55,7 @@ export default function MachineCard({ machine }) {
           </span>
           <button 
             onClick={(e) => {
-             
+              // مساحة مخصصة لأحداث النقر المستقبلية
             }}
             className="px-4 py-2 rounded-lg bg-[#0F172A] text-white text-sm font-medium hover:bg-[#C47B36] transition-colors relative z-10"
           >

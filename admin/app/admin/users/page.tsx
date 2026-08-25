@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import AddUserModal from "@/app/components/AddUserModal";
 import UserActions from "@/app/components/UserActions";
 
+export const dynamic = "force-dynamic";
+
 interface UserData {
   id: string;
   name: string;

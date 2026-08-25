@@ -4,6 +4,9 @@ import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { User, Mail, Lock, Save } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
+
 export default function AdminProfilePage() {
   const { data: session, update } = useSession();
   const [name, setName] = useState("");

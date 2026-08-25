@@ -6,9 +6,10 @@ import { Plus, X } from "lucide-react";
 
 export default function AddCountryModal() {
   const [open, setOpen] = useState<boolean>(false);
-  const [nameAr, setNameAr] = useState<string>( "");
+  const [nameAr, setNameAr] = useState<string>("");
   const [nameEn, setNameEn] = useState<string>("");
   const [nameJa, setNameJa] = useState<string>("");
+  const [nameRu, setNameRu] = useState<string>("");
   const [slug, setSlug] = useState<string>("");
   
   const [loading, setLoading] = useState<boolean>(false);
@@ -49,6 +50,12 @@ export default function AddCountryModal() {
       newErrors.nameJa = "Japanese name is required.";
     }
 
+    if (!nameRu.trim()) {
+      newErrors.nameRu = "Russian name is required.";
+    } else if (!/^[\u0400-\u04FF0-9\s\-_,.:()]+$/.test(nameRu)) {
+      newErrors.nameRu = "Russian name must contain Russian (Cyrillic) characters only.";
+    }
+
     if (!slug.trim()) {
       newErrors.slug = "Slug is required.";
     }
@@ -56,6 +63,7 @@ export default function AddCountryModal() {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -70,6 +78,7 @@ export default function AddCountryModal() {
           nameAr: nameAr.trim(),
           nameEn: nameEn.trim(),
           nameJa: nameJa.trim(),
+          nameRu: nameRu.trim(),
           slug: slug.trim(),
         }),
       });
@@ -100,9 +109,9 @@ export default function AddCountryModal() {
     setNameAr("");
     setNameEn("");
     setNameJa("");
+    setNameRu("");
     setSlug("");
   };
-
   return (
     <>
       <button
@@ -186,6 +195,27 @@ export default function AddCountryModal() {
                   />
                   {errors.nameJa && (
                     <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.nameJa}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${errors.nameRu ? "text-red-600" : "text-gray-500"}`}>
+                    Name Russian *
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Введите русское название"
+                    value={nameRu}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      setNameRu(e.target.value);
+                      if (errors.nameRu) setErrors((prev) => ({ ...prev, nameRu: "" }));
+                    }}
+                    className={`w-full border px-4 py-3 rounded-xl text-sm focus:outline-none transition-all ${
+                      errors.nameRu ? "border-red-500 bg-red-50 text-red-900 focus:border-red-600 focus:bg-white" : "border-slate-200 bg-slate-50 text-gray-800 focus:border-[#0B4EA2] focus:bg-white"
+                    }`}
+                  />
+                  {errors.nameRu && (
+                    <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.nameRu}</p>
                   )}
                 </div>
 

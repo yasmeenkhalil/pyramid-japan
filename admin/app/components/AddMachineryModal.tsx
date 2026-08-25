@@ -34,6 +34,7 @@ export default function AddMachineryModal({ categories, manufacturers, available
   const [titleEn, setTitleEn] = useState("");
   const [titleAr, setTitleAr] = useState("");
   const [titleJa, setTitleJa] = useState("");
+  const [titleRu, setTitleRu] = useState("");
   const [slug, setSlug] = useState("");
   const [stockNo, setStockNo] = useState("");
   const [year, setYear] = useState("");
@@ -47,6 +48,7 @@ export default function AddMachineryModal({ categories, manufacturers, available
   const [descriptionEn, setDescriptionEn] = useState("");
   const [descriptionAr, setDescriptionAr] = useState("");
   const [descriptionJa, setDescriptionJa] = useState("");
+  const [descriptionRu, setDescriptionRu] = useState("");
   const [featured, setFeatured] = useState<boolean>(false);
   const [categoryId, setCategoryId] = useState("");
   const [manufacturerId, setManufacturerId] = useState("");
@@ -69,6 +71,11 @@ export default function AddMachineryModal({ categories, manufacturers, available
     if (!titleEn.trim()) newErrors.titleEn = "English title is required.";
     if (!titleAr.trim()) newErrors.titleAr = "Arabic title is required.";
     if (!titleJa.trim()) newErrors.titleJa = "Japanese title is required.";
+    if (!titleRu.trim()) {
+      newErrors.titleRu = "Russian title is required.";
+    } else if (!/^[\u0400-\u04FF0-9\s\-_,.:()]+$/.test(titleRu)) {
+      newErrors.titleRu = "Russian title must contain Russian (Cyrillic) characters only.";
+    }
     if (!slug.trim()) newErrors.slug = "Slug is required.";
     if (!location.trim()) newErrors.location = "Location is required.";
     if (!sector) newErrors.sector = "Sector is required. Please select one."; 
@@ -95,6 +102,7 @@ export default function AddMachineryModal({ categories, manufacturers, available
           titleEn: titleEn.trim(), 
           titleAr: titleAr.trim(), 
           titleJa: titleJa.trim(), 
+          titleRu: titleRu.trim(),
           slug: slug.trim(),
           stockNo: stockNo.trim() || null, 
           year: year ? parseInt(year) : null, 
@@ -108,6 +116,7 @@ export default function AddMachineryModal({ categories, manufacturers, available
           descriptionEn: descriptionEn.trim() || null, 
           descriptionAr: descriptionAr.trim() || null, 
           descriptionJa: descriptionJa.trim() || null,
+          descriptionRu: descriptionRu.trim() || null,
           featured, 
           categoryId, 
           manufacturerId, 
@@ -141,6 +150,7 @@ export default function AddMachineryModal({ categories, manufacturers, available
     setTitleEn(""); 
     setTitleAr(""); 
     setTitleJa(""); 
+    setTitleRu("");
     setSlug(""); 
     setStockNo(""); 
     setYear(""); 
@@ -153,6 +163,7 @@ export default function AddMachineryModal({ categories, manufacturers, available
     setDescriptionEn(""); 
     setDescriptionAr(""); 
     setDescriptionJa(""); 
+    setDescriptionRu("");
     setFeatured(false); 
     setCategoryId(""); 
     setManufacturerId(""); 
@@ -167,7 +178,6 @@ export default function AddMachineryModal({ categories, manufacturers, available
       <button onClick={() => setOpen(true)} className="flex items-center gap-2 rounded-2xl bg-[#0B4EA2] px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-blue-700 transition cursor-pointer">
         <Plus size={18} /> Add Machinery
       </button>
-
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="w-full max-w-[94vw] xl:max-w-[85vw] h-[92vh] rounded-3xl bg-white p-6 shadow-xl border border-slate-100 flex flex-col overflow-hidden">
@@ -180,7 +190,7 @@ export default function AddMachineryModal({ categories, manufacturers, available
             <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden" noValidate>
               <div className="space-y-4 overflow-y-auto flex-1 pr-1 pb-4 text-left">
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div>
                     <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${errors.titleEn ? "text-red-600" : "text-gray-500"}`}>Title English *</label>
                     <input type="text" value={titleEn} onChange={handleTitleEnChange} className={`w-full border px-4 py-3 rounded-xl text-sm focus:outline-none transition-all ${errors.titleEn ? "border-red-500 bg-red-50 text-red-900 focus:border-red-600" : "border-slate-200 bg-slate-50 text-gray-800 focus:border-[#0B4EA2]"}`} />
@@ -195,6 +205,11 @@ export default function AddMachineryModal({ categories, manufacturers, available
                     <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${errors.titleJa ? "text-red-600" : "text-gray-500"}`}>Title Japanese *</label>
                     <input type="text" value={titleJa} onChange={(e) => { setTitleJa(e.target.value); if (errors.titleJa) setErrors(prev => ({ ...prev, titleJa: "" })); }} className={`w-full border px-4 py-3 rounded-xl text-sm focus:outline-none transition-all ${errors.titleJa ? "border-red-500 bg-red-50 text-red-900 focus:border-red-600" : "border-slate-200 bg-slate-50 text-gray-800 focus:border-[#0B4EA2]"}`} />
                     {errors.titleJa && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.titleJa}</p>}
+                  </div>
+                  <div>
+                    <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${errors.titleRu ? "text-red-600" : "text-gray-500"}`}>Title Russian *</label>
+                    <input type="text" value={titleRu} onChange={(e) => { setTitleRu(e.target.value); if (errors.titleRu) setErrors(prev => ({ ...prev, titleRu: "" })); }} className={`w-full border px-4 py-3 rounded-xl text-sm focus:outline-none transition-all ${errors.titleRu ? "border-red-500 bg-red-50 text-red-900 focus:border-red-600" : "border-slate-200 bg-slate-50 text-gray-800 focus:border-[#0B4EA2]"}`} />
+                    {errors.titleRu && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.titleRu}</p>}
                   </div>
                 </div>
 
@@ -217,7 +232,6 @@ export default function AddMachineryModal({ categories, manufacturers, available
                         <option value="Industrial">Industrial</option>
                         <option value="Agriculture">Agriculture</option>
                         <option value="maintenance">Maintenance & Support</option>
-
                       </select>
                       {errors.sector && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.sector}</p>}
                     </div>
@@ -284,7 +298,6 @@ export default function AddMachineryModal({ categories, manufacturers, available
                     <input type="checkbox" id="featured" checked={featured} onChange={(e) => setFeatured(e.target.checked)} className="w-4 h-4 text-[#0B4EA2] border-slate-300 rounded focus:ring-[#0B4EA2] cursor-pointer" />
                     <label htmlFor="featured" className="text-sm font-bold text-gray-700 cursor-pointer select-none">Mark as Featured Machinery</label>
                   </div>
-
                   <div className="flex items-center gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
                     <input type="checkbox" id="isAvailableForExport" checked={isAvailableForExport} onChange={(e) => setIsAvailableForExport(e.target.checked)} className="w-4 h-4 text-[#0B4EA2] border-slate-300 rounded focus:ring-[#0B4EA2] cursor-pointer" />
                     <label htmlFor="isAvailableForExport" className="text-sm font-bold text-gray-700 cursor-pointer select-none">Available for International Export</label>
@@ -303,6 +316,10 @@ export default function AddMachineryModal({ categories, manufacturers, available
                   <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Description Japanese</label>
                     <textarea value={descriptionJa} onChange={(e) => setDescriptionJa(e.target.value)} rows={3} className="w-full border border-slate-200 bg-slate-50 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#0B4EA2] text-gray-800 resize-none" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Description Russian</label>
+                    <textarea value={descriptionRu} onChange={(e) => setDescriptionRu(e.target.value)} rows={3} className="w-full border border-slate-200 bg-slate-50 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#0B4EA2] text-gray-800 resize-none" />
                   </div>
                 </div>
 

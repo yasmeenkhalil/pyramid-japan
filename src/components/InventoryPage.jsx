@@ -80,7 +80,6 @@ export default function InventoryPage() {
             </select>
           </div>
         </div>
-
         {/* MACHINERY GRID */}
         {filteredMachinery.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-3xl border border-slate-200">
@@ -106,7 +105,9 @@ export default function InventoryPage() {
                 {/* Content Details */}
                 <div className="p-4 flex-1 flex flex-col justify-between">
                   <div>
-                    <span className="text-[9px] font-bold tracking-widest text-[#D9A441] uppercase">{t(`inventory.types.${machine.type.toLowerCase().replace(" ", "_")}`, machine.type)}</span>
+                    <span className="text-[9px] font-bold tracking-widest text-[#D9A441] uppercase">
+                      {t(`inventory.types.${machine.type.toLowerCase().replace(" ", "_")}`, machine.type)}
+                    </span>
                     <h3 className="mt-0.5 text-sm font-black text-[#081F3F] line-clamp-1 group-hover:text-[#D9A441] transition-colors">{machine.title}</h3>
 
                     {/* Specs */}

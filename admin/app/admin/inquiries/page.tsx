@@ -2,6 +2,9 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import InquiryActions from "@/app/components/InquiryActions";
 
+export const dynamic = "force-dynamic";
+
+
 interface InquiryData {
   id: string;
   name: string;

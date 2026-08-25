@@ -19,8 +19,10 @@ export default function AgricultureHero() {
           setTotalAgriCount(machines.length);
 
           const tractors = machines.filter(item => {
-            const catName = item.category?.nameEn || item.category || "";
-            return catName.toLowerCase().includes("tractor");
+            const catNameEn = item.category?.nameEn || "";
+            const catNameRaw = typeof item.category === "string" ? item.category : (item.category?.name || "");
+            
+            return catNameEn.toLowerCase().includes("tractor") || catNameRaw.toLowerCase().includes("tractor");
           });
           
           setTractorCount(tractors.length);
@@ -34,7 +36,6 @@ export default function AgricultureHero() {
 
     fetchAgriData();
   }, []);
-
   return (
     <section className="relative overflow-hidden bg-[#0b2416] px-4 pt-0">
       <div className="mx-auto mt-0 max-w-[1300px] bg-[#052919] rounded-[40px] relative overflow-hidden shadow-2xl min-h-[500px] md:min-h-[550px] flex items-center">

@@ -42,9 +42,15 @@ export default function CountriesSection() {
   }, []);
 
   const getCountryName = (country) => {
-    if (i18n.language === "ar" && country.nameAr) return country.nameAr;
-    if (i18n.language === "ja" && country.nameJa) return country.nameJa;
-    return country.nameEn || country.name;
+    if (!country) return "";
+    const currentLang = i18n.language;
+
+    if (country[`name_${currentLang}`]) return country[`name_${currentLang}`];
+
+    if (currentLang === "ar" && country.nameAr) return country.nameAr;
+    if (currentLang === "ja" && country.nameJa) return country.nameJa;
+    
+    return country.nameEn || country.name || "";
   };
   return (
     <section className="bg-[#081F3F] py-32">

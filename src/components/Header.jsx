@@ -122,49 +122,43 @@ export default function Header() {
     { name: t("nav.about"), path: "/about" },
     { name: t("nav.contact"), path: "/contact" },
   ];
-
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200">
-      <div className="max-w-[1400px] mx-auto px-6">
-        <div className="h-[78px] flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3 shrink-0">
-            <img src={logo} alt="Pyramid Japan CO,LTD" className="w-18 h-18 rounded-xl object-cover" />
-            <div>
-              <h1 className="text-lg font-bold tracking-wide text-[#111827] leading-none">
+      <div className="max-w-[1440px] mx-auto px-4 xl:px-6">
+        <div className="h-[78px] flex items-center justify-between gap-2">
+          
+          {/* اللوجو مع حماية المساحة عند الضغط الخفيف */}
+          <Link to="/" className="flex items-center gap-2 xl:gap-3 shrink-0 max-w-[240px] xl:max-w-none">
+            <img src={logo} alt="Pyramid Japan CO,LTD" className="w-12 h-12 xl:w-16 xl:h-16 rounded-xl object-cover shrink-0" />
+            <div className="min-w-0">
+              <h1 className="text-sm xl:text-base font-bold tracking-wide text-[#111827] leading-none truncate">
                 PYRAMID JAPAN CO.LTD
               </h1>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-slate-500 mt-1">
+              <p className="text-[9px] uppercase tracking-[0.1em] text-slate-500 mt-1 truncate">
                 {t("nav.sub_logo")}
               </p>
             </div>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-3">
+          {/* روابط الملاحة: تم تصغير الخط وتقليل الفراغات عند الحاجة لمنع تخريب التصميم بالروسي */}
+          <nav className="hidden lg:flex items-center justify-center gap-1.5 xl:gap-3 flex-1 px-2 text-xs xl:text-sm">
             {navLinks.map((item) => (
               <Link
                 key={item.name}
                 to={item.path}
-                className={`relative font-medium transition-all duration-300 ${location.pathname === item.path ? "text-[#E0B15A]" : "text-slate-700 hover:text-[#E0B15A]"}`}
+                className={`relative font-medium transition-all duration-300 whitespace-nowrap px-1 py-2 ${location.pathname === item.path ? "text-[#E0B15A]" : "text-slate-700 hover:text-[#E0B15A]"}`}
               >
                 {item.name}
                 {location.pathname === item.path && (
-                  <span className="absolute -bottom-[28px] left-0 w-full h-[3px] bg-[#E0B15A] rounded-full" />
+                  <span className="absolute bottom-0 left-0 w-full h-[2.5px] bg-[#E0B15A] rounded-full" />
                 )}
               </Link>
             ))}
 
-            {isAuthenticated && isAdmin && (
-              <Link
-                to="/admin/dashboard"
-                className="relative font-bold transition-all duration-300 flex items-center gap-1 text-slate-700 hover:text-rose-600"
-              >
-                <ShieldCheck className="w-4 h-4 " />
-                {t("nav.admin_panel")}
-              </Link>
-            )}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-3">
+          {/* عناصر البحث وتخويل الدخول الفردية */}
+          <div className="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -173,71 +167,75 @@ export default function Header() {
                   setIsOpen(false);
                 }
               }}
-              className="flex items-center w-[190px] h-11 rounded-xl border border-slate-200 bg-slate-50 pl-4 pr-1.5 transition-all focus-within:border-amber-500 focus-within:bg-white"
+              className="flex items-center w-[140px] xl:w-[190px] h-10 rounded-xl border border-slate-200 bg-slate-50 pl-3 pr-1 transition-all focus-within:border-amber-500 focus-within:bg-white"
             >
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t("nav.search_placeholder")}
-                className="flex-1 bg-transparent outline-none text-sm placeholder:text-slate-400 min-w-0"
+                className="flex-1 bg-transparent outline-none text-xs placeholder:text-slate-400 min-w-0"
               />
               <button 
                 type="submit"
-                className="h-8 w-8 rounded-lg bg-slate-100 text-slate-500 hover:text-white hover:bg-[#E0B15A] active:scale-95 transition-all duration-200 cursor-pointer shrink-0 flex items-center justify-center"
+                className="h-7 w-7 rounded-lg bg-slate-100 text-slate-500 hover:text-white hover:bg-[#E0B15A] active:scale-95 transition-all duration-200 cursor-pointer shrink-0 flex items-center justify-center"
                 title={t("nav.search_title")}
               >
-                <Search className="w-3.5 h-3.5" />
+                <Search className="w-3 h-3" />
               </button>
             </form>
 
             {loadingAuth ? (
-              <div className="w-24 h-11 bg-slate-100 animate-pulse rounded-xl" />
+              <div className="w-20 h-10 bg-slate-100 animate-pulse rounded-xl" />
             ) : !isAuthenticated ? (
               <button
                 onClick={() => { setShowAuthModal(true); setIsLoginView(true); }}
-                className="h-11 px-5 rounded-xl bg-[#E0B15A] text-white font-semibold hover:bg-[#C47B36] transition-all duration-300 shadow-sm flex items-center justify-center"
+                className="h-10 px-4 rounded-xl bg-[#E0B15A] text-white text-xs font-semibold hover:bg-[#C47B36] transition-all duration-300 shadow-sm flex items-center justify-center whitespace-nowrap"
               >
                 {t("nav.btn_auth")}
               </button>
             ) : (
-              <div className="flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-xl p-1.5 pr-4">
-                <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded-lg bg-[#081F3F] text-white flex items-center justify-center font-bold text-xs uppercase">
-                    {isAdmin ? <ShieldCheck className="w-4 h-4 text-[#E0B15A]" /> : <User className="w-4 h-4" />}
+              <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl p-1 pr-3 max-w-[180px]">
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <div className="h-7 w-7 rounded-lg bg-[#081F3F] text-white flex items-center justify-center font-bold text-xs uppercase shrink-0">
+                    {isAdmin ? <ShieldCheck className="w-3.5 h-3.5 text-[#E0B15A]" /> : <User className="w-3.5 h-3.5" />}
                   </div>
-                  <div className="flex flex-col text-left">
-                    <span className="text-xs font-bold text-slate-800 max-w-[100px] truncate">{session?.user?.name}</span>
-                    <span className="text-[9px] uppercase tracking-wider font-bold text-slate-400">{session?.user?.role || "user"}</span>
+                  <div className="flex flex-col text-left min-w-0">
+                    <span className="text-[11px] font-bold text-slate-800 truncate">{session?.user?.name}</span>
+                    <span className="text-[8px] uppercase tracking-wider font-bold text-slate-400 truncate">{session?.user?.role || "user"}</span>
                   </div>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-all"
+                  className="p-1 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-all shrink-0"
                   title={t("nav.sign_out")}
                 >
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="w-3.5 h-3.5" />
                 </button>
               </div>
             )}
           </div>
-          <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 text-slate-700">
+
+          {/* زر قائمة الهامبرغر للموبايل */}
+          <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-lg transition-colors shrink-0">
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
+
         </div>
       </div>
 
+      {/* قائمة الموبايل المنسدلة */}
       {isOpen && (
-        <div className="lg:hidden border-t border-slate-200 bg-white">
+        <div className="lg:hidden border-t border-slate-200 bg-white shadow-inner max-h-[calc(100vh-78px)] overflow-y-auto">
           <div className="p-5">
-            <nav className="flex flex-col gap-2">
+            <nav className="flex flex-col gap-1">
               {navLinks.map((item) => (
                 <Link
                   key={item.name}
                   to={item.path}
                   onClick={() => setIsOpen(false)}
-                  className={`px-4 py-3 rounded-xl transition-all ${location.pathname === item.path
-                      ? "bg-[#C47B36]/10 text-[#C47B36] font-semibold"
+                  className={`px-4 py-2.5 rounded-xl transition-all text-sm ${location.pathname === item.path
+                      ? "bg-[#C47B36]/10 text-[#C47B36] font-bold"
                       : "text-slate-700 hover:bg-slate-50 hover:text-[#C47B36]"
                     }`}
                 >
@@ -249,7 +247,7 @@ export default function Header() {
                 <Link
                   to="/admin/dashboard"
                   onClick={() => setIsOpen(false)}
-                  className="px-4 py-3 rounded-xl bg-rose-50 text-rose-600 font-bold transition-all flex items-center gap-2"
+                  className="px-4 py-2.5 rounded-xl bg-rose-50 text-rose-600 font-bold transition-all flex items-center gap-2 text-sm"
                 >
                   <ShieldCheck className="w-4 h-4" />
                   {t("nav.admin_panel")}
@@ -266,21 +264,21 @@ export default function Header() {
                   {t("nav.btn_auth")}
                 </button>
               ) : (
-                <div className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-xl p-3">
-                  <div className="flex items-center gap-3">
-                    <div className="h-9 w-9 rounded-lg bg-[#081F3F] text-white flex items-center justify-center font-bold text-sm">
+                <div className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-xl p-3 gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div className="h-9 w-9 rounded-lg bg-[#081F3F] text-white flex items-center justify-center font-bold text-sm shrink-0">
                       {session?.user?.name?.charAt(0)}
                     </div>
-                    <div className="flex flex-col text-left">
-                      <span className="text-sm font-bold text-slate-800">{session?.user?.name}</span>
-                      <span className="text-xs text-slate-400">{session?.user?.email}</span>
+                    <div className="flex flex-col text-left min-w-0">
+                      <span className="text-xs font-bold text-slate-800 truncate">{session?.user?.name}</span>
+                      <span className="text-[10px] text-slate-400 truncate">{session?.user?.email}</span>
                     </div>
                   </div>
                   <button
                     onClick={handleLogout}
-                    className="p-2 rounded-xl bg-rose-50 text-rose-600 font-bold transition-all flex items-center gap-2 text-sm"
+                    className="p-2 rounded-xl bg-rose-50 text-rose-600 font-bold transition-all flex items-center gap-1.5 text-xs shrink-0 whitespace-nowrap"
                   >
-                    <LogOut className="w-4 h-4" />
+                    <LogOut className="w-3.5 h-3.5" />
                     {t("nav.sign_out")}
                   </button>
                 </div>
@@ -290,6 +288,7 @@ export default function Header() {
         </div>
       )}
 
+      {/* المودال الشفاف لنماذج الدخول بورتال */}
       {showAuthModal && createPortal(
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div

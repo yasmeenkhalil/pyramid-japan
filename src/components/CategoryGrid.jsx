@@ -20,8 +20,6 @@ export default function CategoryGrid({ sector, sort }) {
         const res = await fetch(url);
         if (res.ok) {
           const data = await res.json();
-          console.log(data);
-          
           setCategories(data);
         }
       } catch (err) {
@@ -32,11 +30,16 @@ export default function CategoryGrid({ sector, sort }) {
   }, [sector, sort]);
 
   const getCategoryName = (cat) => {
-    if (i18n.language === "ar" && cat.nameAr) return cat.nameAr;
-    if (i18n.language === "ja" && cat.nameJa) return cat.nameJa;
-    return cat.nameEn || cat.name;
-  };
+    if (!cat) return "";
+    const currentLang = i18n.language;
 
+    if (cat[`name_${currentLang}`]) return cat[`name_${currentLang}`];
+
+    if (currentLang === "ar" && cat.nameAr) return cat.nameAr;
+    if (currentLang === "ja" && cat.nameJa) return cat.nameJa;
+    
+    return cat.nameEn || cat.name || "";
+  };
   return (
     <section className="w-full">
       <div className="mb-8">
@@ -65,7 +68,7 @@ export default function CategoryGrid({ sector, sort }) {
             </div>
 
             <div className="p-5 text-center">
-              <h3 className="text-[#111827] font-bold uppercase tracking-wide text-sm lg:text-base">
+              <h3 className="text-[#111827] font-bold uppercase tracking-wide text-sm lg:text-base line-clamp-2">
                 {getCategoryName(cat)}
               </h3>
               <p className="mt-2 text-xs text-slate-500">

@@ -5,11 +5,32 @@ export async function PUT(request, { params }) {
   try {
     const resolvedParams = await params;
     const id = resolvedParams.id;
-    const { nameAr, nameEn, nameJa, slug } = await request.json();
+    // 1. تم إضافة nameRu لاستقبل حقل الاسم بالروسية من الطلب القادم للتحديث
+    const { nameAr, nameEn, nameJa, nameRu, slug } = await request.json();
 
-    if (!nameAr || !nameEn || !nameJa || !slug) {
+    // 2. تم إضافة حقل nameRu لشروط الحقول المطلوبة إجبارياً للتحديث
+    if (!nameAr || !nameEn || !nameJa || !nameRu || !slug) {
       return NextResponse.json(
-        { message: "All fields are required" },
+        { message: "All fields including Russian name are required" },
+        { status: 400 }
+      );
+    }
+
+    // تنظيف المسافات للاسم الروسي
+    const nameRuStr = nameRu.trim();
+
+    // 3. التحقق من أن حقل الروسية لا يحتوي على مسافات فقط
+    if (!nameRuStr) {
+      return NextResponse.json(
+        { message: "Russian name cannot contain only spaces" },
+        { status: 400 }
+      );
+    }
+
+    // 4. فحص الأحرف السيريلية (الروسية) بنطاق اليونيكود الصريح والآمن لمنع مشاكل الـ TS Compiler
+    if (!/^[\u0400-\u04FF0-9\s\-_,.:()]+$/.test(nameRuStr)) {
+      return NextResponse.json(
+        { message: "Russian name must contain Russian (Cyrillic) characters only" },
         { status: 400 }
       );
     }
@@ -28,13 +49,21 @@ export async function PUT(request, { params }) {
       );
     }
 
+    // 5. تحديث الحقل الجديد في قاعدة البيانات عبر Prisma
     const updatedSpec = await prisma.specification.update({
       where: { id },
-      data: { nameAr, nameEn, nameJa, slug },
+      data: { 
+        nameAr, 
+        nameEn, 
+        nameJa, 
+        nameRu: nameRuStr, // تمرير القيمة الروسية المحدثة للـ DB
+        slug 
+      },
     });
 
     return NextResponse.json(updatedSpec, { status: 200 });
   } catch (error) {
+    console.error("Update Specification Error:", error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }
@@ -56,6 +85,7 @@ export async function DELETE(request, { params }) {
       { status: 200 }
     );
   } catch (error) {
+    console.error("Delete Specification Error:", error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

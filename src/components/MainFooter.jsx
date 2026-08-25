@@ -114,7 +114,7 @@ export default function MainFooter() {
               </div>
               <div className="flex gap-3">
                 <Phone className="w-4 h-4 text-[#C47B36] shrink-0" />
-                <a href="tel:+81568887980" className="hover:text-[#C47B36]">
+                <a href="tel:080-4346-6222 / 080-3000-3879" className="hover:text-[#C47B36]">
                   {t('footer.contact.phone_val')}
                 </a>
               </div>

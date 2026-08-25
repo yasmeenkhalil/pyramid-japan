@@ -5,6 +5,9 @@ import EditableStatsBox from "@/app/components/EditableStatsBox"; // استير�
 import { prisma } from "@/lib/prisma";
 import { Tractor, FolderKanban, Mail, Users } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
+
 async function getDashboardStats() {
   const [machineryCount, inquiryCount, pendingInquiries, categoryCount, userCount] =
     await Promise.all([
@@ -44,9 +47,9 @@ async function getDashboardStats() {
 
   // تحويل البيانات لكائن مرتب، وفي حال لم تكن منشأة مسبقاً نضع قيم افتراضية
   const homeStats = {
-    countries_count: dbSettings.find(s => s.key === "countries_count")?.value || "50",
-    experience_years: dbSettings.find(s => s.key === "experience_years")?.value || "20",
-    machines_count: dbSettings.find(s => s.key === "machines_count")?.value || "1000",
+    countries_count: dbSettings.find((s:any) => s.key === "countries_count")?.value || "50",
+    experience_years: dbSettings.find((s:any) => s.key === "experience_years")?.value || "20",
+    machines_count: dbSettings.find((s:any) => s.key === "machines_count")?.value || "1000",
   };
 
   return {

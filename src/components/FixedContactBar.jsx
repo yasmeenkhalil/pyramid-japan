@@ -29,10 +29,10 @@ export default function FixedContactBar() {
         <div className="flex items-center gap-4">
 
           <a
-            href="tel:+81568887980"
+            href="tel:080-4346-6222 / 080-3000-3879"
             className="text-white text-sm font-medium hover:text-[#C47B36] transition"
           >
-            +81-568-88-7980
+            080-4346-6222 / 080-3000-3879
           </a>
 
           <Link

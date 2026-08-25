@@ -206,6 +206,7 @@
     "opt_parts": "Spare Parts Support",
     "opt_maintenance": "Technical Maintenance",
     "btn_sending": "Sending Message...",
+    "btn_send": "Send Message",
     "btn_submit": "Send Secure Message"
   },
   "countries_section": {
@@ -507,8 +508,8 @@
       "export": "Worldwide Export"
     },
     "contact": {
-      "address": "Kasugai City, Aichi 480-0305, Japan",
-      "phone_val": "+81-568-88-7980"
+      "address": "1-1-2 Ekiminamicho, Oyama-Shi, Tochigi-Ken, 323-0822",
+      "phone_val": "080-4346-6222 / 080-3000-3879"
     }
   },
   "maintenance_cta": {
@@ -547,7 +548,8 @@
       "a": "For in-stock components, parts are packed and dispatched via premium air couriers (DHL/FedEx) within 48 hours of payment verification, reaching most global main ports and hubs within 5 to 7 business days."
     }
   }
-},"maintenance_hero": {
+},
+"maintenance_hero": {
   "badge": "Certified Technical Support",
   "title_start": "Expert Maintenance",
   "title_highlight": "& Genuine Parts",
@@ -569,7 +571,8 @@
     "card2_title": "Hydraulic Rebuilding",
     "card2_desc": "Main pump pressure tests and resealing"
   }
-},"maker_section": {
+},
+"maker_section": {
   "badge": "Trusted Brands",
   "title": "Leading Japanese Manufacturers",
   "desc": "Browse equipment from Japan's most trusted construction, agricultural and industrial machinery brands.",
@@ -739,6 +742,20 @@
       "recommended_title": "Pick Up Recommended Used Construction Machine!",
       "new_arrivals_title": "New Arrival Used Construction Machine"
     }
+  },
+  "card_info": {
+    "company_name": "PYRAMID JAPAN CO., LTD.",
+    "license_label": "License No.",
+    "business_label": "Business Line",
+    "business_val": "Exporter and importer of used cars and parts",
+    "manager_label": "Name",
+    "manager_val": "ELKHATIB ABDELHADI",
+    "office_label": "Office Address",
+    "office_val": "1-1-2 Ekiminamicho, Oyama-Shi, Tochigi-Ken, 323-0822",
+    "yard_label": "Yard Address",
+    "yard_val": "369-3 namikinishi, Hokunanmoro, Yuki-Shi, Ibaraki-Ken, 307-0036",
+    "tel_fax_label": "TEL / FAX",
+    "phones_label": "Cell Phones"
   }
 
 

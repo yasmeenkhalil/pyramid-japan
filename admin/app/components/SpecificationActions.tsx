@@ -9,15 +9,17 @@ interface SpecificationActionsProps {
   nameAr: string;
   nameEn: string;
   nameJa: string;
+  nameRu: string;
   slug: string;
 }
 
-export default function SpecificationActions({ id, nameAr, nameEn, nameJa, slug }: SpecificationActionsProps) {
+export default function SpecificationActions({ id, nameAr, nameEn, nameJa, nameRu, slug }: SpecificationActionsProps) {
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false);
   const [editNameAr, setEditNameAr] = useState<string>(nameAr);
   const [editNameEn, setEditNameEn] = useState<string>(nameEn);
   const [editNameJa, setEditNameJa] = useState<string>(nameJa);
+  const [editNameRu, setEditNameRu] = useState<string>(nameRu);
   const [editSlug, setEditSlug] = useState<string>(slug);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -40,7 +42,7 @@ export default function SpecificationActions({ id, nameAr, nameEn, nameJa, slug 
       const res = await fetch(`/api/specifications/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nameAr: editNameAr, nameEn: editNameEn, nameJa: editNameJa, slug: editSlug }),
+        body: JSON.stringify({ nameAr: editNameAr, nameEn: editNameEn, nameJa: editNameJa, nameRu: editNameRu, slug: editSlug }),
       });
       if (res.ok) {
         setIsEditOpen(false);
@@ -72,7 +74,6 @@ export default function SpecificationActions({ id, nameAr, nameEn, nameJa, slug 
       setLoading(false);
     }
   };
-
   return (
     <div className="flex items-center gap-2">
       <button
@@ -138,6 +139,19 @@ export default function SpecificationActions({ id, nameAr, nameEn, nameJa, slug 
                   required
                   value={editNameJa}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setEditNameJa(e.target.value)}
+                  className="w-full border border-slate-200 px-4 py-3 rounded-xl text-sm bg-slate-50 text-gray-800 focus:border-[#0B4EA2] focus:bg-white focus:outline-none transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                  Name Russian
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editNameRu}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setEditNameRu(e.target.value)}
                   className="w-full border border-slate-200 px-4 py-3 rounded-xl text-sm bg-slate-50 text-gray-800 focus:border-[#0B4EA2] focus:bg-white focus:outline-none transition-all"
                 />
               </div>

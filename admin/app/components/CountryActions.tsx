@@ -9,15 +9,17 @@ interface CountryActionsProps {
   nameAr: string;
   nameEn: string;
   nameJa: string;
+  nameRu?: string;
   slug: string;
 }
 
-export default function CountryActions({ id, nameAr, nameEn, nameJa, slug }: CountryActionsProps) {
+export default function CountryActions({ id, nameAr, nameEn, nameJa, nameRu, slug }: CountryActionsProps) {
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false);
   const [editNameAr, setEditNameAr] = useState<string>(nameAr);
   const [editNameEn, setEditNameEn] = useState<string>(nameEn);
   const [editNameJa, setEditNameJa] = useState<string>(nameJa);
+  const [editNameRu, setEditNameRu] = useState<string>(nameRu || "");
   const [editSlug, setEditSlug] = useState<string>(slug);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -40,7 +42,7 @@ export default function CountryActions({ id, nameAr, nameEn, nameJa, slug }: Cou
       const res = await fetch(`/api/export-countries/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nameAr: editNameAr, nameEn: editNameEn, nameJa: editNameJa, slug: editSlug }),
+        body: JSON.stringify({ nameAr: editNameAr, nameEn: editNameEn, nameJa: editNameJa, nameRu: editNameRu, slug: editSlug }),
       });
       if (res.ok) {
         setIsEditOpen(false);
@@ -72,7 +74,6 @@ export default function CountryActions({ id, nameAr, nameEn, nameJa, slug }: Cou
       setLoading(false);
     }
   };
-
   return (
     <div className="flex items-center gap-2">
       <button
@@ -144,6 +145,19 @@ export default function CountryActions({ id, nameAr, nameEn, nameJa, slug }: Cou
 
               <div>
                 <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                  Name Russian
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editNameRu}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setEditNameRu(e.target.value)}
+                  className="w-full border border-slate-200 px-4 py-3 rounded-xl text-sm bg-slate-50 text-gray-800 focus:border-[#0B4EA2] focus:bg-white focus:outline-none transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
                   Slug
                 </label>
                 <input
@@ -178,7 +192,7 @@ export default function CountryActions({ id, nameAr, nameEn, nameJa, slug }: Cou
 
       {isDeleteOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div className="w-full max-w-sm rounded-3xl bg-white p-6 shadow-xl border border-slate-100 text-center">
+          <div className="w-full max-sm rounded-3xl bg-white p-6 shadow-xl border border-slate-100 text-center">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-50 text-red-600 mb-4">
               <AlertTriangle size={28} />
             </div>

@@ -1,8 +1,12 @@
+import React from "react";
 import { prisma } from "@/lib/prisma";
 import AddMachineryModal from "@/app/components/AddMachineryModal";
 import MachineryActions from "@/app/components/MachineryActions";
 import ViewSpecsModal from "@/app/components/ViewSpecsModal";
-import TableImageGallery from "@/app/components/TableImageGallery"; // استيراد المكون الجديد هنا
+import TableImageGallery from "@/app/components/TableImageGallery";
+
+export const dynamic = "force-dynamic";
+
 
 export default async function MachineryPage() {
   const [machineries, categories, manufacturers, availableSpecs, availableUnits] = await Promise.all([
@@ -26,6 +30,7 @@ export default async function MachineryPage() {
         id: true,
         nameEn: true,
         nameAr: true,
+        nameRu: true,
       },
     }),
     prisma.manufacturer.findMany({
@@ -39,6 +44,7 @@ export default async function MachineryPage() {
         id: true,
         nameEn: true,
         nameAr: true,
+        nameRu: true,
       },
     }),
     prisma.unit.findMany({
@@ -53,6 +59,7 @@ export default async function MachineryPage() {
     id: cat.id,
     nameEn: cat.nameEn,
     nameAr: cat.nameAr,
+    nameRu: cat.nameRu || "",
   }));
 
   const formattedManufacturers = manufacturers.map(man => ({
@@ -95,7 +102,6 @@ export default async function MachineryPage() {
                   key={item.id}
                   className="hover:bg-slate-50/50 transition-colors"
                 >
-                  {/* استدعاء المكون المنفصل هنا وسيعمل بكفاءة بنسبة 100% */}
                   <td className="p-4 align-middle">
                     <TableImageGallery images={item.images} title={item.titleEn} />
                   </td>

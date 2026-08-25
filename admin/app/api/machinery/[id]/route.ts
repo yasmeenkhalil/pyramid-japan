@@ -25,6 +25,7 @@ interface MachineryUpdateRequestBody {
   titleEn?: string;
   titleAr?: string;
   titleJa?: string;
+  titleRu?: string; // 1. تم إضافة حقل العنوان بالروسية للـ Interface الخاص بالتحديث
   stockNo?: string;
   year?: string | number;
   hour?: string | number;
@@ -37,6 +38,7 @@ interface MachineryUpdateRequestBody {
   descriptionEn?: string;
   descriptionAr?: string;
   descriptionJa?: string;
+  descriptionRu?: string; // 2. تم إضافة حقل الوصف بالروسية للـ Interface الخاص بالتحديث
   featured?: boolean;
   categoryId?: string;
   manufacturerId?: string;
@@ -62,7 +64,6 @@ export async function GET(req: Request, { params }: RouteParams) {
         },
         category: true,
         manufacturer: true,
-       
       },
     });
 
@@ -89,9 +90,10 @@ export async function PUT(req: Request, { params }: RouteParams) {
     const id = resolvedParams.id;
     const body = (await req.json()) as MachineryUpdateRequestBody;
 
-    if (!body.titleEn || !body.titleAr || !body.titleJa || !body.categoryId || !body.manufacturerId || !body.location || !body.sector) {
+    // 3. تم إضافة حقل titleRu لشروط الحقول المطلوبة إجبارياً للتحقق أثناء التعديل
+    if (!body.titleEn || !body.titleAr || !body.titleJa || !body.titleRu || !body.categoryId || !body.manufacturerId || !body.location || !body.sector) {
       return Response.json(
-        { error: "Core fields including titles, category, manufacturer, location, and sector are required." },
+        { error: "Core fields including titles (English, Arabic, Japanese, Russian), category, manufacturer, location, and sector are required." },
         { status: 400 }
       );
     }
@@ -99,12 +101,14 @@ export async function PUT(req: Request, { params }: RouteParams) {
     const titleEnStr = body.titleEn.trim();
     const titleArStr = body.titleAr.trim();
     const titleJaStr = body.titleJa.trim();
+    const titleRuStr = body.titleRu.trim(); // تنظيف المسافات للعنوان الروسي المحدث
     const categoryIdStr = body.categoryId.trim();
     const manufacturerIdStr = body.manufacturerId.trim();
     const locationStr = body.location.trim();
     const sectorStr = body.sector.trim(); 
 
-    if (!titleEnStr || !titleArStr || !titleJaStr || !categoryIdStr || !manufacturerIdStr || !locationStr || !sectorStr) {
+    // 4. التحقق من أن حقل الروسية لا يحتوي على مسافات فقط
+    if (!titleEnStr || !titleArStr || !titleJaStr || !titleRuStr || !categoryIdStr || !manufacturerIdStr || !locationStr || !sectorStr) {
       return Response.json(
         { error: "Required fields cannot contain only spaces." },
         { status: 400 }
@@ -121,6 +125,14 @@ export async function PUT(req: Request, { params }: RouteParams) {
     if (!/^[\u0600-\u06FF0-9\s\-_,.:()]+$/.test(titleArStr)) {
       return Response.json(
         { error: "Arabic title must contain Arabic characters only." },
+        { status: 400 }
+      );
+    }
+
+    // 5. فحص الأحرف السيريلية (الروسية) للعنوان بنطاق اليونيكود الصريح والآمن لمنع مشاكل الـ TS Compiler
+    if (!/^[\u0400-\u04FF0-9\s\-_,.:()]+$/.test(titleRuStr)) {
+      return Response.json(
+        { error: "Russian title must contain Russian (Cyrillic) characters only." },
         { status: 400 }
       );
     }
@@ -161,14 +173,14 @@ export async function PUT(req: Request, { params }: RouteParams) {
         where: { machineryId: id },
       });
 
-   
-
+      // 6. تحديث الحقول الجديدة (titleRu و descriptionRu) في قاعدة البيانات عبر الترانزاكشن للـ Prisma
       return await tx.machinery.update({
         where: { id },
         data: {
           titleEn: titleEnStr,
           titleAr: titleArStr,
           titleJa: titleJaStr,
+          titleRu: titleRuStr, // تمرير العنوان الروسي المحدث للـ DB
           slug: machinerySlug,
           stockNo: body.stockNo ? body.stockNo.trim() : null,
           year: body.year ? parseInt(body.year.toString()) : null,
@@ -182,6 +194,7 @@ export async function PUT(req: Request, { params }: RouteParams) {
           descriptionEn: body.descriptionEn ? body.descriptionEn.trim() : null,
           descriptionAr: body.descriptionAr ? body.descriptionAr.trim() : null,
           descriptionJa: body.descriptionJa ? body.descriptionJa.trim() : null,
+          descriptionRu: body.descriptionRu ? body.descriptionRu.trim() : null, // تمرير الوصف الروسي المحدث للـ DB
           featured: Boolean(body.featured),
           categoryId: categoryIdStr,
           manufacturerId: manufacturerIdStr,

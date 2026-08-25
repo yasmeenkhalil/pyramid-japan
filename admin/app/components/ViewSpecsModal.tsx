@@ -7,6 +7,7 @@ interface SpecRelation {
   specification: {
     nameEn: string;
     nameAr: string;
+    nameRu?: string;
   };
   value: string;
   unit: {
@@ -45,7 +46,6 @@ export default function ViewSpecsModal({ machineryTitle, specifications }: ViewS
                 <X size={20} />
               </button>
             </div>
-
             <div className="overflow-y-auto flex-1 pr-1 pb-2">
               {specifications.length === 0 ? (
                 <p className="text-center text-sm text-gray-400 py-8">No specifications added for this machinery.</p>
@@ -63,7 +63,7 @@ export default function ViewSpecsModal({ machineryTitle, specifications }: ViewS
                       {specifications.map((item, idx) => (
                         <tr key={idx} className="border-b last:border-0 hover:bg-slate-50/50 transition-colors">
                           <td className="p-3 font-medium text-gray-900">
-                            {item.specification.nameEn} ({item.specification.nameAr})
+                            {item.specification.nameEn} ({item.specification.nameAr}) {item.specification.nameRu ? `| ${item.specification.nameRu}` : ""}
                           </td>
                           <td className="p-3 text-gray-600 font-mono">{item.value}</td>
                           <td className="p-3 text-gray-600 font-medium">

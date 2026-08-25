@@ -47,7 +47,10 @@ export default function SidebarMachineFilters() {
                 if (s.specification && !uniqueSpecs.some(x => x.id === s.specificationId)) {
                   uniqueSpecs.push({
                     id: s.specificationId,
-                    nameEn: s.specification.nameEn // السيرفر يرسل الحقل الصحيح تلقائياً حسب طريقتك
+                    nameEn: s.specification.nameEn,
+                    nameAr: s.specification.nameAr,
+                    nameJa: s.specification.nameJa,
+                    nameRu: s.specification.nameRu
                   });
                 }
               });
@@ -83,6 +86,9 @@ export default function SidebarMachineFilters() {
     setSelectedMaker("All Makers");
     navigate("/machinery-all/all");
   };
+
+  const currentLang = i18n.language;
+
   return (
     <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-5">
       <div className="flex flex-col xl:flex-row xl:items-end gap-4">
@@ -134,7 +140,9 @@ export default function SidebarMachineFilters() {
           >
             <option value="All Categories">{t("machinery_filters.category_all")}</option>
             {categories.map((cat) => (
-              <option key={cat.id} value={cat.slug}>{cat.nameEn}</option>
+              <option key={cat.id} value={cat.slug}>
+                {currentLang === 'ar' ? cat.nameAr : currentLang === 'ja' ? cat.nameJa : currentLang === 'ru' ? cat.nameRu : cat.nameEn}
+              </option>
             ))}
           </select>
         </div>
@@ -145,7 +153,9 @@ export default function SidebarMachineFilters() {
             <select value={selectedSpecId} onChange={(e) => setSelectedSpecId(e.target.value)} className="w-full h-11 rounded-xl border border-slate-200 px-3 bg-white focus:ring-2 focus:ring-[#C47B36] focus:border-[#C47B36] outline-none text-xs font-medium text-gray-800">
               <option value="">{t("machinery_filters.spec_default")}</option>
               {specNames.map((s) => (
-                <option key={s.id} value={s.id}>{s.nameEn}</option>
+                <option key={s.id} value={s.id}>
+                  {currentLang === 'ar' ? s.nameAr : currentLang === 'ja' ? s.nameJa : currentLang === 'ru' ? s.nameRu : s.nameEn}
+                </option>
               ))}
             </select>
           </div>
@@ -159,7 +169,13 @@ export default function SidebarMachineFilters() {
           </div>
           <div className="flex-1">
             <label className="block text-xs font-medium text-slate-600 mb-2">{t("machinery_filters.value_label")}</label>
-            <input type="text" placeholder={t("machinery_filters.value_placeholder")} value={specVal} onChange={(e) => setSpecVal(e.target.value)} className="w-full h-11 rounded-xl border border-slate-200 px-4 bg-white focus:ring-2 focus:ring-[#C47B36] focus:border-[#C47B36] outline-none text-xs font-medium text-gray-800 placeholder-slate-400" />
+            <input 
+              type="text" 
+              placeholder={t("machinery_filters.value_placeholder")} 
+              value={specVal} 
+              onChange={(e) => setSpecVal(e.target.value)} 
+              className="w-full h-11 rounded-xl border border-slate-200 px-4 bg-white focus:ring-2 focus:ring-[#C47B36] focus:border-[#C47B36] outline-none text-xs font-medium text-gray-800 placeholder-slate-400" 
+            />
           </div>
         </div>
 

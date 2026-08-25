@@ -50,6 +50,7 @@ export async function GET(req: Request) {
           { titleEn: { contains: search } },
           { titleAr: { contains: search } },
           { titleJa: { contains: search } },
+          { titleRu: { contains: search } },
           { stockNo: { contains: search } }
         ]
       });

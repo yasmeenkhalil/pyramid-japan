@@ -29,9 +29,18 @@ export default function AllMachineryPage() {
   const transformData = (items) => {
     if (!items || !Array.isArray(items)) return [];
     return items.map((item) => {
-      let finalTitle = item.titleEn || item.title || "";
-      if (i18n.language === "ar" && item.titleAr) finalTitle = item.titleAr;
-      if (i18n.language === "ja" && item.titleJa) finalTitle = item.titleJa;
+      const currentLang = i18n.language;
+      let finalTitle = "";
+
+      if (item[`title_${currentLang}`]) {
+        finalTitle = item[`title_${currentLang}`];
+      } else if (currentLang === "ar" && item.titleAr) {
+        finalTitle = item.titleAr;
+      } else if (currentLang === "ja" && item.titleJa) {
+        finalTitle = item.titleJa;
+      } else {
+        finalTitle = item.titleEn || item.title || "";
+      }
 
       return {
         id: item.id,
@@ -49,6 +58,7 @@ export default function AllMachineryPage() {
       };
     });
   };
+
   const handleSearchSubmit = (value) => {
     const currentParams = new URLSearchParams(searchParams);
     if (value.trim()) {

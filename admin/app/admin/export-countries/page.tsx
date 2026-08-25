@@ -2,12 +2,15 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import AddCountryModal from "@/app/components/AddCountryModal";
 import CountryActions from "@/app/components/CountryActions";
+export const dynamic = "force-dynamic";
+
 
 interface CountryData {
   id: string;
   nameAr: string;
   nameEn: string;
   nameJa: string;
+  nameRu?: string | null;
   slug: string;
 }
 
@@ -30,6 +33,7 @@ export default async function ExportCountriesPage() {
               <th className="p-4 text-left">Name Arabic</th>
               <th className="p-4 text-left">Name English</th>
               <th className="p-4 text-left">Name Japanese</th>
+              <th className="p-4 text-left">Name Russian</th>
               <th className="p-4 text-left">Slug</th>
               <th className="p-4 text-left">Actions</th>
             </tr>
@@ -40,6 +44,7 @@ export default async function ExportCountriesPage() {
                 <td className="p-4 align-middle font-medium text-gray-900">{country.nameAr}</td>
                 <td className="p-4 align-middle text-gray-600">{country.nameEn}</td>
                 <td className="p-4 align-middle text-gray-600">{country.nameJa}</td>
+                <td className="p-4 align-middle text-gray-600">{country.nameRu || <span className="text-gray-400">-</span>}</td>
                 <td className="p-4 align-middle text-gray-500 font-mono text-sm">{country.slug}</td>
                 <td className="p-4 align-middle">
                   <div className="flex items-center min-h-[64px]">
@@ -48,6 +53,7 @@ export default async function ExportCountriesPage() {
                       nameAr={country.nameAr}
                       nameEn={country.nameEn}
                       nameJa={country.nameJa}
+                      nameRu={country.nameRu || ""}
                       slug={country.slug}
                     />
                   </div>

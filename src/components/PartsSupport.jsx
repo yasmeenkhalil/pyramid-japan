@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Settings, ShieldCheck, Box, ArrowRight, Lock } from "lucide-react";
+import { Settings, ShieldCheck, Box, ArrowRight, ArrowLeft, Lock } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export default function PartsSupport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.dir() === "rtl";
   
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -81,7 +82,7 @@ export default function PartsSupport() {
         setShowToast(true);
         
         const adminPhoneNumber = "00970594302532"; 
-        const whatsappText = `*New Parts Inquiry - Pyramid Japan*\n\n` +
+        const whatsappText = `*New Parts Inquiry - Global Trading*\n\n` +
                              `*Client Name:* ${name || "N/A"}\n` +
                              `*Phone:* ${phone || "N/A"}\n` +
                              `*Part Number/OEM:* ${partNo}\n` +
@@ -106,7 +107,7 @@ export default function PartsSupport() {
   return (
     <section id="parts-section" className="bg-white py-20 px-6 md:px-12 border-t border-slate-100 scroll-mt-10 relative">
       {showToast && (
-        <div className="fixed top-5 right-5 z-50 flex items-center gap-3 bg-emerald-500 text-white px-5 py-3.5 rounded-xl shadow-xl transition-all duration-300 font-medium text-sm border border-emerald-400/20">
+        <div className={`fixed top-5 z-50 flex items-center gap-3 bg-emerald-500 text-white px-5 py-3.5 rounded-xl shadow-xl transition-all duration-300 font-medium text-sm border border-emerald-400/20 ${isRtl ? 'left-5' : 'right-5'}`}>
           <span>✓</span>
           <span>{t('parts.toast_success')}</span>
         </div>
@@ -224,7 +225,7 @@ export default function PartsSupport() {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-[#081F3F] uppercase tracking-wider mb-1.5">{t('parts.label_details')}</label>
+                  <label className="block text-[11px] font-bold text-[#081F3F] uppercase tracking-wider mb-1.5">{t('parts.label_details')}??</label>
                   <textarea 
                     rows="3"
                     disabled={loading || !isAuthenticated}
@@ -241,7 +242,11 @@ export default function PartsSupport() {
                   className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#081F3F] py-3.5 text-xs font-bold text-white transition hover:bg-[#D9A441] hover:text-[#081F3F] shadow-md shadow-[#081F3F]/5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                   {loading ? t('parts.btn_loading') : t('parts.btn_submit')}
-                  <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+                  {isRtl ? (
+                    <ArrowLeft className="h-4 w-4" />
+                  ) : (
+                    <ArrowRight className="h-4 w-4" />
+                  )}
                 </button>
               </form>
             </div>

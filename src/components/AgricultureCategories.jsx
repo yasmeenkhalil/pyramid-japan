@@ -29,17 +29,28 @@ export default function AgricultureCategories() {
   }, []);
 
   const getCategoryName = (cat) => {
-    if (i18n.language === "ar" && cat.nameAr) return cat.nameAr;
-    if (i18n.language === "ja" && cat.nameJa) return cat.nameJa;
-    return cat.nameEn || cat.name;
+    if (!cat) return "";
+    const currentLang = i18n.language;
+
+    if (cat[`name_${currentLang}`]) return cat[`name_${currentLang}`];
+
+    if (currentLang === "ar" && cat.nameAr) return cat.nameAr;
+    if (currentLang === "ja" && cat.nameJa) return cat.nameJa;
+    
+    return cat.nameEn || cat.name || "";
   };
 
   const getCategoryDesc = (cat) => {
-    if (i18n.language === "ar" && cat.descriptionAr) return cat.descriptionAr;
-    if (i18n.language === "ja" && cat.descriptionJa) return cat.descriptionJa;
-    return cat.description;
-  };
+    if (!cat) return "";
+    const currentLang = i18n.language;
 
+    if (cat[`description_${currentLang}`]) return cat[`description_${currentLang}`];
+
+    if (currentLang === "ar" && cat.descriptionAr) return cat.descriptionAr;
+    if (currentLang === "ja" && cat.descriptionJa) return cat.descriptionJa;
+    
+    return cat.descriptionEn || cat.description || "";
+  };
   return (
     <section className="bg-[#F8F9FB] py-20 px-4">
       <div className="mx-auto max-w-[1350px]">
@@ -84,7 +95,7 @@ export default function AgricultureCategories() {
                 className="group relative flex flex-col justify-between rounded-3xl border border-slate-200 bg-white p-7 shadow-md transition-all duration-300 hover:-translate-y-1.5 hover:border-[#D9A441] hover:shadow-xl cursor-pointer"
               >
                 <div>
-                  <div className="mb-6 h-20 w-20 overflow-hidden rounded-2xl bg-slate-100 border border-slate-200 shadow-inner group-hover:border-[#D9A441] transition-colors">
+                  <div className="mb-6 h-20 w-20 overflow-hidden rounded-2xl bg-slate-100 border border-slate-200 shadow-inner group-hover:border-[#D9A441] transition-colors shrink-0">
                     {cat.imageUrl ? (
                       <img 
                         src={cat.imageUrl} 
@@ -98,7 +109,7 @@ export default function AgricultureCategories() {
                     )}
                   </div>
 
-                  <h3 className="text-xl font-black text-[#081F3F] group-hover:text-[#D9A441] transition-colors">
+                  <h3 className="text-xl font-black text-[#081F3F] group-hover:text-[#D9A441] transition-colors line-clamp-2">
                     {getCategoryName(cat)}
                   </h3>
                   
@@ -107,7 +118,7 @@ export default function AgricultureCategories() {
                   </span>
 
                   {getCategoryDesc(cat) && (
-                    <p className="mt-4 text-xs leading-relaxed text-slate-500">
+                    <p className="mt-4 text-xs leading-relaxed text-slate-500 line-clamp-3">
                       {getCategoryDesc(cat)}
                     </p>
                   )}

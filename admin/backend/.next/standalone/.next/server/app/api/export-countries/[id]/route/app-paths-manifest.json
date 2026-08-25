@@ -1,0 +1,3 @@
+{
+  "/api/export-countries/[id]/route": "app/api/export-countries/[id]/route.js"
+}

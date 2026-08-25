@@ -7,6 +7,7 @@ interface Category {
   nameEn: string;
   nameAr: string;
   nameJa: string;
+  nameRu?: string;
   imageUrl: string;
   sector: string;
 }
@@ -22,6 +23,7 @@ export default function CategoryModal({ category, onSuccess }: CategoryModalProp
   const [nameEn, setNameEn] = useState(category?.nameEn || "");
   const [nameAr, setNameAr] = useState(category?.nameAr || "");
   const [nameJa, setNameJa] = useState(category?.nameJa || "");
+  const [nameRu, setNameRu] = useState(category?.nameRu || "");
   const [sector, setSector] = useState(category?.sector || "");
 
   const [file, setFile] = useState<File | null>(null);
@@ -49,6 +51,12 @@ export default function CategoryModal({ category, onSuccess }: CategoryModalProp
 
     if (!nameJa.trim()) {
       newErrors.nameJa = "Japanese name is required.";
+    }
+
+    if (!nameRu.trim()) {
+      newErrors.nameRu = "Russian name is required.";
+    } else if (!/^[\u0400-\u04FF0-9\s\-_,.:()]+$/.test(nameRu)) {
+      newErrors.nameRu = "Russian name must contain Russian (Cyrillic) characters only.";
     }
 
     if (!sector) {
@@ -98,6 +106,7 @@ export default function CategoryModal({ category, onSuccess }: CategoryModalProp
           nameEn: nameEn.trim(),
           nameAr: nameAr.trim(),
           nameJa: nameJa.trim(),
+          nameRu: nameRu.trim(),
           sector,
           imageUrl: finalImageUrl,
         }),
@@ -118,6 +127,7 @@ export default function CategoryModal({ category, onSuccess }: CategoryModalProp
       setLoading(false);
     }
   };
+
   const handleClose = () => {
     setOpen(false);
     setErrors({});
@@ -125,12 +135,12 @@ export default function CategoryModal({ category, onSuccess }: CategoryModalProp
       setNameEn("");
       setNameAr("");
       setNameJa("");
+      setNameRu("");
       setSector("");
       setFile(null);
       setPreview("");
     }
   };
-
   return (
     <>
       <button
@@ -208,6 +218,25 @@ export default function CategoryModal({ category, onSuccess }: CategoryModalProp
                       }`}
                     />
                     {errors.nameJa && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.nameJa}</p>}
+                  </div>
+
+                  <div>
+                    <label className={`block text-xs font-bold mb-1 ${errors.nameRu ? "text-red-600" : "text-gray-500"}`}>
+                      Russian Name *
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Введите русское название"
+                      value={nameRu}
+                      onChange={(e) => {
+                        setNameRu(e.target.value);
+                        if (errors.nameRu) setErrors((prev) => ({ ...prev, nameRu: "" }));
+                      }}
+                      className={`w-full rounded-xl border p-3 focus:outline-none text-gray-900 transition ${
+                        errors.nameRu ? "border-red-500 bg-red-50 focus:border-red-600" : "border-gray-200 bg-white focus:border-[#0B4EA2]"
+                      }`}
+                    />
+                    {errors.nameRu && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.nameRu}</p>}
                   </div>
 
                   <div>

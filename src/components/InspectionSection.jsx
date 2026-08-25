@@ -41,7 +41,6 @@ export default function InspectionSection() {
             </div>
 
           </div>
-
           {/* SECTION: RIGHT SIDE (TEXT CONTENT & GRID) */}
           <div className="lg:col-span-6 lg:pl-6">
             

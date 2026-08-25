@@ -9,9 +9,10 @@ export default function ServiceCapabilities() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // فحص لغة الموقع الحالية لعرض الحقول المناسبة من قاعدة البيانات
+  // فحص لغة الموقع الحالية لعرض الحقول المناسبة من قاعدة البيانات (تمت إضافة الروسية)
   const isArabic = i18n.language === "ar";
   const isJapanese = i18n.language === "ja";
+  const isRussian = i18n.language === "ru";
 
   useEffect(() => {
     const fetchMaintenanceCategories = async () => {
@@ -31,6 +32,22 @@ export default function ServiceCapabilities() {
 
     fetchMaintenanceCategories();
   }, []);
+
+  // دالة مساعدة لتحديد الاسم المناسب حسب اللغات الأربع
+  const getCategoryName = (cat) => {
+    if (isArabic && cat.nameAr) return cat.nameAr;
+    if (isJapanese && cat.nameJa) return cat.nameJa;
+    if (isRussian && cat.nameRu) return cat.nameRu;
+    return cat.nameEn || "";
+  };
+
+  // دالة مساعدة لتحديد الوصف المناسب حسب اللغات الأربع
+  const getCategoryDesc = (cat) => {
+    if (isArabic && cat.descriptionAr) return cat.descriptionAr;
+    if (isJapanese && cat.descriptionJa) return cat.descriptionJa;
+    if (isRussian && cat.descriptionRu) return cat.descriptionRu;
+    return cat.descriptionEn || "";
+  };
 
   return (
     <section className="bg-[#F8F9FB] py-20 px-4">
@@ -79,7 +96,7 @@ export default function ServiceCapabilities() {
                     {cat.imageUrl ? (
                       <img 
                         src={cat.imageUrl} 
-                        alt={isArabic ? (cat.nameAr || cat.nameEn) : isJapanese ? (cat.nameJa || cat.nameEn) : cat.nameEn} 
+                        alt={getCategoryName(cat)} 
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                     ) : (
@@ -90,21 +107,19 @@ export default function ServiceCapabilities() {
                   </div>
 
                   <h3 className="text-xl font-black text-[#081F3F] group-hover:text-[#D9A441] transition-colors">
-                    {/* قراءة حقل الاسم المناسب للغة الحالية بناءً على السكيما الخاصة بك */}
-                    {isArabic ? (cat.nameAr || cat.nameEn) : isJapanese ? (cat.nameJa || cat.nameEn) : cat.nameEn}
+                    {getCategoryName(cat)}
                   </h3>
                   
-                  {/* قراءة حقل الوصف المناسب للغة الحالية بناءً على السكيما الخاصة بك */}
-                  {(isArabic ? (cat.descriptionAr || cat.descriptionEn) : isJapanese ? (cat.descriptionJa || cat.descriptionEn) : cat.descriptionEn) && (
+                  {getCategoryDesc(cat) && (
                     <p className="mt-4 text-xs leading-relaxed text-slate-500">
-                      {isArabic ? (cat.descriptionAr || cat.descriptionEn) : isJapanese ? (cat.descriptionJa || cat.descriptionEn) : cat.descriptionEn}
+                      {getCategoryDesc(cat)}
                     </p>
                   )}
                 </div>
 
                 <div className="mt-8 flex items-center gap-1 text-xs font-bold text-[#081F3F] opacity-80 group-hover:opacity-100 group-hover:text-[#D9A441] transition-all">
                   <span>{t('services.btn_details')}</span>
-                  <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 rlt:rotate-180" />
+                  <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 rtl:rotate-180" />
                 </div>
               </div>
             ))

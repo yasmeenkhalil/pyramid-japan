@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import worldMapImage from '/assets/images/map.jpeg';
 import { useTranslation } from "react-i18next";
 
 export default function WorldShipping() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [stats, setStats] = useState(null);
   const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // قراءة اللغة الحالية لتحديد حقل العرض المناسب من السيرفر
+  const currentLang = i18n.language;
 
   useEffect(() => {
     Promise.all([
@@ -23,6 +26,14 @@ export default function WorldShipping() {
       setLoading(false);
     });
   }, []);
+
+  // دالة مساعدة لجلب اسم الدولة المترجم بشكل صحيح
+  const getCountryName = (country) => {
+    if (currentLang === 'ar' && country.nameAr) return country.nameAr;
+    if (currentLang === 'ja' && country.nameJa) return country.nameJa;
+    if (currentLang === 'ru' && country.nameRu) return country.nameRu;
+    return country.nameEn || "";
+  };
 
   return (
     <section className="w-full">
@@ -96,8 +107,7 @@ export default function WorldShipping() {
                     key={country.id || index}
                     className="px-4 py-2 rounded-full bg-slate-50 border border-slate-200 text-sm text-slate-700 hover:border-[#C47B36] hover:text-[#C47B36] transition-all duration-300 cursor-pointer"
                   >
-                    {/* استخدام التسمية الافتراضية العادية لأن السيرفر يعدلها يدوياً من طرفه بناءً على طريقتك العبقرية */}
-                    {country.nameEn}
+                    {getCountryName(country)}
                   </span>
                 ))
               ) : (

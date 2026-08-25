@@ -9,8 +9,9 @@ interface CategoryActionsProps {
   nameEn: string;
   nameAr: string;
   nameJa: string;
+  nameRu?: string;
   imageUrl: string;
-  sector: string; // 👈 تأكد من وجود هذا السطر هنا
+  sector: string; 
 }
 
 export default function CategoryActions({
@@ -18,8 +19,9 @@ export default function CategoryActions({
   nameEn,
   nameAr,
   nameJa,
+  nameRu,
   imageUrl,
-  sector, // 👈 تأكد من استقباله هنا
+  sector, 
 }: CategoryActionsProps) {
   const [openDelete, setOpenDelete] = useState(false);
 
@@ -28,8 +30,9 @@ export default function CategoryActions({
     nameEn,
     nameAr,
     nameJa,
+    nameRu,
     imageUrl,
-    sector, // 👈 تأكد من تمريره هنا للمودال
+    sector, 
   };
 
   async function handleDelete() {
@@ -48,7 +51,6 @@ export default function CategoryActions({
       alert("Something went wrong during deletion");
     }
   }
-
   return (
     <>
       <div className="flex items-center justify-start gap-2 h-full my-auto">

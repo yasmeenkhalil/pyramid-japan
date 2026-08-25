@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[64518,["/_next/static/chunks/26pz6sumagcut.js","/_next/static/chunks/3of2t893zwq5a.js","/_next/static/chunks/0gh7vj8pnqlf_.js"],"default"]
+3:I[80263,["/_next/static/chunks/26pz6sumagcut.js","/_next/static/chunks/3of2t893zwq5a.js","/_next/static/chunks/0gh7vj8pnqlf_.js"],"default"]
+4:I[39756,["/_next/static/chunks/26pz6sumagcut.js","/_next/static/chunks/3of2t893zwq5a.js"],"default"]
+5:I[37457,["/_next/static/chunks/26pz6sumagcut.js","/_next/static/chunks/3of2t893zwq5a.js"],"default"]
+0:{"rsc":["$","$1","c",{"children":[[["$","script","script-0",{"src":"/_next/static/chunks/0gh7vj8pnqlf_.js","async":true}]],["$","div",null,{"className":"h-screen w-screen bg-[#F4F8FC]  overflow-hidden","children":["$","div",null,{"className":"flex h-full w-full overflow-hidden  bg-white shadow-xl relative","children":[["$","div",null,{"className":"h-full flex flex-col shrink-0","children":["$","$L2",null,{}]}],["$","div",null,{"className":"flex flex-1 flex-col overflow-hidden","children":[["$","$L3",null,{}],["$","main",null,{"className":"flex-1 overflow-y-auto p-8 bg-[#F4F8FC]/30","children":["$","$L4",null,{"parallelRouterKey":"children","template":["$","$L5",null,{}]}]}]]}]]}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"K9ZdvrFbIEH_15-Xw_2B6"}

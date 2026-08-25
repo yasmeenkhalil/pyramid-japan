@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 10, "column": 0}, "map": {"version":3,"sources":["file:///D:/dev/pyramid-japan-co/admin/app/AuthProvider.tsx"],"sourcesContent":["\"use client\";\n\nimport { SessionProvider } from \"next-auth/react\";\nimport React from \"react\";\n\nexport default function AuthProvider({ children }: { children: React.ReactNode }) {\n  return <SessionProvider>{children}</SessionProvider>;\n}"],"names":["AuthProvider","children"],"mappings":";;;;;AAEA;AAFA;;;AAKe,SAASA,aAAa,EAAEC,QAAQ,EAAiC;IAC9E,qBAAO,8OAAC,iKAAe;kBAAEA;;;;;;AAC3B"}}]
+}

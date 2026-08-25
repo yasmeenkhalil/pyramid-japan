@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ArrowUpRight, Gauge, Calendar, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, Gauge, Calendar, ShieldCheck, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -20,13 +20,17 @@ export default function FeaturedConstructionMachinery() {
   const transformData = (items) => {
     if (!items || !Array.isArray(items)) return [];
     return items.map((item) => {
+      // جلب العنوان حسب اللغة الحالية بما فيها الروسية
       let finalTitle = item.titleEn || item.title || "";
       if (i18n.language === "ar" && item.titleAr) finalTitle = item.titleAr;
       if (i18n.language === "ja" && item.titleJa) finalTitle = item.titleJa;
+      if (i18n.language === "ru" && item.titleRu) finalTitle = item.titleRu;
 
+      // جلب القسم حسب اللغة الحالية بما فيها الروسية
       let finalCategory = item.category?.nameEn || "Machinery";
       if (i18n.language === "ar" && item.category?.nameAr) finalCategory = item.category.nameAr;
       if (i18n.language === "ja" && item.category?.nameJa) finalCategory = item.category.nameJa;
+      if (i18n.language === "ru" && item.category?.nameRu) finalCategory = item.category.nameRu;
 
       return {
         id: item.id,
@@ -80,6 +84,7 @@ export default function FeaturedConstructionMachinery() {
       setShowToast(false);
     }, 4000);
   };
+
   return (
     <section className="bg-white py-16 px-12 border-t border-slate-100 relative">
       
@@ -146,7 +151,6 @@ export default function FeaturedConstructionMachinery() {
                     {t("featured_con.ref_label")}: {machine.id}
                   </div>
                 </div>
-
                 <div className="p-4 flex-1 flex flex-col justify-between">
                   <div>
                     <span className="text-[9px] font-bold tracking-widest text-[#D9A441] uppercase">
@@ -196,7 +200,7 @@ export default function FeaturedConstructionMachinery() {
       {isModalOpen && selectedMachine && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
           <div className="bg-white rounded-2xl max-w-lg w-full p-6 border border-slate-200 shadow-2xl relative">
-            <button onClick={() => setIsModalOpen(false)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl">✕</button>
+            <button onClick={() => setIsModalOpen(false)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl"><X className="h-5 w-5" /></button>
             <div className="mb-5">
               <h2 className="text-xl font-bold text-[#081F3F]">{t("featured_con.modal_title")}</h2>
               <p className="text-xs text-slate-500 mt-1">{t("featured_con.modal_equip")}: <span className="font-semibold text-[#D9A441]">{selectedMachine.title}</span> ({t("featured_con.ref_label")}: {selectedMachine.id})</p>
@@ -204,15 +208,15 @@ export default function FeaturedConstructionMachinery() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t("featured_con.label_name")}</label>
-                <input type="text" name="name" required value={formData.name} onChange={handleInputChange} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#D9A441]" placeholder="John Doe" />
+                <input type="text" name="name" required value={formData.name} onChange={handleInputChange} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#D9A441]" placeholder={t("featured_con.placeholder_name")} />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t("featured_con.label_email")}</label>
-                <input type="email" name="email" required value={formData.email} onChange={handleInputChange} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#D9A441]" placeholder="john@example.com" />
+                <input type="email" name="email" required value={formData.email} onChange={handleInputChange} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#D9A441]" placeholder={t("featured_con.placeholder_email")} />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t("featured_con.label_phone")}</label>
-                <input type="tel" name="phone" required value={formData.phone} onChange={handleInputChange} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#D9A441]" placeholder="+81 90-1234-5678" />
+                <input type="tel" name="phone" required value={formData.phone} onChange={handleInputChange} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#D9A441]" placeholder={t("featured_con.placeholder_phone")} />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t("featured_con.label_msg")}</label>

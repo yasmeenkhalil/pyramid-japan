@@ -36,7 +36,6 @@ export default function CategoryGrid() {
       imageSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTicBrtuYrDAl7i93fgsX5wOVKY1whn95ZcXg&s",
     },
   ];
-
   return (
     <section className="max-w-[1400px] mx-auto px-6 py-20">
       
@@ -63,21 +62,21 @@ export default function CategoryGrid() {
             <img
               src={cat.imageSrc}
               alt={t(cat.nameKey)}
-              className="w-full h-full object-cover transition-transform duration-7700 group-hover:scale-110"
+              className="w-full h-full object-cover transition-transform duration-[700ms] group-hover:scale-110"
             />
 
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
-            <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-              <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#D6A06A] text-[#111827] text-xs font-bold mb-4">
+            <div className="absolute bottom-0 left-0 right-0 p-6 text-white flex flex-col justify-end min-h-[200px]">
+              <div className="inline-flex items-center w-fit px-3 py-1 rounded-full bg-[#D6A06A] text-[#111827] text-xs font-bold mb-3 shrink-0">
                 {cat.count} {t("categories_section.machines_count")}
               </div>
 
-              <h3 className="text-2xl font-bold leading-tight mb-2">
+              <h3 className="text-xl md:text-2xl font-bold leading-tight mb-2 line-clamp-2">
                 {t(cat.nameKey)}
               </h3>
 
-              <button className="mt-2 text-[#D6A06A] font-semibold flex items-center gap-2 transition-all group-hover:translate-x-1">
+              <button className="mt-2 text-[#D6A06A] font-semibold flex items-center gap-2 transition-all group-hover:translate-x-1 w-fit text-sm">
                 {t("categories_section.btn_text")} →
               </button>
             </div>

@@ -14,7 +14,7 @@ export default function SidebarBanners() {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'Pyramid_Japan_Stock_List.xlsx';
+      a.download = 'Global_Trading_Stock_List.xlsx';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

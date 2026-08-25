@@ -15,6 +15,7 @@ interface CategoryRequestBody {
   nameEn?: string;
   nameAr?: string;
   nameJa?: string;
+  nameRu?: string; 
   imageUrl?: string;
   sector?: string;
 }
@@ -23,9 +24,9 @@ export async function POST(req: Request) {
   try {
     const body = (await req.json()) as CategoryRequestBody;
 
-    if (!body.nameEn || !body.nameAr || !body.nameJa || !body.imageUrl || !body.sector) {
+    if (!body.nameEn || !body.nameAr || !body.nameJa || !body.nameRu || !body.imageUrl || !body.sector) {
       return Response.json(
-        { error: "All fields including sector are required." },
+        { error: "All fields including sector and Russian name are required." },
         { status: 400 }
       );
     }
@@ -33,10 +34,11 @@ export async function POST(req: Request) {
     const nameEnStr = body.nameEn.trim();
     const nameArStr = body.nameAr.trim();
     const nameJaStr = body.nameJa.trim();
+    const nameRuStr = body.nameRu.trim(); 
     const imageUrlStr = body.imageUrl.trim();
     const sectorStr = body.sector.trim().toLowerCase();
 
-    if (!nameEnStr || !nameArStr || !nameJaStr || !imageUrlStr || !sectorStr) {
+    if (!nameEnStr || !nameArStr || !nameJaStr || !nameRuStr || !imageUrlStr || !sectorStr) {
       return Response.json(
         { error: "Fields cannot contain only spaces." },
         { status: 400 }
@@ -57,6 +59,14 @@ export async function POST(req: Request) {
       );
     }
 
+    // التعديل هنا: استخدام نطاق اليونيكود الصريح للأحرف الروسية [\u0400-\u04FF] لحل مشكلة الـ TS Error تماماً
+    if (!/^[\u0400-\u04FF0-9\s\-_,.:()]+$/.test(nameRuStr)) {
+      return Response.json(
+        { error: "Russian name must contain Russian (Cyrillic) characters only." },
+        { status: 400 }
+      );
+    }
+
     let categorySlug = slugify(nameEnStr);
     if (!categorySlug) {
       categorySlug = slugify(nameArStr) || `category-${Date.now()}`;
@@ -67,6 +77,7 @@ export async function POST(req: Request) {
         nameEn: nameEnStr,
         nameAr: nameArStr,
         nameJa: nameJaStr,
+        nameRu: nameRuStr, 
         slug: categorySlug,
         imageUrl: imageUrlStr,
         sector: sectorStr,
@@ -93,6 +104,7 @@ export async function POST(req: Request) {
     );
   }
 }
+
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);

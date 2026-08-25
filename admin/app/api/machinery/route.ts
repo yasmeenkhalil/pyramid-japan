@@ -21,6 +21,7 @@ interface MachineryRequestBody {
   titleEn?: string;
   titleAr?: string;
   titleJa?: string;
+  titleRu?: string; // 1. تم إضافة حقل العنوان بالروسية للـ Interface
   slug?: string;
   stockNo?: string;
   year?: string | number;
@@ -34,6 +35,7 @@ interface MachineryRequestBody {
   descriptionEn?: string;
   descriptionAr?: string;
   descriptionJa?: string;
+  descriptionRu?: string; // 2. تم إضافة حقل الوصف بالروسية للـ Interface
   featured?: boolean;
   categoryId?: string;
   manufacturerId?: string;
@@ -47,9 +49,10 @@ export async function POST(req: Request) {
   try {
     const body = (await req.json()) as MachineryRequestBody;
 
-    if (!body.titleEn || !body.titleAr || !body.titleJa || !body.categoryId || !body.manufacturerId || !body.location || !body.sector) {
+    // 3. تم إضافة حقل titleRu لشروط الحقول المطلوبة إجبارياً للتحقق
+    if (!body.titleEn || !body.titleAr || !body.titleJa || !body.titleRu || !body.categoryId || !body.manufacturerId || !body.location || !body.sector) {
       return Response.json(
-        { message: "Core fields including titles, category, manufacturer, location, and sector are required." },
+        { message: "Core fields including titles (English, Arabic, Japanese, Russian), category, manufacturer, location, and sector are required." },
         { status: 400 }
       );
     }
@@ -57,12 +60,14 @@ export async function POST(req: Request) {
     const titleEnStr = body.titleEn.trim();
     const titleArStr = body.titleAr.trim();
     const titleJaStr = body.titleJa.trim();
+    const titleRuStr = body.titleRu.trim(); // تنظيف المسافات للعنوان الروسي
     const categoryIdStr = body.categoryId.trim();
     const manufacturerIdStr = body.manufacturerId.trim();
     const locationStr = body.location.trim();
     const sectorStr = body.sector.trim(); 
 
-    if (!titleEnStr || !titleArStr || !titleJaStr || !categoryIdStr || !manufacturerIdStr || !locationStr || !sectorStr) {
+    // 4. التحقق من أن حقل الروسية لا يحتوي على مسافات فقط
+    if (!titleEnStr || !titleArStr || !titleJaStr || !titleRuStr || !categoryIdStr || !manufacturerIdStr || !locationStr || !sectorStr) {
       return Response.json(
         { message: "Required fields cannot contain only spaces." },
         { status: 400 }
@@ -79,6 +84,14 @@ export async function POST(req: Request) {
     if (!/^[\u0600-\u06FF0-9\s\-_,.:()]+$/.test(titleArStr)) {
       return Response.json(
         { message: "Arabic title must contain Arabic characters only." },
+        { status: 400 }
+      );
+    }
+
+    // 5. فحص الأحرف السيريلية (الروسية) بنطاق اليونيكود الصريح والآمن للعنوان
+    if (!/^[\u0400-\u04FF0-9\s\-_,.:()]+$/.test(titleRuStr)) {
+      return Response.json(
+        { message: "Russian title must contain Russian (Cyrillic) characters only." },
         { status: 400 }
       );
     }
@@ -111,11 +124,13 @@ export async function POST(req: Request) {
       }
     }
 
+    // 6. حفظ الحقول الجديدة (titleRu و descriptionRu) في قاعدة البيانات عبر Prisma
     const newMachinery = await prisma.machinery.create({
       data: {
         titleEn: titleEnStr,
         titleAr: titleArStr,
         titleJa: titleJaStr,
+        titleRu: titleRuStr, // تمرير العنوان الروسي
         slug: machinerySlug,
         stockNo: body.stockNo ? body.stockNo.trim() : null,
         year: body.year ? parseInt(body.year.toString()) : null,
@@ -129,6 +144,7 @@ export async function POST(req: Request) {
         descriptionEn: body.descriptionEn ? body.descriptionEn.trim() : null,
         descriptionAr: body.descriptionAr ? body.descriptionAr.trim() : null,
         descriptionJa: body.descriptionJa ? body.descriptionJa.trim() : null,
+        descriptionRu: body.descriptionRu ? body.descriptionRu.trim() : null, // تمرير الوصف الروسي
         featured: Boolean(body.featured),
         categoryId: categoryIdStr,
         manufacturerId: manufacturerIdStr,
@@ -147,7 +163,6 @@ export async function POST(req: Request) {
               }))
             : [],
         },
-       
       },
       include: {
         images: true,
@@ -176,6 +191,7 @@ export async function POST(req: Request) {
 
 export async function GET() {
   try {
+    // دالة findMany ستجلب الحقول الروسية الجديدة تلقائياً من الـ DB بعد تحديث الـ Prisma Client
     const machineryList = await prisma.machinery.findMany({
       orderBy: { createdAt: "desc" },
       include: {

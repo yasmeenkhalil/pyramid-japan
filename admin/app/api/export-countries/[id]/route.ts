@@ -6,18 +6,31 @@ interface RouteParams {
 }
 
 export async function PUT(request: NextRequest, { params }: RouteParams) {
-  console.log(params);
-  
   try {
     const resolvedParams = await params;
     const id = resolvedParams.id;
-    console.log(id);
     
-    const { nameAr, nameEn, nameJa, slug } = await request.json();
+    const { nameAr, nameEn, nameJa, nameRu, slug } = await request.json();
 
-    if (!nameAr || !nameEn || !nameJa || !slug) {
+    if (!nameAr || !nameEn || !nameJa || !nameRu || !slug) {
       return NextResponse.json(
         { message: "All fields are required" },
+        { status: 400 }
+      );
+    }
+
+    const nameRuStr = nameRu.trim();
+
+    if (!nameRuStr) {
+      return NextResponse.json(
+        { message: "Russian name cannot contain only spaces" },
+        { status: 400 }
+      );
+    }
+
+    if (!/^[\u0400-\u04FF0-9\s\-_,.:()]+$/.test(nameRuStr)) {
+      return NextResponse.json(
+        { message: "Russian name must contain Russian (Cyrillic) characters only" },
         { status: 400 }
       );
     }
@@ -38,7 +51,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     const updatedCountry = await prisma.exportCountry.update({
       where: { id },
-      data: { nameAr, nameEn, nameJa, slug },
+      data: { nameAr, nameEn, nameJa, nameRu: nameRuStr, slug },
     });
 
     return NextResponse.json(updatedCountry, { status: 200 });

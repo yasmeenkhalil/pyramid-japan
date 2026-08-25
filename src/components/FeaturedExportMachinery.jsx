@@ -30,12 +30,14 @@ export default function FeaturedExportMachinery() {
   const getMachineTitle = (machine) => {
     if (i18n.language === "ar" && machine.titleAr) return machine.titleAr;
     if (i18n.language === "ja" && machine.titleJa) return machine.titleJa;
+    if (i18n.language === "ru" && machine.titleRu) return machine.titleRu;
     return machine.titleEn || machine.title;
   };
 
   const getCategoryName = (machine) => {
     if (i18n.language === "ar" && machine.category?.nameAr) return machine.category.nameAr;
     if (i18n.language === "ja" && machine.category?.nameJa) return machine.category.nameJa;
+    if (i18n.language === "ru" && machine.category?.nameRu) return machine.category.nameRu;
     return machine.category?.nameEn || "Machinery";
   };
 
@@ -72,8 +74,7 @@ export default function FeaturedExportMachinery() {
           <div className="text-center py-8 text-slate-400 font-medium">
             {t("featured_export.no_data")}
           </div>
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 w-full mx-auto">
+        ) : (          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 w-full mx-auto">
             {machines.map((machine) => (
               <div 
                 key={machine.id} 
@@ -120,7 +121,7 @@ export default function FeaturedExportMachinery() {
                         <div className="flex flex-col">
                           <span className="text-[9px] text-slate-400 leading-none">{t("featured_export.hours_label")}</span>
                           <span className="text-xs font-bold text-[#081F3F] mt-0.5">
-                            {machine.hour ? machine.hour.toLocaleString() : "—"}
+                            {machine.hour ? `${machine.hour.toLocaleString()} ${t("featured_export.hrs")}` : "—"}
                           </span>
                         </div>
                       </div>
@@ -154,3 +155,4 @@ export default function FeaturedExportMachinery() {
     </section>
   );
 }
+

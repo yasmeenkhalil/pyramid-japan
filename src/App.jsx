@@ -24,7 +24,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import AboutUs from  "./components/AboutUs"; 
  
 export default function App() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [recommendedMachines, setRecommendedMachines] = useState([]);
   const [newArrivals, setNewArrivals] = useState([]);
   const [loadingRec, setLoadingRec] = useState(true);
@@ -35,19 +35,29 @@ export default function App() {
   const [selectedSort, setSelectedSort] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
+  const currentLang = i18n.language;
+
   const transformData = (items) => {
     if (!items || !Array.isArray(items)) return [];
-    return items.map((item) => ({
-      id: item.id,
-      title: item.titleEn || item.titleAr || item.titleJa,
-      model: item.model || "",
-      hours: item.hour ? item.hour.toLocaleString() : "0",
-      year: item.year ? item.year.toString() : "",
-      location: item.location || t('app.default_location'),
-      tag: item.featured ? t('app.tag_featured') : "",
-      price: item.price ? `${item.price.toLocaleString()} JPY` : t('app.ask_price'),
-      image: item.images && item.images.length > 0 ? item.images[0].imageUrl : '/assets/images/Crushers_Wood_Chippers.png'
-    }));
+    return items.map((item) => {
+      // إصلاح منطق جلب العناوين ليدعم الحقل الروسي ديناميكياً بناءً على اختيار الواجهة
+      let finalTitle = item.titleEn || item.title || "";
+      if (currentLang === "ar" && item.titleAr) finalTitle = item.titleAr;
+      if (currentLang === "ja" && item.titleJa) finalTitle = item.titleJa;
+      if (currentLang === "ru" && item.titleRu) finalTitle = item.titleRu;
+
+      return {
+        id: item.id,
+        title: finalTitle,
+        model: item.model || "",
+        hours: item.hour ? item.hour.toLocaleString() : "0",
+        year: item.year ? item.year.toString() : "",
+        location: item.location || t('app.default_location'),
+        tag: item.featured ? t('app.tag_featured') : "",
+        price: item.price ? `${item.price.toLocaleString()} JPY` : t('app.ask_price'),
+        image: item.images && item.images.length > 0 ? item.images[0].imageUrl : '/assets/images/Crushers_Wood_Chippers.png'
+      };
+    });
   };
 
   useEffect(() => {
@@ -88,8 +98,8 @@ export default function App() {
       }
     }
     fetchHomeData();
-  }, [searchQuery, selectedCategory]);
-  return (
+  }, [searchQuery, selectedCategory, currentLang]); 
+    return (
     <Router> 
       <ScrollToTop />
       <div className="min-h-screen bg-bg-base text-charcoal selection:bg-sun-red selection:text-pure-white antialiased overflow-x-hidden flex flex-col justify-between">

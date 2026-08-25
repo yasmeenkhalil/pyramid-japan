@@ -3,6 +3,9 @@ import { prisma } from "@/lib/prisma";
 import AddUnitModal from "@/app/components/AddUnitModal";
 import UnitActions from "@/app/components/UnitActions";
 
+export const dynamic = "force-dynamic";
+
+
 interface UnitData {
   id: string;
   name: string;

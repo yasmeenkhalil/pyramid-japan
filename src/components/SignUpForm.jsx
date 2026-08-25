@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Mail, Lock, User, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next"; // استيراد مكتبة الترجمة
 

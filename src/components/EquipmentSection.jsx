@@ -2,39 +2,36 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import MachineCard from './MachineCard';
 
-export default function EquipmentSection({ title, data, loading }) {
+export default function EquipmentSection({ title, data, loading, categoryRaw }) {
   const { t, i18n } = useTranslation();
 
-  const words = title.split(' ');
-  const firstTwoWords = words.slice(0, 2).join(' ');
-  const restOfTitle = words.slice(2).join(' ');
+  const getInitialCategory = () => {
+    if (categoryRaw) return categoryRaw;
+    
+    const currentLang = i18n.language;
+    if (currentLang !== 'en') return 'all';
 
-  const firstWord = words[0]?.toLowerCase() || '';
-  let initialCategory = 'all';
+    const firstWord = title?.split(' ')[0]?.toLowerCase() || '';
+    if (firstWord === 'new' || firstWord === 'used') return 'construction';
+    if (firstWord === 'export') return 'export';
+    if (firstWord === 'agricultural' || firstWord === 'agriculture') return 'agriculture';
+    if (firstWord === 'maintenance') return 'maintenance';
+    return 'all';
+  };
 
-  if (firstWord === 'new' || firstWord === 'used') {
-    initialCategory = 'construction';
-  } else if (firstWord === 'export') {
-    initialCategory = 'export';
-  } else if (firstWord === 'agricultural' || firstWord === 'agriculture') {
-    initialCategory = 'agriculture';
-  } else if (firstWord === 'maintenance') {
-    initialCategory = 'maintenance';
-  }
-
+  const initialCategory = getInitialCategory();
   return (
     <div className="w-full mb-12 text-left px-2 sm:px-0">
       
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 mb-6 border-b border-[#E5C193]/20">
         
-        <h3 className="text-lg sm:text-xl font-bold tracking-tight text-[#E6DED5]">
-          <span className="text-[#E5C193] mr-2">{firstTwoWords}</span>
-          <span className="text-black font-medium">{restOfTitle}</span>
+        <h3 className="text-lg sm:text-xl font-bold tracking-tight text-slate-800">
+          <span className="text-[#C47B36]">{title}</span>
         </h3>
         
         <Link 
           to={`/machinery-all/${initialCategory}`}
-          className="group bg-[#16110F] hover:bg-[#E5C193] text-[#E5C193] hover:text-[#110E0D] text-xs font-semibold px-4 py-2 rounded-lg border border-[#E5C193]/30 hover:border-[#E5C193] transition-all duration-300 flex items-center gap-2 cursor-pointer shrink-0 shadow-lg shadow-black/20 block"
+          className="group bg-[#16110F] hover:bg-[#E5C193] text-[#E5C193] hover:text-[#110E0D] text-xs font-semibold px-4 py-2 rounded-lg border border-[#E5C193]/30 hover:border-[#E5C193] transition-all duration-300 flex items-center gap-2 cursor-pointer shrink-0 shadow-lg"
         >
           <span>{t("eq_section.view_all")}</span>
           <svg 
