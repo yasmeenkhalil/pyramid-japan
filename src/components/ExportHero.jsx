@@ -15,7 +15,7 @@ export default function ExportHero() {
   useEffect(() => {
     async function fetchStats() {
       try {
-        const res = await fetch("/api/settings");
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/settings`);
         if (res.ok) {
           const data = await res.json();
           setStats({

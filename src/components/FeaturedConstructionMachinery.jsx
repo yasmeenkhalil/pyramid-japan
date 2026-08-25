@@ -49,7 +49,7 @@ export default function FeaturedConstructionMachinery() {
     async function fetchFeaturedMachines() {
       try {
         setLoading(true);
-        const response = await fetch("/api/machinery/all?sector=Construction&featured=true");
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/machinery/all?sector=Construction&featured=true`);
         if (response.ok) {
           const data = await response.json();
           setMachines(transformData(data));

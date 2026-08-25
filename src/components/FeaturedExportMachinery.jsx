@@ -13,7 +13,7 @@ export default function FeaturedExportMachinery() {
     async function fetchFeatured() {
       try {
         setLoading(true);
-        const res = await fetch("/api/machinery/all?export=true");
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/machinery/all?export=true`);
         if (res.ok) {
           const data = await res.json();
           setMachines(data.slice(0, 10));

@@ -52,7 +52,7 @@ export default function FeaturedAgricultureMachinery() {
     async function fetchFeaturedMachines() {
       try {
         setLoading(true);
-        const response = await fetch("/api/machinery/all?sector=Agriculture&featured=true");
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/machinery/all?sector=Agriculture&featured=true`);
         if (response.ok) {
           const data = await response.json();
           setMachines(transformData(data));

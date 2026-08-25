@@ -30,13 +30,13 @@ export default function SidebarMachineFilters() {
   useEffect(() => {
     async function fetchFilterOptions() {
       try {
-        const catRes = await fetch("/api/categories");
+        const catRes = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/categories`);
         if (catRes.ok) setCategories(await catRes.json());
 
-        const manRes = await fetch("/api/manufacturers");
+        const manRes = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/manufacturers`);
         if (manRes.ok) setManufacturers(await manRes.json());
 
-        const machRes = await fetch("/api/machinery");
+        const machRes = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/machinery`);
         if (machRes.ok) {
           const machData = await machRes.json();
           const uniqueSpecs = [];

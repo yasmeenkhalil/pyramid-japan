@@ -17,7 +17,7 @@ export default function ServiceCapabilities() {
   useEffect(() => {
     const fetchMaintenanceCategories = async () => {
       try {
-        const response = await fetch("/api/categories?sector=maintenance"); 
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/categories?sector=maintenance`); 
         const data = await response.json();
         
         if (Array.isArray(data)) {

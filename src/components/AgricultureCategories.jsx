@@ -12,7 +12,7 @@ export default function AgricultureCategories() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("/api/categories?sector=agricultural"); 
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/categories?sector=agricultural`); 
         const data = await response.json();
         
         if (Array.isArray(data)) {

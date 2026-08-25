@@ -12,7 +12,7 @@ export default function AgricultureHero() {
   useEffect(() => {
     const fetchAgriData = async () => {
       try {
-        const response = await fetch("/api/machinery/all?sector=Agriculture");
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/machinery/all?sector=Agriculture`);
         const machines = await response.json();
         
         if (Array.isArray(machines)) {

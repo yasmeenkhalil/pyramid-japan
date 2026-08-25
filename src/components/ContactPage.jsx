@@ -44,7 +44,7 @@ export default function ContactPage() {
 
     async function checkAuth() {
       try {
-        const response = await fetch("/api/auth/session", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/auth/session`, {
           credentials: "include",
           cache: "no-store",
         });
@@ -105,7 +105,7 @@ export default function ContactPage() {
 
     try {
       setLoading(true);
-      const response = await fetch("/api/inquiries", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/inquiries`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

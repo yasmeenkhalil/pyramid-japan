@@ -17,13 +17,13 @@ export default function SignInForm({ onToggleView, onSuccess }) {
     setLoading(true);
 
     try {
-      const csrfResponse = await fetch("/api/auth/csrf", {
+      const csrfResponse = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/auth/csrf`, {
         credentials: "include",
       });
 
       const csrfData = await csrfResponse.json();
 
-      const loginResponse = await fetch("/api/auth/callback/credentials", {
+      const loginResponse = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/auth/callback/credentials`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -45,7 +45,7 @@ export default function SignInForm({ onToggleView, onSuccess }) {
         return;
       }
 
-      const sessionResponse = await fetch("/api/auth/session", {
+      const sessionResponse = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/auth/session`, {
         credentials: "include",
         cache: "no-store",
       });
