@@ -7,10 +7,14 @@ export default function CategoryGrid({ sector, sort }) {
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
+  // تعريف الرابط الأساسي للباك إند من ملف الـ env
+  const baseUrl = import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp';
+
   useEffect(() => {
     async function fetchCategories() {
       try {
-        let url = "/api/categories";
+        // دمج الـ baseUrl مع مسار الـ api الأساسي
+        let url = `${baseUrl}/api/categories`;
         const params = new URLSearchParams();
         if (sector) params.append("sector", sector);
         if (sort) params.append("sort", sort);
@@ -27,7 +31,7 @@ export default function CategoryGrid({ sector, sort }) {
       }
     }
     fetchCategories();
-  }, [sector, sort]);
+  }, [sector, sort, baseUrl]); // إضافة baseUrl لمصفوفة التبعيات لضمان الاستقرار
 
   const getCategoryName = (cat) => {
     if (!cat) return "";
@@ -40,6 +44,7 @@ export default function CategoryGrid({ sector, sort }) {
     
     return cat.nameEn || cat.name || "";
   };
+
   return (
     <section className="w-full">
       <div className="mb-8">

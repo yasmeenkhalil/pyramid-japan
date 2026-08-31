@@ -37,10 +37,12 @@ export default function App() {
 
   const currentLang = i18n.language;
 
+  // تعريف الرابط الأساسي للباك إند من ملف الـ env
+  const baseUrl = import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp';
+
   const transformData = (items) => {
     if (!items || !Array.isArray(items)) return [];
     return items.map((item) => {
-      // إصلاح منطق جلب العناوين ليدعم الحقل الروسي ديناميكياً بناءً على اختيار الواجهة
       let finalTitle = item.titleEn || item.title || "";
       if (currentLang === "ar" && item.titleAr) finalTitle = item.titleAr;
       if (currentLang === "ja" && item.titleJa) finalTitle = item.titleJa;
@@ -65,8 +67,9 @@ export default function App() {
       setLoadingRec(true);
       setLoadingNew(true);
       try {
-        let recUrl = '/api/machinery/recommended';
-        let newUrl = '/api/machinery/new-arrivals';
+        // إصلاح وتوجيه الروابط إلى السيرفر الفعلي باستخدام الـ baseUrl
+        let recUrl = `${baseUrl}/api/machinery/recommended`;
+        let newUrl = `${baseUrl}/api/machinery/new-arrivals`;
         
         const params = new URLSearchParams();
         if (searchQuery) params.append("search", searchQuery);
@@ -98,8 +101,9 @@ export default function App() {
       }
     }
     fetchHomeData();
-  }, [searchQuery, selectedCategory, currentLang]); 
-    return (
+  }, [searchQuery, selectedCategory, currentLang, baseUrl]); // إضافة baseUrl هنا لضمان استقرار التحديث
+  
+  return (
     <Router> 
       <ScrollToTop />
       <div className="min-h-screen bg-bg-base text-charcoal selection:bg-sun-red selection:text-pure-white antialiased overflow-x-hidden flex flex-col justify-between">

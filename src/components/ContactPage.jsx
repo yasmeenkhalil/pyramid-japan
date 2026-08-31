@@ -44,7 +44,7 @@ export default function ContactPage() {
 
     async function checkAuth() {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/auth/session`, {
+        const response = await fetch(`${import.meta.env.VITE_API_ || 'https://pyramidjapan.jp'}/api/auth/session`, {
           credentials: "include",
           cache: "no-store",
         });

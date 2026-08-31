@@ -100,7 +100,9 @@ export default function AllMachineryPage() {
     async function fetchFilteredMachines() {
       try {
         setLoading(true);
-        let url = '/api/machinery/all';
+        const baseUrl = import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp';
+        let url = `${baseUrl}/api/machinery/all`;
+
         const params = new URLSearchParams();
         
         if (category && category !== 'all') params.append("category", category);

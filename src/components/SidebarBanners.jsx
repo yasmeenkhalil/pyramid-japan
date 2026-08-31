@@ -2,11 +2,13 @@ import { FileText, PlayCircle, ShieldCheck } from 'lucide-react';
 import { useTranslation } from "react-i18next"; // استيراد مكتبة الترجمة
 
 export default function SidebarBanners() {
-  const { t, i18n } = useTranslation(); // تفعيل تابع الترجمة والاتجاهات
+  const { t, i18n } = useTranslation(); 
 
-  const handleDownloadStockList = async () => {
+   const handleDownloadStockList = async () => {
     try {
-      const response = await fetch('/api/machinery/export', {
+      const baseUrl = import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp';
+
+      const response = await fetch(`${baseUrl}/api/machinery/export`, {
         method: 'GET',
       });
       if (!response.ok) throw new Error("Failed to download file");
@@ -23,6 +25,7 @@ export default function SidebarBanners() {
       console.error("Error exporting excel:", error);
     }
   };
+
 
   return (
     <div className="w-full flex flex-col gap-4 text-left rtl:text-right" dir={i18n.dir()}>

@@ -5,6 +5,8 @@ import { signOut } from "next-auth/react";
 export default function Topbar() {
   
   const handleLogout = async () => {
+     localStorage.clear();      
+     sessionStorage.clear(); 
     await signOut({ callbackUrl: "/login" });
   };
 
