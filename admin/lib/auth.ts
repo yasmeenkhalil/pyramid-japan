@@ -52,6 +52,37 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
 
+  // 👇 1. أضيفي هذا القسم للسماح بمشاركة الكوكيز بين النطاقات المختلفة (Cross-Domain)
+  useSecureCookies: true, // تفعيل الكوكيز الآمنة لأنك تستخدمين HTTPS على الاستضافة
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "none", // 👈 ضروري جداً لكي يسمح المتصفح لتطبيق React بقراءة الكوكيز من نطاق Next.js الفرعي
+        path: "/",
+        secure: true, // يجب أن يكون true لأن الموقع يعمل بـ https
+      },
+    },
+    callbackUrl: {
+      name: `next-auth.callback-url`,
+      options: {
+        sameSite: "none",
+        path: "/",
+        secure: true,
+      },
+    },
+    csrfToken: {
+      name: `next-auth.csrf-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "none",
+        path: "/",
+        secure: true,
+      },
+    },
+  },
+
   callbacks: {
     async jwt({ token, user, trigger, session }) {
       if (user) {
@@ -82,4 +113,3 @@ export const authOptions: NextAuthOptions = {
 
   secret: process.env.NEXTAUTH_SECRET,
 };
-
