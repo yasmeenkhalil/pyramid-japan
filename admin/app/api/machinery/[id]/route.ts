@@ -90,10 +90,9 @@ export async function PUT(req: Request, { params }: RouteParams) {
     const id = resolvedParams.id;
     const body = (await req.json()) as MachineryUpdateRequestBody;
 
-    // 3. تم إضافة حقل titleRu لشروط الحقول المطلوبة إجبارياً للتحقق أثناء التعديل
-    if (!body.titleEn || !body.titleAr || !body.titleJa || !body.titleRu || !body.categoryId || !body.manufacturerId || !body.location || !body.sector) {
+    if (!body.titleEn || !body.titleAr || !body.titleJa || !body.categoryId || !body.manufacturerId || !body.location || !body.sector) {
       return Response.json(
-        { error: "Core fields including titles (English, Arabic, Japanese, Russian), category, manufacturer, location, and sector are required." },
+        { error: "Required fields (titles, category, manufacturer, location, sector) are missing." },
         { status: 400 }
       );
     }
@@ -101,46 +100,17 @@ export async function PUT(req: Request, { params }: RouteParams) {
     const titleEnStr = body.titleEn.trim();
     const titleArStr = body.titleAr.trim();
     const titleJaStr = body.titleJa.trim();
-    const titleRuStr = body.titleRu.trim(); // تنظيف المسافات للعنوان الروسي المحدث
+    const titleRuStr = body.titleRu ? body.titleRu.trim() : ""; 
     const categoryIdStr = body.categoryId.trim();
     const manufacturerIdStr = body.manufacturerId.trim();
     const locationStr = body.location.trim();
     const sectorStr = body.sector.trim(); 
-
-    // 4. التحقق من أن حقل الروسية لا يحتوي على مسافات فقط
-    if (!titleEnStr || !titleArStr || !titleJaStr || !titleRuStr || !categoryIdStr || !manufacturerIdStr || !locationStr || !sectorStr) {
-      return Response.json(
-        { error: "Required fields cannot contain only spaces." },
-        { status: 400 }
-      );
-    }
-
-    if (!/^[A-Za-z0-9\s\-_,.:()]+$/.test(titleEnStr)) {
-      return Response.json(
-        { error: "English title must contain English characters only." },
-        { status: 400 }
-      );
-    }
-
-    if (!/^[\u0600-\u06FF0-9\s\-_,.:()]+$/.test(titleArStr)) {
-      return Response.json(
-        { error: "Arabic title must contain Arabic characters only." },
-        { status: 400 }
-      );
-    }
-
-    // 5. فحص الأحرف السيريلية (الروسية) للعنوان بنطاق اليونيكود الصريح والآمن لمنع مشاكل الـ TS Compiler
-    if (!/^[\u0400-\u04FF0-9\s\-_,.:()]+$/.test(titleRuStr)) {
-      return Response.json(
-        { error: "Russian title must contain Russian (Cyrillic) characters only." },
-        { status: 400 }
-      );
-    }
     
     let machinerySlug = slugify(titleEnStr);
     if (!machinerySlug) {
       machinerySlug = slugify(titleArStr) || `machinery-${Date.now()}`;
     }
+
     const uploadedImageUrls: string[] = [];
     if (body.images && Array.isArray(body.images)) {
       for (const img of body.images) {
@@ -173,14 +143,13 @@ export async function PUT(req: Request, { params }: RouteParams) {
         where: { machineryId: id },
       });
 
-      // 6. تحديث الحقول الجديدة (titleRu و descriptionRu) في قاعدة البيانات عبر الترانزاكشن للـ Prisma
       return await tx.machinery.update({
         where: { id },
         data: {
           titleEn: titleEnStr,
           titleAr: titleArStr,
           titleJa: titleJaStr,
-          titleRu: titleRuStr, // تمرير العنوان الروسي المحدث للـ DB
+          titleRu: titleRuStr , 
           slug: machinerySlug,
           stockNo: body.stockNo ? body.stockNo.trim() : null,
           year: body.year ? parseInt(body.year.toString()) : null,
@@ -194,7 +163,7 @@ export async function PUT(req: Request, { params }: RouteParams) {
           descriptionEn: body.descriptionEn ? body.descriptionEn.trim() : null,
           descriptionAr: body.descriptionAr ? body.descriptionAr.trim() : null,
           descriptionJa: body.descriptionJa ? body.descriptionJa.trim() : null,
-          descriptionRu: body.descriptionRu ? body.descriptionRu.trim() : null, // تمرير الوصف الروسي المحدث للـ DB
+          descriptionRu: body.descriptionRu ? body.descriptionRu.trim() : null,
           featured: Boolean(body.featured),
           categoryId: categoryIdStr,
           manufacturerId: manufacturerIdStr,
@@ -234,11 +203,12 @@ export async function PUT(req: Request, { params }: RouteParams) {
       }
     }
     return Response.json(
-      { error: "Failed to update machinery due to a server error." },
+      { error: "Failed to update machinery due to a database or server error." },
       { status: 500 }
     );
   }
 }
+
 
 export async function DELETE(req: Request, { params }: RouteParams) {
   try {
