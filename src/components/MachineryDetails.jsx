@@ -62,13 +62,12 @@ export default function MachineryDetails() {
 
   const isAuthenticated = status === "authenticated";
 
-  // جلب البيانات من الـ API بأسلوب fetch
   useEffect(() => {
     async function fetchMachineDetails() {
       setIsLoading(true);
       setFetchError(null);
       try {
-        const res = await fetch(`/api/machinery/${id}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/machinery/${id}`);
         
         if (res.ok) {
           const data = await res.json();
