@@ -34,7 +34,7 @@ export default function MakerSection() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/manufacturers`)
+    fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/manufacturers`)
       .then((res) => {
         if (!res.ok) throw new Error();
         return res.json();

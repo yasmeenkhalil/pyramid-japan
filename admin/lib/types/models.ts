@@ -1,4 +1,3 @@
-
 // types/models.ts
 
 export interface User {
@@ -74,6 +73,7 @@ export interface Machinery {
   descriptionJa: string | null;
   descriptionRu: string | null;
   featured: boolean;
+  isSold: boolean;
   isAvailableForExport: boolean;
   categoryId: string;
   manufacturerId: string;

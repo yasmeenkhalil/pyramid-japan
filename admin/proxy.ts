@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 
 // 1. تعريف هيدرز الـ CORS المطلوبة بشكل موحد
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "https://pyramidjapan.jp",
+  "Access-Control-Allow-Origin": "https://app.pyramidjapan.jp",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH",
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Date, X-Api-Version",
   "Access-Control-Allow-Credentials": "true",
@@ -70,7 +70,6 @@ export const config = {
   matcher: [
     "/admin/:path*",        
     "/api/admin/:path*",
-    "/api/auth/:path*" 
   ], 
 };
 

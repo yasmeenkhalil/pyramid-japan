@@ -1,21 +1,105 @@
 {
   "about": {
-    "badge": "Agricultural Machinery Experts",
-    "sub_title": "Premier Exporter of Premium Used Agricultural Equipment",
-    "p1": "Based in Japan, Pyramid Japan Corp. stands as a trusted global supplier of elite used agricultural machinery. We specialize in sourcing and exporting high-capacity tractors, precision combine harvesters, specialized sugar harvesters, and high-tech field implements tailored to worldwide farming standards.",
-    "p2": "Our engineering team carefully screens each piece of heavy equipment to ensure peak hydraulic performance and field readiness. We bridge the gap between premium Japanese equipment sources and international agricultural enterprises.",
-    "feature1": "Heavy-Duty Farm Tractors",
-    "feature2": "High-Capacity Harvesters",
-    "feature3": "100% Field-Tested in Japan",
-    "feature4": "Custom Dismantling & Shipping",
-    "card_title": "Global Standard",
-    "card_desc": "Field-ready machinery exported directly from professional Japanese agricultural hubs.",
-    "adv1_title": "Certified Ag-Tech Quality",
-    "adv1_desc": "Every tractor, combine harvester, and sugarcane rig undergoes intensive multi-point mechanical and hydraulic testing before export.",
-    "adv2_title": "Global Machinery Logistics",
-    "adv2_desc": "Expert handling of oversized farm machinery, including professional dismantling, heavy container loading, and ocean freight.",
-    "adv3_title": "Top Japanese Brands",
-    "adv3_desc": "Direct sourcing from premium Japanese dealer networks and auction houses, ensuring genuine parts and pristine operational hours."
+    "badge": "ABOUT US",
+    "heading_start": "Japanese Quality,",
+    "heading_highlight": "Global Standards",
+    "sub_title": "USED JAPANESE MACHINERY • QUALITY • RELIABILITY • GLOBAL EXPORT",
+
+    "p1": "We are a specialized company engaged in the trading and global export of quality used machinery from Japan, providing customers worldwide with reliable solutions across the construction, agricultural, and industrial sectors.",
+
+    "p2": "With strong knowledge of the Japanese used machinery market, we are committed to sourcing and supplying equipment that delivers the right balance of quality, performance, reliability, and competitive pricing.",
+
+    "p3": "Our goal is to connect customers around the world with high-quality Japanese used machinery while providing a professional, transparent, and dependable purchasing and export experience.",
+
+    "highlight1": "Japanese quality",
+    "highlight2": "Carefully selected machinery",
+    "highlight3": "Competitive pricing",
+    "highlight4": "Global export",
+
+    "image_alt": "Japanese agricultural machinery",
+    "image_badge": "FROM JAPAN TO THE WORLD",
+    "image_title": "Reliable Japanese Used Machinery",
+
+    "card_label": "MARKET REACH",
+    "card_value": "Global",
+    "card_desc": "We provide used machinery export services to customers across international markets.",
+
+    "quality_badge": "JAPANESE EXPERTISE",
+    "quality_title": "Japanese Quality, Global Standards",
+
+    "quality_p1": "Japanese machinery is internationally recognized for its high manufacturing standards, durability, reliability, and operational efficiency. We bring these advantages to our customers by offering a carefully selected range of used machinery from Japan.",
+
+    "quality_p2": "We pay close attention to the specifications, overall condition, performance, and suitability of each machine, helping our customers make informed purchasing decisions and achieve the best possible value from their investment.",
+
+    "sectors_badge": "COMPREHENSIVE SOLUTIONS",
+    "sectors_title": "Comprehensive Machinery Solutions",
+    "sectors_desc": "We offer a wide range of machinery to meet the needs of different industries and applications, including:",
+
+    "sector1_title": "Construction Machinery",
+    "sector1_desc": "Excavators, wheel loaders, motor graders, road rollers, cranes, aerial work platforms, forklifts, and other construction and material-handling equipment.",
+
+    "sector2_title": "Agricultural Machinery",
+    "sector2_desc": "Tractors, combine harvesters, tillage equipment, agricultural machinery, and a wide range of equipment designed to support modern farming operations.",
+
+    "sector3_title": "Industrial Machinery",
+    "sector3_desc": "Forklifts, material-handling equipment, industrial machinery, and specialized equipment for a variety of industrial applications.",
+
+    "export_badge": "GLOBAL EXPORT",
+    "export_title": "From Japan to the World",
+
+    "export_p1": "From Japan to the World.",
+
+    "export_p2": "We export used machinery from Japan to customers across international markets, providing a reliable and efficient process from equipment selection to preparation and shipment.",
+
+    "export_p3": "Our team works to make the international purchasing process as smooth and transparent as possible, assisting customers in finding suitable equipment and coordinating the export process to its final destination. Whether you are looking for a single machine or sourcing equipment for a larger project or business operation, we are committed to delivering a professional service tailored to your requirements.",
+
+    "value_badge": "QUALITY & VALUE",
+    "value_title": "Quality and Value at the Heart of Our Business",
+
+    "value_p1": "We believe that machinery is more than just a product—it is an investment in the success and growth of a business. That is why we focus on offering equipment that combines reliable performance with competitive pricing, helping our customers maximize the value of their investment.",
+
+    "value_p2": "Our commitment goes beyond completing a transaction. We aim to build long-term business relationships based on trust, transparency, reliability, and mutual success.",
+
+    "why_badge": "WHY US",
+    "why_title": "Why Choose Us?",
+
+    "feature1": "Wide selection of quality used machinery from Japan",
+    "feature2": "Construction, agricultural, and industrial equipment",
+    "feature3": "Carefully selected Japanese machinery",
+    "feature4": "Competitive prices and excellent value",
+    "feature5": "Global export capabilities",
+    "feature6": "Wide range of brands, models, and specifications",
+    "feature7": "Professional and transparent service",
+    "feature8": "Reliable support throughout the purchasing and export process",
+    "feature9": "Customer-focused solutions tailored to individual requirements",
+
+    "adv1_title": "Carefully Selected Machinery",
+    "adv1_desc": "We carefully consider specifications, overall condition, performance, and suitability to help customers choose the right equipment.",
+
+    "adv2_title": "Export Support",
+    "adv2_desc": "We assist with equipment selection, purchasing, preparation, export coordination, and shipment to the final destination.",
+
+    "adv3_title": "Global Markets",
+    "adv3_desc": "We connect the proven quality of Japanese machinery with the needs of customers across international markets.",
+
+    "vision_label": "OUR VISION",
+    "vision_title": "A Trusted Global Machinery Company",
+
+    "vision_desc": "To become a trusted global leader in the trading and export of Japanese used machinery, recognized for quality, reliability, competitive pricing, and exceptional customer service.",
+
+    "mission_label": "OUR MISSION",
+    "mission_title": "Delivering Real Value Worldwide",
+
+    "mission_desc": "Our mission is to provide customers worldwide with reliable Japanese used machinery that delivers quality, performance, and value, while creating a seamless and professional international trading experience.",
+
+    "mission_extra": "We are committed to continuously expanding our global network and building long-term partnerships with customers, dealers, and businesses around the world.",
+
+    "final_badge": "FROM JAPAN TO THE WORLD",
+    "final_title": "From Japan to the World",
+
+    "final_desc": "We connect the proven quality of Japanese machinery with the needs of global markets. Whether your business operates in construction, agriculture, or industry, we are dedicated to helping you find the right equipment at the right value.",
+
+    "final_statement": "Japanese Quality. Reliable Performance. Competitive Prices. Global Reach."
   },
   "ag_cat": {
     "badge": "Browse by Farming Equipment",
@@ -88,6 +172,7 @@
     "sort_year": "Manufacture Year",
     "no_machines": "No active machinery matching your filter options.",
     "featured_tag": "Featured",
+    "sold_badge": "Sold",
     "ask_price": "Ask Price"
   },
   "cat_grid": {
@@ -508,8 +593,9 @@
       "export": "Worldwide Export"
     },
     "contact": {
-      "address": "1-1-2 Ekiminamicho, Oyama-Shi, Tochigi-Ken, 323-0822",
-      "phone_val": "080-4346-6222 / 080-3000-3879"
+      "address": "1-1-2 Ekinancho, Oyama-shi, Tochigi 323-0822, Japan",
+      
+      "phone_val": "+81 80-4346-6222 / +81 80-3000-3879"
     }
   },
   "maintenance_cta": {

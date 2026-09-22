@@ -40,6 +40,7 @@ interface MachineryUpdateRequestBody {
   descriptionJa?: string;
   descriptionRu?: string; // 2. تم إضافة حقل الوصف بالروسية للـ Interface الخاص بالتحديث
   featured?: boolean;
+  isSold?: boolean;
   categoryId?: string;
   manufacturerId?: string;
   specifications?: any[];
@@ -134,61 +135,68 @@ export async function PUT(req: Request, { params }: RouteParams) {
       }
     }
 
-    const updatedMachinery = await prisma.$transaction(async (tx) => {
-      await tx.machineryImage.deleteMany({
-        where: { machineryId: id },
-      });
+    const updatedMachinery = await prisma.$transaction(
+      async (tx) => {
+        await tx.machineryImage.deleteMany({
+          where: { machineryId: id },
+        });
 
-      await tx.machinerySpecification.deleteMany({
-        where: { machineryId: id },
-      });
+        await tx.machinerySpecification.deleteMany({
+          where: { machineryId: id },
+        });
 
-      return await tx.machinery.update({
-        where: { id },
-        data: {
-          titleEn: titleEnStr,
-          titleAr: titleArStr,
-          titleJa: titleJaStr,
-          titleRu: titleRuStr , 
-          slug: machinerySlug,
-          stockNo: body.stockNo ? body.stockNo.trim() : null,
-          year: body.year ? parseInt(body.year.toString()) : null,
-          hour: body.hour ? parseInt(body.hour.toString()) : null,
-          price: body.price ? parseFloat(body.price.toString()) : null,
-          location: locationStr,
-          sector: sectorStr, 
-          minPrice: body.minPrice ? parseFloat(body.minPrice.toString()) : null,
-          avgPrice: body.avgPrice ? parseFloat(body.avgPrice.toString()) : null,
-          maxPrice: body.maxPrice ? parseFloat(body.maxPrice.toString()) : null,
-          descriptionEn: body.descriptionEn ? body.descriptionEn.trim() : null,
-          descriptionAr: body.descriptionAr ? body.descriptionAr.trim() : null,
-          descriptionJa: body.descriptionJa ? body.descriptionJa.trim() : null,
-          descriptionRu: body.descriptionRu ? body.descriptionRu.trim() : null,
-          featured: Boolean(body.featured),
-          categoryId: categoryIdStr,
-          manufacturerId: manufacturerIdStr,
-          isAvailableForExport: body.isAvailableForExport !== undefined ? Boolean(body.isAvailableForExport) : true,
-          images: {
-            create: uploadedImageUrls.map((url: string) => ({
-              imageUrl: url,
-            })),
+        return await tx.machinery.update({
+          where: { id },
+          data: {
+            titleEn: titleEnStr,
+            titleAr: titleArStr,
+            titleJa: titleJaStr,
+            titleRu: titleRuStr, 
+            slug: machinerySlug,
+            stockNo: body.stockNo ? body.stockNo.trim() : null,
+            year: body.year ? parseInt(body.year.toString()) : null,
+            hour: body.hour ? parseInt(body.hour.toString()) : null,
+            price: body.price ? parseFloat(body.price.toString()) : null,
+            location: locationStr,
+            sector: sectorStr, 
+            minPrice: body.minPrice ? parseFloat(body.minPrice.toString()) : null,
+            avgPrice: body.avgPrice ? parseFloat(body.avgPrice.toString()) : null,
+            maxPrice: body.maxPrice ? parseFloat(body.maxPrice.toString()) : null,
+            descriptionEn: body.descriptionEn ? body.descriptionEn.trim() : null,
+            descriptionAr: body.descriptionAr ? body.descriptionAr.trim() : null,
+            descriptionJa: body.descriptionJa ? body.descriptionJa.trim() : null,
+            descriptionRu: body.descriptionRu ? body.descriptionRu.trim() : null,
+            featured: Boolean(body.featured),
+            isSold: body.isSold !== undefined ? Boolean(body.isSold) : false,
+            categoryId: categoryIdStr,
+            manufacturerId: manufacturerIdStr,
+            isAvailableForExport: body.isAvailableForExport !== undefined ? Boolean(body.isAvailableForExport) : true,
+            images: {
+              create: uploadedImageUrls.map((url: string) => ({
+                imageUrl: url,
+              })),
+            },
+            specifications: {
+              create: body.specifications && Array.isArray(body.specifications)
+                ? body.specifications.map((spec: any) => ({
+                    specificationId: spec.specificationId,
+                    value: spec.value.trim(),
+                    unitId: spec.unitId && spec.unitId !== "" ? spec.unitId : null,
+                  }))
+                : [],
+            },
           },
-          specifications: {
-            create: body.specifications && Array.isArray(body.specifications)
-              ? body.specifications.map((spec: any) => ({
-                  specificationId: spec.specificationId,
-                  value: spec.value.trim(),
-                  unitId: spec.unitId && spec.unitId !== "" ? spec.unitId : null,
-                }))
-              : [],
+          include: {
+            images: true,
+            specifications: true,
           },
-        },
-        include: {
-          images: true,
-          specifications: true,
-        },
-      });
-    });
+        });
+      },
+      {
+        maxWait: 15000,
+        timeout: 30000,
+      }
+    );
 
     return Response.json(updatedMachinery, { status: 200 });
   } catch (error: unknown) {

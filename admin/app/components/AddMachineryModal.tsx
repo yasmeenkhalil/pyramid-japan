@@ -50,6 +50,7 @@ export default function AddMachineryModal({ categories, manufacturers, available
   const [descriptionJa, setDescriptionJa] = useState("");
   const [descriptionRu, setDescriptionRu] = useState("");
   const [featured, setFeatured] = useState<boolean>(false);
+  const [isSold, setIsSold] = useState<boolean>(false);
   const [categoryId, setCategoryId] = useState("");
   const [manufacturerId, setManufacturerId] = useState("");
   const [selectedSpecs, setSelectedSpecs] = useState<SelectedSpec[]>([]);
@@ -117,7 +118,8 @@ export default function AddMachineryModal({ categories, manufacturers, available
           descriptionAr: descriptionAr.trim() || null, 
           descriptionJa: descriptionJa.trim() || null,
           descriptionRu: descriptionRu.trim() || null,
-          featured, 
+          featured,
+          isSold,
           categoryId, 
           manufacturerId, 
           specifications: selectedSpecs, 
@@ -165,6 +167,7 @@ export default function AddMachineryModal({ categories, manufacturers, available
     setDescriptionJa(""); 
     setDescriptionRu("");
     setFeatured(false); 
+    setIsSold(false);
     setCategoryId(""); 
     setManufacturerId(""); 
     setSelectedSpecs([]); 
@@ -301,6 +304,13 @@ export default function AddMachineryModal({ categories, manufacturers, available
                   <div className="flex items-center gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
                     <input type="checkbox" id="isAvailableForExport" checked={isAvailableForExport} onChange={(e) => setIsAvailableForExport(e.target.checked)} className="w-4 h-4 text-[#0B4EA2] border-slate-300 rounded focus:ring-[#0B4EA2] cursor-pointer" />
                     <label htmlFor="isAvailableForExport" className="text-sm font-bold text-gray-700 cursor-pointer select-none">Available for International Export</label>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex items-center gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                    <input type="checkbox" id="isSold" checked={isSold} onChange={(e) => setIsSold(e.target.checked)} className="w-4 h-4 text-[#0B4EA2] border-slate-300 rounded focus:ring-[#0B4EA2] cursor-pointer" />
+                    <label htmlFor="isSold" className="text-sm font-bold text-gray-700 cursor-pointer select-none">Mark as Sold</label>
                   </div>
                 </div>
 

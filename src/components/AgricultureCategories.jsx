@@ -12,7 +12,7 @@ export default function AgricultureCategories() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/categories?sector=agricultural`); 
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/categories?sector=agricultural`); 
         const data = await response.json();
         
         if (Array.isArray(data)) {
@@ -30,24 +30,26 @@ export default function AgricultureCategories() {
 
   const getCategoryName = (cat) => {
     if (!cat) return "";
-    const currentLang = i18n.language;
+    const currentLang = i18n.language || "en";
 
     if (cat[`name_${currentLang}`]) return cat[`name_${currentLang}`];
 
-    if (currentLang === "ar" && cat.nameAr) return cat.nameAr;
-    if (currentLang === "ja" && cat.nameJa) return cat.nameJa;
+    if ((currentLang === "ar" || currentLang.startsWith("ar")) && cat.nameAr) return cat.nameAr;
+    if ((currentLang === "ja" || currentLang.startsWith("ja")) && cat.nameJa) return cat.nameJa;
+    if ((currentLang === "ru" || currentLang.startsWith("ru")) && cat.nameRu) return cat.nameRu;
     
     return cat.nameEn || cat.name || "";
   };
 
   const getCategoryDesc = (cat) => {
     if (!cat) return "";
-    const currentLang = i18n.language;
+    const currentLang = i18n.language || "en";
 
     if (cat[`description_${currentLang}`]) return cat[`description_${currentLang}`];
 
-    if (currentLang === "ar" && cat.descriptionAr) return cat.descriptionAr;
-    if (currentLang === "ja" && cat.descriptionJa) return cat.descriptionJa;
+    if ((currentLang === "ar" || currentLang.startsWith("ar")) && cat.descriptionAr) return cat.descriptionAr;
+    if ((currentLang === "ja" || currentLang.startsWith("ja")) && cat.descriptionJa) return cat.descriptionJa;
+    if ((currentLang === "ru" || currentLang.startsWith("ru")) && cat.descriptionRu) return cat.descriptionRu;
     
     return cat.descriptionEn || cat.description || "";
   };

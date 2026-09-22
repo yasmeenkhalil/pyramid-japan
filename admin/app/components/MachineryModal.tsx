@@ -28,6 +28,7 @@ interface Machinery {
   titleEn: string;
   titleAr: string;
   titleJa: string;
+  titleRu: string;
   slug: string;
   stockNo: string | null;
   year: number | null;
@@ -41,7 +42,9 @@ interface Machinery {
   descriptionEn: string | null;
   descriptionAr: string | null;
   descriptionJa: string | null;
+  descriptionRu: string | null;
   featured: boolean;
+  isSold: boolean;
   categoryId: string;
   manufacturerId: string;
   isAvailableForExport: boolean;
@@ -72,6 +75,7 @@ export default function MachineryModal({
   const [titleEn, setTitleEn] = useState(machinery.titleEn);
   const [titleAr, setTitleAr] = useState(machinery.titleAr);
   const [titleJa, setTitleJa] = useState(machinery.titleJa);
+  const [titleRu, setTitleRu] = useState(machinery.titleRu || "");
   const [slug, setSlug] = useState(machinery.slug);
   const [stockNo, setStockNo] = useState(machinery.stockNo || "");
   const [year, setYear] = useState(machinery.year ? machinery.year.toString() : "");
@@ -85,7 +89,9 @@ export default function MachineryModal({
   const [descriptionEn, setDescriptionEn] = useState(machinery.descriptionEn || "");
   const [descriptionAr, setDescriptionAr] = useState(machinery.descriptionAr || "");
   const [descriptionJa, setDescriptionJa] = useState(machinery.descriptionJa || "");
+  const [descriptionRu, setDescriptionRu] = useState(machinery.descriptionRu || "");
   const [featured, setFeatured] = useState<boolean>(machinery.featured);
+  const [isSold, setIsSold] = useState<boolean>(machinery.isSold || false);
   const [categoryId, setCategoryId] = useState(machinery.categoryId);
   const [manufacturerId, setManufacturerId] = useState(machinery.manufacturerId);
   const [selectedSpecs, setSelectedSpecs] = useState<SelectedSpec[]>([]);
@@ -107,6 +113,9 @@ export default function MachineryModal({
       }
      
       setIsAvailableForExport(machinery.isAvailableForExport);
+      setTitleRu(machinery.titleRu || "");
+      setDescriptionRu(machinery.descriptionRu || "");
+      setIsSold(machinery.isSold || false);
     }
   }, [machinery]);
 
@@ -129,6 +138,11 @@ export default function MachineryModal({
     if (!titleEn.trim()) newErrors.titleEn = "English title is required.";
     if (!titleAr.trim()) newErrors.titleAr = "Arabic title is required.";
     if (!titleJa.trim()) newErrors.titleJa = "Japanese title is required.";
+    if (!titleRu.trim()) {
+      newErrors.titleRu = "Russian title is required.";
+    } else if (!/^[\u0400-\u04FF0-9\s\-_,.:()]+$/.test(titleRu)) {
+      newErrors.titleRu = "Russian title must contain Russian (Cyrillic) characters only.";
+    }
     if (!slug.trim()) newErrors.slug = "Slug is required.";
     if (!location.trim()) newErrors.location = "Location is required.";
     if (!sector) newErrors.sector = "Sector is required. Please select one.";
@@ -150,6 +164,7 @@ export default function MachineryModal({
           titleEn: titleEn.trim(),
           titleAr: titleAr.trim(),
           titleJa: titleJa.trim(),
+          titleRu: titleRu.trim(),
           slug: slug.trim(),
           stockNo: stockNo.trim() || null,
           year: year ? parseInt(year) : null,
@@ -163,7 +178,9 @@ export default function MachineryModal({
           descriptionEn: descriptionEn.trim() || null,
           descriptionAr: descriptionAr.trim() || null,
           descriptionJa: descriptionJa.trim() || null,
+          descriptionRu: descriptionRu.trim() || null,
           featured,
+          isSold,
           categoryId,
           manufacturerId,
           specifications: selectedSpecs,
@@ -210,7 +227,10 @@ export default function MachineryModal({
     setDescriptionEn(machinery.descriptionEn || "");
     setDescriptionAr(machinery.descriptionAr || "");
     setDescriptionJa(machinery.descriptionJa || "");
+    setDescriptionRu(machinery.descriptionRu || "");
+    setTitleRu(machinery.titleRu || "");
     setFeatured(machinery.featured);
+    setIsSold(machinery.isSold || false);
     setCategoryId(machinery.categoryId);
     setManufacturerId(machinery.manufacturerId);
     if (machinery.specifications) {
@@ -250,7 +270,7 @@ export default function MachineryModal({
             <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden" noValidate>
               <div className="space-y-4 overflow-y-auto flex-1 pr-1 pb-4">
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div>
                     <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${errors.titleEn ? "text-red-600" : "text-gray-500"}`}>
                       Title English *
@@ -300,6 +320,24 @@ export default function MachineryModal({
                       }`}
                     />
                     {errors.titleJa && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.titleJa}</p>}
+                  </div>
+
+                  <div>
+                    <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${errors.titleRu ? "text-red-600" : "text-gray-500"}`}>
+                      Title Russian *
+                    </label>
+                    <input
+                      type="text"
+                      value={titleRu}
+                      onChange={(e) => {
+                        setTitleRu(e.target.value);
+                        if (errors.titleRu) setErrors((prev) => ({ ...prev, titleRu: "" }));
+                      }}
+                      className={`w-full border px-4 py-3 rounded-xl text-sm focus:outline-none transition-all ${
+                        errors.titleRu ? "border-red-500 bg-red-50 text-red-900 focus:border-red-600" : "border-slate-200 bg-slate-50 text-gray-800 focus:border-[#0B4EA2]"
+                      }`}
+                    />
+                    {errors.titleRu && <p className="mt-1.5 text-xs text-red-600 font-bold bg-red-50 p-2 rounded-lg border border-red-200">🚨 {errors.titleRu}</p>}
                   </div>
                 </div>
 
@@ -420,7 +458,7 @@ export default function MachineryModal({
                   </div>
                 </div>
 
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Description English</label>
                     <textarea value={descriptionEn} onChange={(e) => setDescriptionEn(e.target.value)} rows={3} className="w-full border border-slate-200 bg-slate-50 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#0B4EA2] text-gray-800 resize-none" />
@@ -433,26 +471,36 @@ export default function MachineryModal({
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Description Japanese</label>
                     <textarea value={descriptionJa} onChange={(e) => setDescriptionJa(e.target.value)} rows={3} className="w-full border border-slate-200 bg-slate-50 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#0B4EA2] text-gray-800 resize-none" />
                   </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Description Russian</label>
+                    <textarea value={descriptionRu} onChange={(e) => setDescriptionRu(e.target.value)} rows={3} className="w-full border border-slate-200 bg-slate-50 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#0B4EA2] text-gray-800 resize-none" />
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4 border-t">
+                <div className="space-y-4 pt-4 border-t">
+                  <div>
+                    <ImageUploader images={images} onChange={setImages} />
+                  </div>
+
                   <div className="bg-slate-50/60 p-5 rounded-2xl border border-slate-100">
                     <MachinerySpecsForm availableSpecs={availableSpecs} availableUnits={availableUnits} selectedSpecs={selectedSpecs} onChange={setSelectedSpecs} />
                   </div>
-                  <div className="bg-slate-50/60 p-5 rounded-2xl border border-slate-100">
-                    <ImageUploader images={images} onChange={setImages} />
-                  </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t">
                   <div className="flex items-center gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
                     <input type="checkbox" id="edit-featured" checked={featured} onChange={(e) => setFeatured(e.target.checked)} className="h-4 w-4 rounded border-slate-300 text-[#0B4EA2] focus:ring-[#0B4EA2] cursor-pointer" />
-                    <label htmlFor="edit-featured" className="text-sm font-bold text-gray-700 select-none cursor-pointer">Feature this machinery on the landing page</label>
+                    <label htmlFor="edit-featured" className="text-sm font-bold text-gray-700 select-none cursor-pointer">Feature this machinery</label>
                   </div>
 
                   <div className="flex items-center gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
                     <input type="checkbox" id="edit-isAvailableForExport" checked={isAvailableForExport} onChange={(e) => setIsAvailableForExport(e.target.checked)} className="h-4 w-4 rounded border-slate-300 text-[#0B4EA2] focus:ring-[#0B4EA2] cursor-pointer" />
-                    <label htmlFor="edit-isAvailableForExport" className="text-sm font-bold text-gray-700 select-none cursor-pointer">Available for International Export</label>
+                    <label htmlFor="edit-isAvailableForExport" className="text-sm font-bold text-gray-700 select-none cursor-pointer">International Export</label>
+                  </div>
+
+                  <div className="flex items-center gap-3 bg-red-50 p-4 rounded-2xl border border-red-100">
+                    <input type="checkbox" id="edit-isSold" checked={isSold} onChange={(e) => setIsSold(e.target.checked)} className="h-4 w-4 rounded border-red-300 text-red-600 focus:ring-red-500 cursor-pointer" />
+                    <label htmlFor="edit-isSold" className="text-sm font-bold text-red-700 select-none cursor-pointer">Mark as SOLD</label>
                   </div>
                 </div>
               </div>

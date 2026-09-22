@@ -44,7 +44,7 @@ export default function ContactPage() {
 
     async function checkAuth() {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_ || 'https://pyramidjapan.jp'}/api/auth/session`, {
+        const response = await fetch(`${import.meta.env.VITE_API_ || 'https://app.pyramidjapan.jp'}/api/auth/session`, {
           credentials: "include",
           cache: "no-store",
         });
@@ -105,7 +105,7 @@ export default function ContactPage() {
 
     try {
       setLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/inquiries`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/inquiries`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -244,7 +244,7 @@ export default function ContactPage() {
                         {t("card_info.phones_label")}
                       </h4>
                       <p className="text-sm font-bold text-[#081F3F] mt-0.5" dir="ltr">
-                        080-4346-6222 / 080-3000-3879
+                        +81 80-4346-6222 / +81 80-3000-3879
                       </p>
 
                       <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-3">

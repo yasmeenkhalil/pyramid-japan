@@ -40,7 +40,7 @@ interface Machinery {
   titleEn: string;
   titleAr: string;
   titleJa: string;
-  titleRu: string | null;
+  titleRu: string;
   slug: string;
   stockNo: string | null;
   year: number | null;
@@ -56,6 +56,7 @@ interface Machinery {
   descriptionJa: string | null;
   descriptionRu: string | null;
   featured: boolean;
+  isSold: boolean;
   categoryId: string;
   manufacturerId: string;
   isAvailableForExport: boolean;

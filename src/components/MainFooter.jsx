@@ -1,11 +1,24 @@
 import React from 'react';
 import { useLocation, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ChevronUp, Globe, MapPin, Phone } from "lucide-react";
+import { ChevronUp, MapPin, Phone } from "lucide-react";
+import logoen from "../../public/assets/images/logoen.jpeg";
+import logojp from "../../public/assets/images/logojp.jpeg";
+import logoru from "../../public/assets/images/logoru.jpeg";
+import logoar from "../../public/assets/images/logoar.jpeg";
 
 export default function MainFooter() {
   const location = useLocation();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  // اختيار اللوجو المناسب بناءً على لغة الموقع الحالية
+  const currentLogo = i18n.language === "ar"
+     ? logoar
+     : (i18n.language === "ja" || i18n.language === "jp")
+     ? logojp
+     : i18n.language === "ru"
+     ? logoru
+     : logoen;
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -25,14 +38,12 @@ export default function MainFooter() {
           {/* Section 1: About Company */}
           <div>
             <div className="flex items-center gap-4 mb-5">
-              <div className="w-14 h-14 rounded-full border border-[#C47B36]/40 flex items-center justify-center">
-                <Globe className="w-7 h-7 text-[#C47B36]" />
-              </div>
+              <img src={currentLogo} alt="Pyramid Japan CO,LTD" className="h-[60px] md:h-[70px] w-auto object-contain shrink-0 rounded-xl" />
               <div>
-                <h2 className="text-2xl font-black">
+                <h2 className="text-xl font-black leading-tight">
                   {t('footer.company_name')}
                 </h2>
-                <p className="text-slate-400 text-sm">
+                <p className="text-slate-400 text-xs mt-1">
                   {t('footer.company_suffix')}
                 </p>
               </div>
@@ -114,7 +125,7 @@ export default function MainFooter() {
               </div>
               <div className="flex gap-3">
                 <Phone className="w-4 h-4 text-[#C47B36] shrink-0" />
-                <a href="tel:080-4346-6222 / 080-3000-3879" className="hover:text-[#C47B36]">
+                <a href="tel:+81 80-4346-6222 / +81 80-3000-3879" className="hover:text-[#C47B36]">
                   {t('footer.contact.phone_val')}
                 </a>
               </div>
@@ -141,3 +152,4 @@ export default function MainFooter() {
     </footer>
   );
 }
+

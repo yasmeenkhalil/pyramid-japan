@@ -11,26 +11,30 @@ export default function FeaturedAgricultureMachinery() {
   const transformData = (items) => {
     if (!items || !Array.isArray(items)) return [];
     return items.map((item) => {
-      const currentLang = i18n.language;
+      const currentLang = i18n.language || "en";
       let finalTitle = "";
       let finalCategory = "";
 
       if (item[`title_${currentLang}`]) {
         finalTitle = item[`title_${currentLang}`];
-      } else if (currentLang === "ar" && item.titleAr) {
+      } else if ((currentLang === "ar" || currentLang.startsWith("ar")) && item.titleAr) {
         finalTitle = item.titleAr;
-      } else if (currentLang === "ja" && item.titleJa) {
+      } else if ((currentLang === "ja" || currentLang.startsWith("ja")) && item.titleJa) {
         finalTitle = item.titleJa;
+      } else if ((currentLang === "ru" || currentLang.startsWith("ru")) && item.titleRu) {
+        finalTitle = item.titleRu;
       } else {
         finalTitle = item.titleEn || item.title || "";
       }
 
       if (item.category?.[`name_${currentLang}`]) {
         finalCategory = item.category[`name_${currentLang}`];
-      } else if (currentLang === "ar" && item.category?.nameAr) {
+      } else if ((currentLang === "ar" || currentLang.startsWith("ar")) && item.category?.nameAr) {
         finalCategory = item.category.nameAr;
-      } else if (currentLang === "ja" && item.category?.nameJa) {
+      } else if ((currentLang === "ja" || currentLang.startsWith("ja")) && item.category?.nameJa) {
         finalCategory = item.category.nameJa;
+      } else if ((currentLang === "ru" || currentLang.startsWith("ru")) && item.category?.nameRu) {
+        finalCategory = item.category.nameRu;
       } else {
         finalCategory = item.category?.nameEn || "Machinery";
       }
@@ -38,10 +42,15 @@ export default function FeaturedAgricultureMachinery() {
       return {
         id: item.id,
         title: finalTitle,
+        titleEn: item.titleEn,
+        titleAr: item.titleAr,
+        titleJa: item.titleJa,
+        titleRu: item.titleRu,
         category: finalCategory,
         year: item.year ? item.year.toString() : "",
         hours: item.hour ? `${item.hour.toLocaleString()} ${t("featured_agri.hrs")}` : `0 ${t("featured_agri.hrs")}`,
         condition: t("featured_agri.condition_val"),
+        isSold: Boolean(item.isSold),
         price: item.price ? `${item.price.toLocaleString()} JPY` : t("featured_agri.ask_price"),
         image: item.images && item.images.length > 0 ? item.images[0].imageUrl : '/assets/images/Tractors.png',
       };
@@ -52,7 +61,7 @@ export default function FeaturedAgricultureMachinery() {
     async function fetchFeaturedMachines() {
       try {
         setLoading(true);
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/machinery/all?sector=Agriculture&featured=true`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/machinery/all?sector=Agriculture&featured=true`);
         if (response.ok) {
           const data = await response.json();
           setMachines(transformData(data));
@@ -116,10 +125,16 @@ export default function FeaturedAgricultureMachinery() {
                     alt={machine.title}
                     className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute top-3 left-3 z-10 flex items-center gap-1 rounded-full bg-emerald-500 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow">
-                    <ShieldCheck className="h-3 w-3" />
-                    {machine.condition}
-                  </div>
+                  {machine.isSold ? (
+                    <div className="absolute top-3 left-3 z-10 flex items-center gap-1 rounded-full bg-red-600 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow">
+                      {t("machinery.sold_badge")}
+                    </div>
+                  ) : (
+                    <div className="absolute top-3 left-3 z-10 flex items-center gap-1 rounded-full bg-emerald-500 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow">
+                      <ShieldCheck className="h-3 w-3" />
+                      {machine.condition}
+                    </div>
+                  )}
                   <div className="absolute bottom-3 right-3 z-10 rounded-md bg-[#052919]/85 backdrop-blur-sm px-2 py-0.5 text-[9px] font-mono text-white">
                     {t("featured_agri.ref_label")}: {machine.id}
                   </div>

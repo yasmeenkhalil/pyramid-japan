@@ -37,6 +37,7 @@ interface MachineryRequestBody {
   descriptionJa?: string;
   descriptionRu?: string; // 2. تم إضافة حقل الوصف بالروسية للـ Interface
   featured?: boolean;
+  isSold?: boolean;
   categoryId?: string;
   manufacturerId?: string;
   specifications?: any[];
@@ -146,6 +147,7 @@ export async function POST(req: Request) {
         descriptionJa: body.descriptionJa ? body.descriptionJa.trim() : null,
         descriptionRu: body.descriptionRu ? body.descriptionRu.trim() : null, // تمرير الوصف الروسي
         featured: Boolean(body.featured),
+        isSold: body.isSold !== undefined ? Boolean(body.isSold) : false,
         categoryId: categoryIdStr,
         manufacturerId: manufacturerIdStr,
         isAvailableForExport: body.isAvailableForExport !== undefined ? Boolean(body.isAvailableForExport) : true,

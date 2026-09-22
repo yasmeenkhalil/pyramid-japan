@@ -13,8 +13,8 @@ export default function WorldShipping() {
 
   useEffect(() => {
     Promise.all([
-      fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/settings`).then(res => res.ok ? res.json() : null),
-      fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/export-countries`).then(res => res.ok ? res.json() : [])
+      fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/settings`).then(res => res.ok ? res.json() : null),
+      fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/export-countries`).then(res => res.ok ? res.json() : [])
     ])
     .then(([statsData, countriesData]) => {
       if (statsData) setStats(statsData);

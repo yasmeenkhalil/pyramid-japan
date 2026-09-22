@@ -38,26 +38,67 @@ export default function App() {
   const currentLang = i18n.language;
 
   // تعريف الرابط الأساسي للباك إند من ملف الـ env
-  const baseUrl = import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp';
+  const baseUrl = import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp';
+
+  const resolveImage = (item) => {
+    const candidates = [
+      item?.images,
+      item?.image,
+      item?.imageUrl,
+      item?.thumbnail,
+      item?.mainImage,
+    ];
+
+    for (const candidate of candidates) {
+      if (Array.isArray(candidate) && candidate.length > 0) {
+        const first = candidate[0];
+        if (typeof first === 'string') return first;
+        if (first?.imageUrl) return first.imageUrl;
+      }
+
+      if (typeof candidate === 'string' && candidate.trim()) {
+        return candidate;
+      }
+
+      if (candidate && typeof candidate === 'object' && candidate.imageUrl) {
+        return candidate.imageUrl;
+      }
+    }
+
+    if (item?.sector === 'Agriculture') {
+      return '/assets/images/Tractors.png';
+    }
+
+    if (item?.sector === 'Construction') {
+      return '/assets/images/Crushers_Wood_Chippers.png';
+    }
+
+    return '/assets/images/Crushers_Wood_Chippers.png';
+  };
 
   const transformData = (items) => {
     if (!items || !Array.isArray(items)) return [];
     return items.map((item) => {
       let finalTitle = item.titleEn || item.title || "";
-      if (currentLang === "ar" && item.titleAr) finalTitle = item.titleAr;
-      if (currentLang === "ja" && item.titleJa) finalTitle = item.titleJa;
-      if (currentLang === "ru" && item.titleRu) finalTitle = item.titleRu;
+      if ((currentLang === "ar" || currentLang?.startsWith("ar")) && item.titleAr) finalTitle = item.titleAr;
+      if ((currentLang === "ja" || currentLang?.startsWith("ja")) && item.titleJa) finalTitle = item.titleJa;
+      if ((currentLang === "ru" || currentLang?.startsWith("ru")) && item.titleRu) finalTitle = item.titleRu;
 
       return {
         id: item.id,
         title: finalTitle,
+        titleEn: item.titleEn,
+        titleAr: item.titleAr,
+        titleJa: item.titleJa,
+        titleRu: item.titleRu,
         model: item.model || "",
         hours: item.hour ? item.hour.toLocaleString() : "0",
         year: item.year ? item.year.toString() : "",
         location: item.location || t('app.default_location'),
-        tag: item.featured ? t('app.tag_featured') : "",
+        tag: item.isSold ? "" : (item.featured ? t('app.tag_featured') : ""),
+        isSold: Boolean(item.isSold),
         price: item.price ? `${item.price.toLocaleString()} JPY` : t('app.ask_price'),
-        image: item.images && item.images.length > 0 ? item.images[0].imageUrl : '/assets/images/Crushers_Wood_Chippers.png'
+        image: resolveImage(item)
       };
     });
   };
@@ -84,6 +125,8 @@ export default function App() {
         const resRec = await fetch(recUrl);
         if (resRec.ok) {
           const dataRec = await resRec.json();
+          console.log(dataRec);
+          
           setRecommendedMachines(transformData(dataRec));
         }
         setLoadingRec(false);

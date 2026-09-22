@@ -13,7 +13,7 @@ export default function FeaturedExportMachinery() {
     async function fetchFeatured() {
       try {
         setLoading(true);
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/machinery/all?export=true`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/machinery/all?export=true`);
         if (res.ok) {
           const data = await res.json();
           setMachines(data.slice(0, 10));
@@ -87,10 +87,16 @@ export default function FeaturedExportMachinery() {
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   
-                  <div className="absolute top-3 left-3 z-10 flex items-center gap-1 rounded-full bg-emerald-500 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow">
-                    <ShieldCheck className="h-3 w-3" />
-                    {t("featured_export.verified")}
-                  </div>
+                  {machine.isSold ? (
+                    <div className="absolute top-3 left-3 z-10 flex items-center gap-1 rounded-full bg-red-600 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow">
+                      {t("machinery.sold_badge")}
+                    </div>
+                  ) : (
+                    <div className="absolute top-3 left-3 z-10 flex items-center gap-1 rounded-full bg-emerald-500 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow">
+                      <ShieldCheck className="h-3 w-3" />
+                      {t("featured_export.verified")}
+                    </div>
+                  )}
                   
                   {machine.stockNo && (
                     <div className="absolute bottom-3 right-3 z-10 rounded-md bg-[#081F3F]/80 backdrop-blur-sm px-2 py-0.5 text-[9px] font-mono text-white">
@@ -129,7 +135,7 @@ export default function FeaturedExportMachinery() {
                   </div>
 
                   <Link 
-                    to={`/machinery/${machine.slug}`}
+                    to={`/machinery/${machine.id}`}
                     className="mt-1 flex w-full items-center justify-center gap-1.5 rounded-xl bg-[#081F3F] px-3 py-2.5 text-[11px] font-bold text-white transition hover:bg-[#D9A441] hover:text-[#081F3F]"
                   >
                     {t("featured_export.btn_details")}

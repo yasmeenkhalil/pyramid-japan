@@ -4,27 +4,58 @@ import { useTranslation } from "react-i18next"; // استيراد مكتبة ا�
 export default function SidebarBanners() {
   const { t, i18n } = useTranslation(); 
 
-   const handleDownloadStockList = async () => {
-    try {
-      const baseUrl = import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp';
+  const handleDownloadStockList = async () => {
+  try {
+    const baseUrl =
+      import.meta.env.VITE_API_URL ||
+      "https://app.pyramidjapan.jp";
 
-      const response = await fetch(`${baseUrl}/api/machinery/export`, {
-        method: 'GET',
-      });
-      if (!response.ok) throw new Error("Failed to download file");
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'Global_Trading_Stock_List.xlsx';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error exporting excel:", error);
+    const response = await fetch(
+      `${baseUrl}/api/machinery/export`,
+      {
+        method: "GET",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to download PDF");
     }
-  };
+
+    const contentType =
+      response.headers.get("content-type") || "";
+
+    if (!contentType.includes("application/pdf")) {
+      throw new Error(
+        "Server did not return a PDF file"
+      );
+    }
+
+    const blob = await response.blob();
+
+    const url =
+      window.URL.createObjectURL(blob);
+
+    const a =
+      document.createElement("a");
+
+    a.href = url;
+    a.download =
+      "Pyramid_Japan_Stock_List.pdf";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error(
+      "Error exporting PDF:",
+      error
+    );
+  }
+};;
 
 
   return (

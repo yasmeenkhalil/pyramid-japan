@@ -17,7 +17,7 @@ export default function SignUpForm({ onToggleView, onRegisterSuccess }) {
     setLoading(true);
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/register`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),

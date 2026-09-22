@@ -2,7 +2,10 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Search, Menu, X, LogOut, ShieldCheck, User } from "lucide-react";
-import logo from "../../public/assets/images/logo1.jpg";
+import logoen from "../../public/assets/images/logoen.jpeg";
+import logojp from "../../public/assets/images/logojp.jpeg";
+import logoru from "../../public/assets/images/logoru.jpeg";
+import logoar from "../../public/assets/images/logoar.jpeg";
 import SignInForm from "../components/SignInForm";
 import SignUpForm from "../components/SignUpForm";
 import { createPortal } from "react-dom";
@@ -18,13 +21,22 @@ export default function Header() {
 
   const [session, setSession] = useState(null);
   const [status, setStatus] = useState("loading");
+  const currentLogo = i18n.language === "ar"
+    ? logoar
+    : (i18n.language === "ja" || i18n.language === "jp")
+    ? logojp
+    : i18n.language === "ru"
+    ? logoru
+    : logoen;
+
+
 
   useEffect(() => {
     let isMounted = true;
 
     async function fetchAuthSession() {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/auth/session`, { credentials: "include" });
+;      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/auth/session`, { credentials: "include" });
 
         if (response.ok && isMounted) {
           const data = await response.json();
@@ -54,16 +66,28 @@ export default function Header() {
       isMounted = false;
     };
   }, []);
+  useEffect(() => {
+  const handleOpenAuthModal = () => {
+    setShowAuthModal(true);
+    setIsLoginView(true);
+  };
+
+  window.addEventListener("open-auth-modal", handleOpenAuthModal);
+
+  return () => {
+    window.removeEventListener("open-auth-modal", handleOpenAuthModal);
+  };
+}, []);
 
   const handleLogout = async () => {
     try {
-      const csrfResponse = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/auth/csrf`, {
+      const csrfResponse = await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/auth/csrf`, {
         credentials: "include",
       });
 
       const csrfData = await csrfResponse.json();
 
-      await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/auth/signout`, {
+      await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/auth/signout`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -88,7 +112,7 @@ export default function Header() {
     setShowAuthModal(false);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/auth/session`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/auth/session`, {
         credentials: "include",
         cache: "no-store",
       });
@@ -125,20 +149,31 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200">
       <div className="max-w-[1440px] mx-auto px-4 xl:px-6">
-        <div className="h-[78px] flex items-center justify-between gap-2">
+          <div className="h-[92px] flex items-center justify-between gap-2">
           
           {/* اللوجو مع حماية المساحة عند الضغط الخفيف */}
-          <Link to="/" className="flex items-center gap-2 xl:gap-3 shrink-0 max-w-[240px] xl:max-w-none">
-            <img src={logo} alt="Pyramid Japan CO,LTD" className="w-12 h-12 xl:w-16 xl:h-16 rounded-xl object-cover shrink-0" />
-            <div className="min-w-0">
-              <h1 className="text-sm xl:text-base font-bold tracking-wide text-[#111827] leading-none truncate">
-                PYRAMID JAPAN CO.LTD
-              </h1>
-              <p className="text-[9px] uppercase tracking-[0.1em] text-slate-500 mt-1 truncate">
-                {t("nav.sub_logo")}
-              </p>
-            </div>
-          </Link>
+          <Link
+  to="/"
+  className="flex items-center gap-3 shrink-0 max-w-[300px] xl:max-w-none"
+>
+  <div className="flex items-center justify-center shrink-0">
+    <img
+      src={currentLogo}
+      alt="Pyramid Japan CO,LTD"
+      className="w-[76px] h-[76px] xl:w-[82px] xl:h-[82px] rounded-xl object-contain"
+    />
+  </div>
+
+  <div className="min-w-0">
+    <h1 className="text-sm xl:text-base font-bold tracking-wide text-[#111827] leading-none whitespace-nowrap">
+      PYRAMID JAPAN CO.LTD
+    </h1>
+
+    <p className="text-[9px] uppercase tracking-[0.1em] text-slate-500 mt-1 whitespace-nowrap">
+      {t("nav.sub_logo")}
+    </p>
+  </div>
+</Link>
 
           {/* روابط الملاحة: تم تصغير الخط وتقليل الفراغات عند الحاجة لمنع تخريب التصميم بالروسي */}
           <nav className="hidden lg:flex items-center justify-center gap-1.5 xl:gap-3 flex-1 px-2 text-xs xl:text-sm">
@@ -226,7 +261,7 @@ export default function Header() {
 
       {/* قائمة الموبايل المنسدلة */}
       {isOpen && (
-        <div className="lg:hidden border-t border-slate-200 bg-white shadow-inner max-h-[calc(100vh-78px)] overflow-y-auto">
+        <div className="lg:hidden border-t border-slate-200 bg-white shadow-inner max-h-[calc(100vh-92px)] overflow-y-auto">
           <div className="p-5">
             <nav className="flex flex-col gap-1">
               {navLinks.map((item) => (

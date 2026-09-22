@@ -8,7 +8,7 @@ export default function CategoryGrid({ sector, sort }) {
   const navigate = useNavigate();
 
   // تعريف الرابط الأساسي للباك إند من ملف الـ env
-  const baseUrl = import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp';
+  const baseUrl = import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp';
 
   useEffect(() => {
     async function fetchCategories() {
@@ -35,12 +35,13 @@ export default function CategoryGrid({ sector, sort }) {
 
   const getCategoryName = (cat) => {
     if (!cat) return "";
-    const currentLang = i18n.language;
+    const currentLang = i18n.language || "en";
 
     if (cat[`name_${currentLang}`]) return cat[`name_${currentLang}`];
 
-    if (currentLang === "ar" && cat.nameAr) return cat.nameAr;
-    if (currentLang === "ja" && cat.nameJa) return cat.nameJa;
+    if ((currentLang === "ar" || currentLang.startsWith("ar")) && cat.nameAr) return cat.nameAr;
+    if ((currentLang === "ja" || currentLang.startsWith("ja")) && cat.nameJa) return cat.nameJa;
+    if ((currentLang === "ru" || currentLang.startsWith("ru")) && cat.nameRu) return cat.nameRu;
     
     return cat.nameEn || cat.name || "";
   };
@@ -67,7 +68,7 @@ export default function CategoryGrid({ sector, sort }) {
               <img 
                 src={cat.imageUrl || "/assets/images/Crushers_Wood_Chippers.png"} 
                 alt={getCategoryName(cat)} 
-                className="w-full h-full object-contain object-center transition-transform duration-750 ease-out group-hover:scale-105" 
+                className="w-full h-full object-cover object-center transition-transform duration-750 ease-out group-hover:scale-105" 
               />
               <div className="absolute inset-0 bg-gradient-to-b from-[#16110F]/40 via-transparent to-[#16110F] opacity-90" />
             </div>

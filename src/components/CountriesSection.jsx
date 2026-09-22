@@ -18,12 +18,12 @@ export default function CountriesSection() {
       try {
         setLoading(true);
         
-        const countriesRes = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/export-countries`);
+        const countriesRes = await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/export-countries`);
         if (countriesRes.ok) {
           const countriesData = await countriesRes.json();
           setDbCountries(countriesData);
         }
-        const statsRes = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/settings`);
+        const statsRes = await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/settings`);
         if (statsRes.ok) {
           const statsData = await statsRes.json();
           setStats({

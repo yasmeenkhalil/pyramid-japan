@@ -29,15 +29,17 @@ export default function AllMachineryPage() {
   const transformData = (items) => {
     if (!items || !Array.isArray(items)) return [];
     return items.map((item) => {
-      const currentLang = i18n.language;
+      const currentLang = i18n.language || "en";
       let finalTitle = "";
 
       if (item[`title_${currentLang}`]) {
         finalTitle = item[`title_${currentLang}`];
-      } else if (currentLang === "ar" && item.titleAr) {
+      } else if ((currentLang === "ar" || currentLang.startsWith("ar")) && item.titleAr) {
         finalTitle = item.titleAr;
-      } else if (currentLang === "ja" && item.titleJa) {
+      } else if ((currentLang === "ja" || currentLang.startsWith("ja")) && item.titleJa) {
         finalTitle = item.titleJa;
+      } else if ((currentLang === "ru" || currentLang.startsWith("ru")) && item.titleRu) {
+        finalTitle = item.titleRu;
       } else {
         finalTitle = item.titleEn || item.title || "";
       }
@@ -45,13 +47,18 @@ export default function AllMachineryPage() {
       return {
         id: item.id,
         title: finalTitle,
+        titleEn: item.titleEn,
+        titleAr: item.titleAr,
+        titleJa: item.titleJa,
+        titleRu: item.titleRu,
         model: item.model || "",
         hours: item.hour ? item.hour.toLocaleString() : "0",
         rawHours: item.hour || 0,
         year: item.year ? item.year.toString() : "",
         rawYear: item.year || 0,
         location: item.location || "AOCHI Yard",
-        tag: item.featured ? t("machinery.featured_tag") : "",
+        tag: item.isSold ? "" : (item.featured ? t("machinery.featured_tag") : ""),
+        isSold: Boolean(item.isSold),
         price: item.price ? `${item.price.toLocaleString()} JPY` : t("machinery.ask_price"),
         image: item.images && item.images.length > 0 ? item.images[0].imageUrl : '/assets/images/Crushers_Wood_Chippers.png',
         createdAt: item.createdAt ? new Date(item.createdAt).getTime() : 0
@@ -100,7 +107,7 @@ export default function AllMachineryPage() {
     async function fetchFilteredMachines() {
       try {
         setLoading(true);
-        const baseUrl = import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp';
+        const baseUrl = import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp';
         let url = `${baseUrl}/api/machinery/all`;
 
         const params = new URLSearchParams();

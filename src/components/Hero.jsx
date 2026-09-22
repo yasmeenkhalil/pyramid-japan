@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import image from "../../public/assets/images/3-motor-graders_01.webp";
 
 export default function Hero() {
   const { t } = useTranslation();
@@ -9,7 +10,7 @@ export default function Hero() {
       
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://changlinglobal.asia/products/3-motor-graders_01.webp" 
+          src={image} 
           alt="Heavy Machinery Yard" 
           className="w-full h-full object-cover object-center"
         />

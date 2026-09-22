@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import MachineryGallery from "../components/MachineryGallery";
 
 export default function MachineryDetails() {
   const { id } = useParams();
@@ -26,7 +27,7 @@ export default function MachineryDetails() {
   useEffect(() => {
     async function checkAuth() {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/auth/session`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/auth/session`, {
           credentials: "include",
           cache: "no-store",
         });
@@ -67,7 +68,7 @@ export default function MachineryDetails() {
       setIsLoading(true);
       setFetchError(null);
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/machinery/${id}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/machinery/${id}`);
         
         if (res.ok) {
           const data = await res.json();
@@ -109,7 +110,7 @@ export default function MachineryDetails() {
 
     try {
       setIsSubmitting(true);
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/inquiries`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/inquiries`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -146,24 +147,64 @@ export default function MachineryDetails() {
     );
   }
 
+  if (!isAuthenticated && status !== "loading") {
+    return (
+      <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 font-sans relative flex items-center justify-center overflow-hidden">
+
+        <div className="absolute inset-0 filter blur-xl pointer-events-none opacity-25 select-none max-w-7xl mx-auto py-12 px-4 z-0">
+          <div className="flex flex-col lg:flex-row gap-8 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm mb-8">
+            <div className="w-full lg:w-1/2 h-96 bg-slate-300 rounded-xl"></div>
+          <div className="w-full lg:w-1/2 flex flex-col justify-between">
+              <div className="h-6 w-1/3 bg-slate-300 rounded mb-4"></div>
+              <div className="h-10 w-3/4 bg-slate-300 rounded mb-4"></div>
+              <div className="h-20 w-full bg-slate-300 rounded mb-6"></div>
+              <div className="h-12 w-1/2 bg-slate-300 rounded"></div>
+            </div>
+              </div>
+                </div>
+
+        {/* كارد تنبيه تسجيل الدخول في المنتصف */}
+        <div className="relative z-20 max-w-md w-full bg-white rounded-2xl border border-slate-200 p-8 shadow-2xl text-center">
+          <div className="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl border border-amber-100">
+            🔒
+                </div>
+          <h2 className="text-xl font-bold text-[#0F172A] mb-2">
+            {t("details.auth_required_title", "Authentication Required")}
+            </h2>
+          <p className="text-xs text-slate-500 leading-relaxed mb-6">
+            {t("contact_page.err_auth")}
+          </p>
+              <button
+             onClick={() => {
+  window.dispatchEvent(new CustomEvent("open-auth-modal"));
+}}
+            className="w-full py-3.5 rounded-xl bg-[#E0B15A] hover:bg-[#C47B36] text-white font-bold text-sm transition-all duration-300 shadow-md cursor-pointer"
+          >
+            {t("nav.btn_auth")}
+              </button>
+            </div>
+          </div>
+                );
+  }
+
   if (fetchError || !machineData) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 text-center">
         <div className="text-4xl mb-2">⚠️</div>
         <h2 className="text-lg font-bold text-slate-800">{fetchError || t('details.not_found')}</h2>
         <p className="text-xs text-slate-500 mt-1 max-w-sm">{t('details.not_found_desc')}</p>
-      </div>
-    );
-  }
+            </div>
+  );
+}
 
-  // فرز العناوين والوصف بناءً على اللغة الحالية المفعّلة في الموقع ديناميكياً بما فيها الروسية
   const displayTitle = currentLang === 'ar' ? machineData.titleAr : currentLang === 'ja' ? machineData.titleJa : currentLang === 'ru' ? machineData.titleRu : machineData.titleEn;
   const displayDescription = currentLang === 'ar' ? machineData.descriptionAr : currentLang === 'ja' ? machineData.descriptionJa : currentLang === 'ru' ? machineData.descriptionRu : machineData.descriptionEn;
   const displayCategory = currentLang === 'ar' ? machineData.category?.nameAr : currentLang === 'ja' ? machineData.category?.nameJa : currentLang === 'ru' ? machineData.category?.nameRu : machineData.category?.nameEn;
+  const isSold = Boolean(machineData.isSold);
 
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 font-sans relative">
-      
+
       {showToast && (
         <div className={`fixed top-5 z-50 flex items-center gap-3 bg-emerald-500 text-white px-5 py-3.5 rounded-xl shadow-xl transition-all duration-300 font-medium text-sm border border-emerald-400/20 ${isRtl ? 'left-5' : 'right-5'}`}>
           <span className="text-base">✓</span>
@@ -172,34 +213,7 @@ export default function MachineryDetails() {
       )}
 
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row gap-8 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm mb-8">
-          
-          {/* معرض الصور الديناميكي */}
-          <div className="w-full lg:w-1/2 flex flex-col gap-4">
-            <div className="relative h-96 w-full rounded-xl overflow-hidden bg-slate-100 border border-slate-200 flex justify-center items-center">
-              <span className={`absolute top-4 px-3 py-1 rounded-full bg-[#C47B36] text-white text-[10px] font-semibold uppercase tracking-wide z-10 ${isRtl ? 'right-4' : 'left-4'}`}>
-                {displayCategory}
-              </span>
-              <img src={activeImage} alt={displayTitle} className="w-90 h-full object-cover object-center transition-all duration-300" />
-            </div>
-
-            {machineData.images && machineData.images.length > 0 && (
-              <div className="flex gap-3 overflow-x-auto pb-2 scroll-smooth select-none cursor-grab active:cursor-grabbing snap-x whitespace-nowrap scrollbar-thin scrollbar-thumb-slate-300 stroke-transparent">
-                {machineData.images.map((img, index) => {
-                  const imgUrl = img.imageUrl || img;
-                  return (
-                    <button
-                      key={index}
-                      onClick={() => setActiveImage(imgUrl)}
-                      className={`flex-shrink-0 w-24 h-24 rounded-xl overflow-hidden border-2 bg-slate-50 transition-all snap-center ${activeImage === imgUrl ? 'border-[#C47B36] shadow-md scale-95' : 'border-slate-200 hover:border-slate-300'}`}
-                    >
-                      <img src={imgUrl} alt={`thumb-${index}`} className="w-full h-full object-cover object-center pointer-events-none" />
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+       <div className="flex flex-col lg:flex-row gap-8 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm mb-8"> {/* Gallery */} <div className="w-full lg:w-1/2"> <MachineryGallery images={machineData.images || []} title={displayTitle} category={displayCategory} isSold={isSold} soldLabel={t("machinery.sold_badge")} dir={isRtl ? "rtl" : "ltr"} /> </div>
           {/* تفاصيل الموديل والمواصفات الأساسية */}
           <div className="w-full lg:w-1/2 flex flex-col justify-between">
             <div>
@@ -207,7 +221,7 @@ export default function MachineryDetails() {
                 <span>{t('details.stock_id')} : #{machineData.stockNo || machineData.id.slice(0,6)}</span>
                 <span>{t('details.published')} : {new Date(machineData.createdAt).toLocaleDateString()}</span>
               </div>
-              
+
               <h1 className="text-3xl font-bold text-[#0F172A] uppercase mb-1">
                 {machineData.manufacturer?.name} {machineData.slug.replace(/-/g, ' ')}
               </h1>
@@ -258,7 +272,7 @@ export default function MachineryDetails() {
                   {machineData.price > 0 ? `¥ ${machineData.price.toLocaleString()}` : t('machine.inquire')}
                 </span>
               </div>
-              <button 
+              <button
                 onClick={() => {
                   if (isAuthenticated) {
                     setIsModalOpen(true);
@@ -282,10 +296,10 @@ export default function MachineryDetails() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 text-sm">
               {machineData.specifications.map((item, index) => {
-                const specName = 
-                  currentLang === 'ar' ? item.specification?.nameAr : 
-                  currentLang === 'ja' ? item.specification?.nameJa : 
-                  currentLang === 'ru' ? item.specification?.nameRu : 
+                const specName =
+                  currentLang === 'ar' ? item.specification?.nameAr :
+                  currentLang === 'ja' ? item.specification?.nameJa :
+                  currentLang === 'ru' ? item.specification?.nameRu :
                   item.specification?.nameEn;
 
                 const unitName = item.unit?.name || '';
@@ -314,7 +328,7 @@ export default function MachineryDetails() {
               <h2 className="text-xl font-bold text-[#0F172A]">{t('details.modal_title')}</h2>
               <p className="text-xs text-slate-500 mt-1">{t('details.form.request_subtitle')} <span className="font-semibold text-[#C47B36]">{displayTitle}</span></p>
             </div>
-            
+
             {!isAuthenticated && status !== "loading" && (
               <div className="mb-4 p-3.5 bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium rounded-xl">
                 ⚠️ {t("contact_page.err_auth")}
@@ -322,7 +336,7 @@ export default function MachineryDetails() {
             )}
 
             {errorMessage && <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-xs font-medium rounded-xl">⚠️ {errorMessage}</div>}
-            
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t('details.form.name')}</label>
@@ -340,11 +354,11 @@ export default function MachineryDetails() {
                 <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t('details.form.message')}</label>
                 <textarea name="message" rows="3" value={formData.message} onChange={handleInputChange} disabled={isSubmitting} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#C47B36] text-[#0F172A] resize-none disabled:bg-slate-50" placeholder={t('details.form.message_placeholder')}></textarea>
               </div>
-              
+
               <div className="pt-2">
-                <button 
-                  type="submit" 
-                  disabled={!isAuthenticated || isSubmitting} 
+                <button
+                  type="submit"
+                  disabled={!isAuthenticated || isSubmitting}
                   className="w-full py-3 rounded-xl bg-[#0F172A] hover:bg-[#C47B36] text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 disabled:bg-slate-300 disabled:text-slate-500 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
@@ -361,7 +375,9 @@ export default function MachineryDetails() {
           </div>
         </div>
       )}
-      
+
     </div>
   );
 }
+
+

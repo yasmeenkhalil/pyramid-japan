@@ -11,7 +11,7 @@ export default function ConstructionHero() {
   useEffect(() => {
     const fetchMachineryData = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://pyramidjapan.jp'}/api/categories?sector=Construction`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/categories?sector=Construction`);
         const data = await response.json();
 
         if (Array.isArray(data)) {
@@ -29,12 +29,13 @@ export default function ConstructionHero() {
 
   const getCategoryName = (cat) => {
     if (!cat) return "";
-    const currentLang = i18n.language;
+    const currentLang = i18n.language || "en";
 
     if (cat[`name_${currentLang}`]) return cat[`name_${currentLang}`];
 
-    if (currentLang === "ar" && cat.nameAr) return cat.nameAr;
-    if (currentLang === "ja" && cat.nameJa) return cat.nameJa;
+    if ((currentLang === "ar" || currentLang.startsWith("ar")) && cat.nameAr) return cat.nameAr;
+    if ((currentLang === "ja" || currentLang.startsWith("ja")) && cat.nameJa) return cat.nameJa;
+    if ((currentLang === "ru" || currentLang.startsWith("ru")) && cat.nameRu) return cat.nameRu;
     
     return cat.nameEn || cat.name || "";
   };

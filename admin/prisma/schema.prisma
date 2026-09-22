@@ -69,35 +69,43 @@ model MachinerySpecification {
 }
 
 model Machinery {
-  id                   String                   @id @default(cuid())
-  titleEn              String
-  titleAr              String
-  titleJa              String
-  titleRu              String                   
-  slug                 String                   @unique
-  stockNo              String?
-  year                 Int?
-  hour                 Int?
-  price                Float?
-  location             String
-  sector               String                   
-  minPrice             Float?                   
-  avgPrice             Float?                   
-  maxPrice             Float?                   
-  descriptionEn        String?
-  descriptionAr        String?
-  descriptionJa        String?
-  descriptionRu        String?                  // تم إضافة حقل الوصف بالروسية (اختياري)
-  featured             Boolean                  @default(false)
-  isAvailableForExport Boolean                  @default(true)
-  categoryId           String
-  category             Category                 @relation(fields: [categoryId], references: [id])
-  images               MachineryImage[]
-  views                MachineryView[]
-  manufacturerId       String
-  manufacturer         Manufacturer             @relation(fields: [manufacturerId], references: [id])
-  specifications       MachinerySpecification[]
-  createdAt            DateTime                 @default(now())
+  id                     String           @id @default(cuid())
+  titleEn                String
+  titleAr                String
+  titleJa                String
+  titleRu                String
+  slug                   String           @unique
+  stockNo                String?
+  year                   Int?
+  hour                   Int?
+  price                  Float?
+  location               String
+  sector                 String
+  minPrice               Float?
+  avgPrice               Float?
+  maxPrice               Float?
+
+  descriptionEn          String?
+  descriptionAr          String?
+  descriptionJa          String?
+  descriptionRu          String?                 
+
+  featured               Boolean          @default(false)
+  isSold                 Boolean          @default(false)
+  isAvailableForExport   Boolean          @default(true)
+
+  categoryId             String
+  category               Category         @relation(fields: [categoryId], references: [id])
+
+  images                 MachineryImage[]
+  views                  MachineryView[]
+
+  manufacturerId         String
+  manufacturer           Manufacturer     @relation(fields: [manufacturerId], references: [id])
+
+  specifications         MachinerySpecification[]
+
+  createdAt              DateTime         @default(now())
 }
 
 model MachineryImage {
@@ -138,6 +146,11 @@ model ExportCountry {
   slug        String                 @unique 
   countryCode String?                @unique
   createdAt   DateTime               @default(now())
+}
+
+enum MachineryStatus {
+  AVAILABLE
+  SOLD
 }
 
 model Setting {

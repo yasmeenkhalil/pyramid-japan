@@ -93,6 +93,7 @@ export default async function MachineryPage() {
                 <th className="p-4">Price</th>
                 <th className="p-4 text-center">Specs</th>
                 <th className="p-4">Featured</th>
+                <th className="p-4">Status</th>
                 <th className="p-4 text-center">Actions</th>
               </tr>
             </thead>
@@ -146,6 +147,18 @@ export default async function MachineryPage() {
                       </span>
                     ) : (
                       <span className="text-gray-400">-</span>
+                    )}
+                  </td>
+
+                  <td className="p-4 align-middle">
+                    {item.isSold ? (
+                      <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">
+                        Sold
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20">
+                        Available
+                      </span>
                     )}
                   </td>
 

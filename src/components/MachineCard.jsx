@@ -3,7 +3,26 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 export default function MachineCard({ machine }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isSold = Boolean(machine?.isSold);
+  const badgeText = isSold ? t('machinery.sold_badge') : (machine?.tag || '');
+  const badgeClass = isSold ? 'bg-red-600 text-white' : 'bg-[#C47B36] text-white';
+
+  const getMachineTitle = (m) => {
+    if (!m) return "";
+    const currentLang = i18n.language || "en";
+
+    if ((currentLang === "ar" || currentLang.startsWith("ar")) && m.titleAr) return m.titleAr;
+    if ((currentLang === "ja" || currentLang.startsWith("ja")) && m.titleJa) return m.titleJa;
+    if ((currentLang === "ru" || currentLang.startsWith("ru")) && m.titleRu) return m.titleRu;
+    if ((currentLang === "en" || currentLang.startsWith("en")) && m.titleEn) return m.titleEn;
+
+    if (m[`title_${currentLang}`]) return m[`title_${currentLang}`];
+
+    return m.title || m.titleEn || m.titleAr || m.titleRu || m.titleJa || "";
+  };
+
+  const displayTitle = getMachineTitle(machine);
 
   return (
     <Link 
@@ -13,12 +32,14 @@ export default function MachineCard({ machine }) {
       <div className="relative h-56 overflow-hidden bg-slate-100">
         <img
           src={machine.image}
-          alt={machine.title}
+          alt={displayTitle || machine.model}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#C47B36] text-white text-[10px] font-semibold uppercase tracking-wide">
-          {t(`machine.tags.${machine.tag?.toLowerCase()}`, machine.tag)}
-        </span>
+        {badgeText && (
+          <span className={`absolute top-3 left-3 px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide ${badgeClass}`}>
+            {badgeText}
+          </span>
+        )}
       </div>
 
       <div className="p-5">
@@ -26,7 +47,7 @@ export default function MachineCard({ machine }) {
           {machine.model}
         </h3>
         <p className="text-sm text-slate-500 line-clamp-1 mb-4">
-          {machine.title}
+          {displayTitle}
         </p>
 
         {/* المواصفات المترجمة */}
