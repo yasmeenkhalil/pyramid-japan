@@ -1,8 +1,15 @@
 import { prisma } from "@/lib/prisma";
 import ContainerModal from "@/app/components/ContainerModal";
 import ContainerActions from "@/app/components/ContainerActions";
+// 1. استيراد Prisma للحصول على الأنواع الديناميكية
+import { Prisma } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
+
+// 2. إنشاء نوع مخصص للحاوية يتضمن بيانات الدولة المصدر إليها تلقائياً
+type ContainerWithCountry = Prisma.ContainerImageGetPayload<{
+  include: { exportCountry: true };
+}>;
 
 export default async function ContainersPage() {
   // جلب كافة الحاويات محلياً من قاعدة البيانات مع بيانات الدول المرتبطة بها
@@ -40,7 +47,8 @@ export default async function ContainersPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 border-t border-gray-100">
-              {containers.map((container) => (
+              {/* 3. تمرير النوع الجديد هنا ليقبل حقل exportCountry بشكل آمن وصريح */}
+              {(containers as ContainerWithCountry[]).map((container) => (
                 <tr
                   key={container.id}
                   className="hover:bg-slate-50/50 transition-colors"
