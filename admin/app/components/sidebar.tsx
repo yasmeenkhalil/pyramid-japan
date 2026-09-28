@@ -12,6 +12,7 @@ import {
   Building2,
   Globe,
   Ruler,
+  Container, // 1. استيراد أيقونة الحاوية هنا
 } from "lucide-react";
 
 const menuItems = [
@@ -49,6 +50,12 @@ const menuItems = [
     name: "Export Countries",
     href: "/admin/export-countries",
     icon: Globe,
+  },
+  // 2. إضافة حقل الحاويات هنا ليرتبط بصفحة الإدارة الجديدة
+  {
+    name: "Container Exports",
+    href: "/admin/containers",
+    icon: Container,
   },
   {
     name: "Inquiries",

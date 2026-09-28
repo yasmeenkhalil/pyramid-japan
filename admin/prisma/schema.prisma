@@ -146,12 +146,26 @@ model ExportCountry {
   slug        String                 @unique 
   countryCode String?                @unique
   createdAt   DateTime               @default(now())
+  containerImages ContainerImage[]
 }
 
 enum MachineryStatus {
   AVAILABLE
   SOLD
 }
+
+model ContainerImage {
+  id              String        @id @default(cuid())
+  imageUrl        String
+  titleAr         String?     
+  titleEn         String?      
+  titleRu         String?      
+  titleJa         String?      
+  exportCountryId String?       
+  exportCountry   ExportCountry? @relation(fields: [exportCountryId], references: [id], onDelete: SetNull)
+  createdAt       DateTime      @default(now())
+}
+
 
 model Setting {
   key   String @id 

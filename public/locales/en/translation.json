@@ -4,65 +4,43 @@
     "heading_start": "Japanese Quality,",
     "heading_highlight": "Global Standards",
     "sub_title": "USED JAPANESE MACHINERY • QUALITY • RELIABILITY • GLOBAL EXPORT",
-
     "p1": "We are a specialized company engaged in the trading and global export of quality used machinery from Japan, providing customers worldwide with reliable solutions across the construction, agricultural, and industrial sectors.",
-
     "p2": "With strong knowledge of the Japanese used machinery market, we are committed to sourcing and supplying equipment that delivers the right balance of quality, performance, reliability, and competitive pricing.",
-
     "p3": "Our goal is to connect customers around the world with high-quality Japanese used machinery while providing a professional, transparent, and dependable purchasing and export experience.",
-
     "highlight1": "Japanese quality",
     "highlight2": "Carefully selected machinery",
     "highlight3": "Competitive pricing",
     "highlight4": "Global export",
-
     "image_alt": "Japanese agricultural machinery",
     "image_badge": "FROM JAPAN TO THE WORLD",
     "image_title": "Reliable Japanese Used Machinery",
-
     "card_label": "MARKET REACH",
     "card_value": "Global",
     "card_desc": "We provide used machinery export services to customers across international markets.",
-
     "quality_badge": "JAPANESE EXPERTISE",
     "quality_title": "Japanese Quality, Global Standards",
-
     "quality_p1": "Japanese machinery is internationally recognized for its high manufacturing standards, durability, reliability, and operational efficiency. We bring these advantages to our customers by offering a carefully selected range of used machinery from Japan.",
-
     "quality_p2": "We pay close attention to the specifications, overall condition, performance, and suitability of each machine, helping our customers make informed purchasing decisions and achieve the best possible value from their investment.",
-
     "sectors_badge": "COMPREHENSIVE SOLUTIONS",
     "sectors_title": "Comprehensive Machinery Solutions",
     "sectors_desc": "We offer a wide range of machinery to meet the needs of different industries and applications, including:",
-
     "sector1_title": "Construction Machinery",
     "sector1_desc": "Excavators, wheel loaders, motor graders, road rollers, cranes, aerial work platforms, forklifts, and other construction and material-handling equipment.",
-
     "sector2_title": "Agricultural Machinery",
     "sector2_desc": "Tractors, combine harvesters, tillage equipment, agricultural machinery, and a wide range of equipment designed to support modern farming operations.",
-
     "sector3_title": "Industrial Machinery",
     "sector3_desc": "Forklifts, material-handling equipment, industrial machinery, and specialized equipment for a variety of industrial applications.",
-
     "export_badge": "GLOBAL EXPORT",
     "export_title": "From Japan to the World",
-
     "export_p1": "From Japan to the World.",
-
     "export_p2": "We export used machinery from Japan to customers across international markets, providing a reliable and efficient process from equipment selection to preparation and shipment.",
-
     "export_p3": "Our team works to make the international purchasing process as smooth and transparent as possible, assisting customers in finding suitable equipment and coordinating the export process to its final destination. Whether you are looking for a single machine or sourcing equipment for a larger project or business operation, we are committed to delivering a professional service tailored to your requirements.",
-
     "value_badge": "QUALITY & VALUE",
     "value_title": "Quality and Value at the Heart of Our Business",
-
     "value_p1": "We believe that machinery is more than just a product—it is an investment in the success and growth of a business. That is why we focus on offering equipment that combines reliable performance with competitive pricing, helping our customers maximize the value of their investment.",
-
     "value_p2": "Our commitment goes beyond completing a transaction. We aim to build long-term business relationships based on trust, transparency, reliability, and mutual success.",
-
     "why_badge": "WHY US",
     "why_title": "Why Choose Us?",
-
     "feature1": "Wide selection of quality used machinery from Japan",
     "feature2": "Construction, agricultural, and industrial equipment",
     "feature3": "Carefully selected Japanese machinery",
@@ -72,33 +50,22 @@
     "feature7": "Professional and transparent service",
     "feature8": "Reliable support throughout the purchasing and export process",
     "feature9": "Customer-focused solutions tailored to individual requirements",
-
     "adv1_title": "Carefully Selected Machinery",
     "adv1_desc": "We carefully consider specifications, overall condition, performance, and suitability to help customers choose the right equipment.",
-
     "adv2_title": "Export Support",
     "adv2_desc": "We assist with equipment selection, purchasing, preparation, export coordination, and shipment to the final destination.",
-
     "adv3_title": "Global Markets",
     "adv3_desc": "We connect the proven quality of Japanese machinery with the needs of customers across international markets.",
-
     "vision_label": "OUR VISION",
     "vision_title": "A Trusted Global Machinery Company",
-
     "vision_desc": "To become a trusted global leader in the trading and export of Japanese used machinery, recognized for quality, reliability, competitive pricing, and exceptional customer service.",
-
     "mission_label": "OUR MISSION",
     "mission_title": "Delivering Real Value Worldwide",
-
     "mission_desc": "Our mission is to provide customers worldwide with reliable Japanese used machinery that delivers quality, performance, and value, while creating a seamless and professional international trading experience.",
-
     "mission_extra": "We are committed to continuously expanding our global network and building long-term partnerships with customers, dealers, and businesses around the world.",
-
     "final_badge": "FROM JAPAN TO THE WORLD",
     "final_title": "From Japan to the World",
-
     "final_desc": "We connect the proven quality of Japanese machinery with the needs of global markets. Whether your business operates in construction, agriculture, or industry, we are dedicated to helping you find the right equipment at the right value.",
-
     "final_statement": "Japanese Quality. Reliable Performance. Competitive Prices. Global Reach."
   },
   "ag_cat": {
@@ -594,87 +561,86 @@
     },
     "contact": {
       "address": "1-1-2 Ekinancho, Oyama-shi, Tochigi 323-0822, Japan",
-      
       "phone_val": "+81 80-4346-6222 / +81 80-3000-3879"
     }
   },
   "maintenance_cta": {
-  "badge": "Uncompromised Reliability",
-  "title": "Need a Custom Inspection Report Before Shipping?",
-  "desc": "Our team of senior Japanese engineers is ready to prepare custom diagnostic reports for your target machinery. Ensure your field operations stay 100% efficient from day one.",
-  "card1": {
-    "title": "Schedule Custom Test",
-    "desc": "Request specific cylinder pressure tests, engine blow-by videos, or digital multi-point diagnostics for your fleet.",
-    "btn": "Book Test Service"
-  },
-  "card2": {
-    "title": "Technical Consultation",
-    "desc": "Unsure about parts compatibility or modification requirements for your local climate? Speak to our workshop foreman.",
-    "btn": "Talk to an Engineer"
-  }
-},
-"maintenance_faq": {
-  "badge": "Support Center",
-  "title": "Maintenance & Parts FAQ",
-  "items": {
-    "faq1": {
-      "q": "Are your workshop engineers officially certified in Japan?",
-      "a": "Yes. All maintenance and diagnostic overhauls at Pyramid Japan are conducted by senior mechanics certified under strict Japanese automotive and heavy machinery engineering standards, ensuring world-class execution."
+    "badge": "Uncompromised Reliability",
+    "title": "Need a Custom Inspection Report Before Shipping?",
+    "desc": "Our team of senior Japanese engineers is ready to prepare custom diagnostic reports for your target machinery. Ensure your field operations stay 100% efficient from day one.",
+    "card1": {
+      "title": "Schedule Custom Test",
+      "desc": "Request specific cylinder pressure tests, engine blow-by videos, or digital multi-point diagnostics for your fleet.",
+      "btn": "Book Test Service"
     },
-    "faq2": {
-      "q": "Do you supply non-OEM or aftermarket spare parts if requested?",
-      "a": "Our standard inventory is 100% genuine OEM to maximize machinery lifetime. However, upon specific enterprise customer requests, we can source high-grade, certified Japanese aftermarket components to suit your budget."
-    },
-    "faq3": {
-      "q": "Can I get a live video feed of my machine's hydraulic pressure test?",
-      "a": "Absolutely. Transparency is our core value. Once a maintenance or pre-export check is ordered, we can arrange a live streaming session or send high-definition unedited video reports of the gauge meters at maximum load."
-    },
-    "faq4": {
-      "q": "What is your typical turnaround time for air-freighting critical spare parts?",
-      "a": "For in-stock components, parts are packed and dispatched via premium air couriers (DHL/FedEx) within 48 hours of payment verification, reaching most global main ports and hubs within 5 to 7 business days."
+    "card2": {
+      "title": "Technical Consultation",
+      "desc": "Unsure about parts compatibility or modification requirements for your local climate? Speak to our workshop foreman.",
+      "btn": "Talk to an Engineer"
     }
-  }
-},
-"maintenance_hero": {
-  "badge": "Certified Technical Support",
-  "title_start": "Expert Maintenance",
-  "title_highlight": "& Genuine Parts",
-  "title_end": "For Heavy Machinery",
-  "desc": "Ensure long-term operational uptime. Our certified Japanese engineers perform complete diagnostic overhauls, engine calibrations, and hydraulic rebuilding before any machine leaves our yards.",
-  "btn_service": "Book Inspection Service",
-  "btn_parts": "Inquire Spare Parts",
-  "stats": {
-    "stat1_num": "100%",
-    "stat1_lbl": "Inspected Fleet",
-    "stat2_num": "Certified",
-    "stat2_lbl": "JAO Engineers",
-    "stat3_num": "Genuine",
-    "stat3_lbl": "OEM Components"
   },
-  "cards": {
-    "card1_title": "Preventative Overhaul",
-    "card1_desc": "Full structural stress and crack testing",
-    "card2_title": "Hydraulic Rebuilding",
-    "card2_desc": "Main pump pressure tests and resealing"
-  }
-},
-"maker_section": {
-  "badge": "Trusted Brands",
-  "title": "Leading Japanese Manufacturers",
-  "desc": "Browse equipment from Japan's most trusted construction, agricultural and industrial machinery brands.",
-  "no_brands": "No brands found."
-},
-"parts_form": {
-  "part_no_label": "Part Number / OEM Ref",
-  "part_no_placeholder": "e.g. 1R-0716, 708-2L-00420",
-  "machine_model_label": "Machine Model & Brand",
-  "machine_model_placeholder": "e.g. Komatsu PC200-8",
-  "details_label": "Additional Details",
-  "details_placeholder": "Describe the required condition or specific component section...",
-  "btn_submit": "Submit Parts Request",
-  "btn_loading": "Processing Request..."
-},
-"parts": {
+  "maintenance_faq": {
+    "badge": "Support Center",
+    "title": "Maintenance & Parts FAQ",
+    "items": {
+      "faq1": {
+        "q": "Are your workshop engineers officially certified in Japan?",
+        "a": "Yes. All maintenance and diagnostic overhauls at Pyramid Japan are conducted by senior mechanics certified under strict Japanese automotive and heavy machinery engineering standards, ensuring world-class execution."
+      },
+      "faq2": {
+        "q": "Do you supply non-OEM or aftermarket spare parts if requested?",
+        "a": "Our standard inventory is 100% genuine OEM to maximize machinery lifetime. However, upon specific enterprise customer requests, we can source high-grade, certified Japanese aftermarket components to suit your budget."
+      },
+      "faq3": {
+        "q": "Can I get a live video feed of my machine's hydraulic pressure test?",
+        "a": "Absolutely. Transparency is our core value. Once a maintenance or pre-export check is ordered, we can arrange a live streaming session or send high-definition unedited video reports of the gauge meters at maximum load."
+      },
+      "faq4": {
+        "q": "What is your typical turnaround time for air-freighting critical spare parts?",
+        "a": "For in-stock components, parts are packed and dispatched via premium air couriers (DHL/FedEx) within 48 hours of payment verification, reaching most global main ports and hubs within 5 to 7 business days."
+      }
+    }
+  },
+  "maintenance_hero": {
+    "badge": "Certified Technical Support",
+    "title_start": "Expert Maintenance",
+    "title_highlight": "& Genuine Parts",
+    "title_end": "For Heavy Machinery",
+    "desc": "Ensure long-term operational uptime. Our certified Japanese engineers perform complete diagnostic overhauls, engine calibrations, and hydraulic rebuilding before any machine leaves our yards.",
+    "btn_service": "Book Inspection Service",
+    "btn_parts": "Inquire Spare Parts",
+    "stats": {
+      "stat1_num": "100%",
+      "stat1_lbl": "Inspected Fleet",
+      "stat2_num": "Certified",
+      "stat2_lbl": "JAO Engineers",
+      "stat3_num": "Genuine",
+      "stat3_lbl": "OEM Components"
+    },
+    "cards": {
+      "card1_title": "Preventative Overhaul",
+      "card1_desc": "Full structural stress and crack testing",
+      "card2_title": "Hydraulic Rebuilding",
+      "card2_desc": "Main pump pressure tests and resealing"
+    }
+  },
+  "maker_section": {
+    "badge": "Trusted Brands",
+    "title": "Leading Japanese Manufacturers",
+    "desc": "Browse equipment from Japan's most trusted construction, agricultural and industrial machinery brands.",
+    "no_brands": "No brands found."
+  },
+  "parts_form": {
+    "part_no_label": "Part Number / OEM Ref",
+    "part_no_placeholder": "e.g. 1R-0716, 708-2L-00420",
+    "machine_model_label": "Machine Model & Brand",
+    "machine_model_placeholder": "e.g. Komatsu PC200-8",
+    "details_label": "Additional Details",
+    "details_placeholder": "Describe the required condition or specific component section...",
+    "btn_submit": "Submit Parts Request",
+    "btn_loading": "Processing Request..."
+  },
+  "parts": {
     "toast_success": "Inquiry saved and sent successfully! Opening WhatsApp...",
     "sub_title": "Genuine OEM Components",
     "main_title_1": "Global Spare Parts",
@@ -809,7 +775,8 @@
     "feature_1": "Quality Inspected Machinery",
     "feature_2": "Global Export Services",
     "feature_3": "Genuine Spare Parts Support"
-  },"shipping_map": {
+  },
+  "shipping_map": {
     "tag": "Worldwide Export Network",
     "main_title": "Shipping From Japan To The World",
     "description": "Delivering quality construction and agricultural machinery from Japan to customers across Asia, Africa, Europe, Oceania and the Americas.",
@@ -820,7 +787,8 @@
     "stat_global_desc": "Shipping Network",
     "countries_list_title": "Countries We Export To",
     "no_countries": "No countries added yet."
-  },  "app": {
+  },
+  "app": {
     "default_location": "AOCHI Yard",
     "tag_featured": "Featured",
     "ask_price": "Ask Price",
@@ -842,11 +810,32 @@
     "yard_val": "369-3 namikinishi, Hokunanmoro, Yuki-Shi, Ibaraki-Ken, 307-0036",
     "tel_fax_label": "TEL / FAX",
     "phones_label": "Cell Phones"
+  },
+  
+  "export_gallery": {
+    "back_to_export": "Back to Export",
+    "badge": "Export Shipment Archive",
+    "title": "Global Shipment Archive",
+    "description": "Explore our visual archive of machinery and equipment shipments exported from Japan to destinations worldwide.",
+    "shipments": "Shipments",
+    "destinations": "Destinations",
+    "results": "Results",
+    "all_shipments": "Showing all export shipments",
+    "search_placeholder": "Search shipment records...",
+    "all_countries": "All countries",
+    "showing_results_for": "Showing results for:",
+    "clear_filters": "Clear filters",
+    "export_shipment": "Export Shipment",
+    "destination": "Destination",
+    "japan": "Japan",
+    "not_specified": "Not specified",
+    "no_results_title": "No matching shipment records",
+    "no_results_description": "Try selecting another destination or clearing the current filters.",
+    "no_shipments": "No shipment records are currently available.",
+    "zoom_image": "Open image preview",
+    "close": "Close",
+    "footer_title": "Global Export Operations",
+    "footer_description": "Machinery and equipment prepared and exported from Japan to customers around the world."
   }
-
-
-
-
-
 
 }

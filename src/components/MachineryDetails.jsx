@@ -1,57 +1,75 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import MachineryGallery from "../components/MachineryGallery";
 
 export default function MachineryDetails() {
   const { id } = useParams();
   const { t, i18n } = useTranslation();
+
   const isRtl = i18n.dir() === "rtl";
-  const currentLang = i18n.language; // لمعرفة اللغة الحالية (ar, en, ja, ru)
+  const currentLang = i18n.language;
 
-  // حالات التحكم بالبيانات القادمة من الباك إند
-  const [machineData, setMachineData] = useState(null); 
-  const [isLoading, setIsLoading] = useState(true); 
-  const [fetchError, setFetchError] = useState(null); 
+  // Machine data
+  const [machineData, setMachineData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
 
-  // حالات المودال والتوست والنموذج
-  const [activeImage, setActiveImage] = useState('');
+  // Modal / Toast / Form
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
   const [session, setSession] = useState(null);
-  const [status, setStatus] = useState("loading");
   const [errorMessage, setErrorMessage] = useState("");
 
+  // --------------------------------------------------
+  // Check session فقط لتعبئة بيانات المستخدم إن وجد
+  // لا يوجد أي إجبار على تسجيل الدخول
+  // --------------------------------------------------
   useEffect(() => {
     async function checkAuth() {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/auth/session`, {
-          credentials: "include",
-          cache: "no-store",
-        });
+        const response = await fetch(
+          `${
+            import.meta.env.VITE_API_URL ||
+            "https://app.pyramidjapan.jp"
+          }/api/auth/session`,
+          {
+            credentials: "include",
+            cache: "no-store",
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
+
           if (data?.user) {
             setSession(data);
-            setStatus("authenticated");
-            setFormData(prev => ({
+
+            setFormData((prev) => ({
               ...prev,
-              name: data.user.name || "",
-              email: data.user.email || ""
+              name: data.user.name || prev.name || "",
+              email: data.user.email || prev.email || "",
             }));
-          } else {
-            setStatus("unauthenticated");
           }
         }
-      } catch {
-        setStatus("unauthenticated");
+      } catch (error) {
+        // المستخدم غير مسجل أو session غير متاحة
+        // وهذا لا يمنع إرسال الاستفسار
+        console.log("No authenticated session");
       }
     }
 
     checkAuth();
+
     window.addEventListener("auth-change", checkAuth);
     window.addEventListener("focus", checkAuth);
 
@@ -61,323 +79,594 @@ export default function MachineryDetails() {
     };
   }, []);
 
-  const isAuthenticated = status === "authenticated";
-
+  // --------------------------------------------------
+  // Fetch machinery
+  // --------------------------------------------------
   useEffect(() => {
     async function fetchMachineDetails() {
       setIsLoading(true);
       setFetchError(null);
+
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/machinery/${id}`);
-        
+        const res = await fetch(
+          `${
+            import.meta.env.VITE_API_URL ||
+            "https://app.pyramidjapan.jp"
+          }/api/machinery/${id}`
+        );
+
         if (res.ok) {
           const data = await res.json();
+
           setMachineData(data);
-          
-          if (data.images && data.images.length > 0) {
-            const firstImg = data.images[0].imageUrl || data.images[0];
-            setActiveImage(firstImg);
-          }
         } else {
-          setFetchError(t('details.fetch_error'));
+          setFetchError(t("details.fetch_error"));
         }
-        setIsLoading(false);
       } catch (err) {
         console.error(err);
-        setFetchError(t('details.fetch_error'));
+        setFetchError(t("details.fetch_error"));
+      } finally {
         setIsLoading(false);
       }
     }
-    
+
     if (id) {
       fetchMachineDetails();
     }
   }, [id, t]);
 
+  // --------------------------------------------------
+  // Form
+  // --------------------------------------------------
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
+  // --------------------------------------------------
+  // Submit quote
+  // لا يوجد شرط تسجيل دخول
+  // --------------------------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage("");
 
-    if (!isAuthenticated) {
-      setErrorMessage(t("contact_page.err_auth"));
-      return;
-    }
+    setErrorMessage("");
 
     try {
       setIsSubmitting(true);
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://app.pyramidjapan.jp'}/api/inquiries`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...formData,
-          type: "machinery_quote",
-          userId: session?.user?.email || null,
-          machineId: machineData?.id,
-          machineSlug: machineData?.slug
-        }),
-      });
+
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_API_URL ||
+          "https://app.pyramidjapan.jp"
+        }/api/inquiries`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...formData,
+
+            type: "machinery_quote",
+
+            // إذا كان مسجل دخول نرسل الإيميل،
+            // وإذا كان زائر نرسل null
+            userId: session?.user?.email || null,
+
+            machineId: machineData?.id,
+            machineSlug: machineData?.slug,
+          }),
+        }
+      );
 
       if (response.ok) {
         setShowToast(true);
-        setFormData({ name: session?.user?.name || "", email: session?.user?.email || "", phone: "", message: "" });
+
+        setFormData({
+          name: session?.user?.name || "",
+          email: session?.user?.email || "",
+          phone: "",
+          message: "",
+        });
+
         setIsModalOpen(false);
-        setTimeout(() => setShowToast(false), 4000);
+
+        setTimeout(() => {
+          setShowToast(false);
+        }, 4000);
       } else {
-        const errorData = await response.json();
-        setErrorMessage(errorData.message || t('details.form.api_error_fallback'));
+        let errorData = {};
+
+        try {
+          errorData = await response.json();
+        } catch {
+          errorData = {};
+        }
+
+        setErrorMessage(
+          errorData.message ||
+            t("details.form.api_error_fallback")
+        );
       }
     } catch (error) {
       console.error("Error submitting quote request:", error);
+
+      setErrorMessage(
+        t("details.form.api_error_fallback")
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  // --------------------------------------------------
+  // Loading
+  // --------------------------------------------------
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center gap-3">
         <div className="animate-spin h-8 w-8 border-4 border-slate-300 border-t-[#C47B36] rounded-full" />
-        <p className="text-sm font-medium text-slate-500 animate-pulse">{t('details.loading_machine')}</p>
+
+        <p className="text-sm font-medium text-slate-500 animate-pulse">
+          {t("details.loading_machine")}
+        </p>
       </div>
     );
   }
 
-  if (!isAuthenticated && status !== "loading") {
-    return (
-      <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 font-sans relative flex items-center justify-center overflow-hidden">
-
-        <div className="absolute inset-0 filter blur-xl pointer-events-none opacity-25 select-none max-w-7xl mx-auto py-12 px-4 z-0">
-          <div className="flex flex-col lg:flex-row gap-8 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm mb-8">
-            <div className="w-full lg:w-1/2 h-96 bg-slate-300 rounded-xl"></div>
-          <div className="w-full lg:w-1/2 flex flex-col justify-between">
-              <div className="h-6 w-1/3 bg-slate-300 rounded mb-4"></div>
-              <div className="h-10 w-3/4 bg-slate-300 rounded mb-4"></div>
-              <div className="h-20 w-full bg-slate-300 rounded mb-6"></div>
-              <div className="h-12 w-1/2 bg-slate-300 rounded"></div>
-            </div>
-              </div>
-                </div>
-
-        {/* كارد تنبيه تسجيل الدخول في المنتصف */}
-        <div className="relative z-20 max-w-md w-full bg-white rounded-2xl border border-slate-200 p-8 shadow-2xl text-center">
-          <div className="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl border border-amber-100">
-            🔒
-                </div>
-          <h2 className="text-xl font-bold text-[#0F172A] mb-2">
-            {t("details.auth_required_title", "Authentication Required")}
-            </h2>
-          <p className="text-xs text-slate-500 leading-relaxed mb-6">
-            {t("contact_page.err_auth")}
-          </p>
-              <button
-             onClick={() => {
-  window.dispatchEvent(new CustomEvent("open-auth-modal"));
-}}
-            className="w-full py-3.5 rounded-xl bg-[#E0B15A] hover:bg-[#C47B36] text-white font-bold text-sm transition-all duration-300 shadow-md cursor-pointer"
-          >
-            {t("nav.btn_auth")}
-              </button>
-            </div>
-          </div>
-                );
-  }
-
+  // --------------------------------------------------
+  // Error
+  // --------------------------------------------------
   if (fetchError || !machineData) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 text-center">
         <div className="text-4xl mb-2">⚠️</div>
-        <h2 className="text-lg font-bold text-slate-800">{fetchError || t('details.not_found')}</h2>
-        <p className="text-xs text-slate-500 mt-1 max-w-sm">{t('details.not_found_desc')}</p>
-            </div>
-  );
-}
 
-  const displayTitle = currentLang === 'ar' ? machineData.titleAr : currentLang === 'ja' ? machineData.titleJa : currentLang === 'ru' ? machineData.titleRu : machineData.titleEn;
-  const displayDescription = currentLang === 'ar' ? machineData.descriptionAr : currentLang === 'ja' ? machineData.descriptionJa : currentLang === 'ru' ? machineData.descriptionRu : machineData.descriptionEn;
-  const displayCategory = currentLang === 'ar' ? machineData.category?.nameAr : currentLang === 'ja' ? machineData.category?.nameJa : currentLang === 'ru' ? machineData.category?.nameRu : machineData.category?.nameEn;
+        <h2 className="text-lg font-bold text-slate-800">
+          {fetchError || t("details.not_found")}
+        </h2>
+
+        <p className="text-xs text-slate-500 mt-1 max-w-sm">
+          {t("details.not_found_desc")}
+        </p>
+      </div>
+    );
+  }
+
+  // --------------------------------------------------
+  // Translated data
+  // --------------------------------------------------
+  const displayTitle =
+    currentLang === "ar"
+      ? machineData.titleAr
+      : currentLang === "ja"
+      ? machineData.titleJa
+      : currentLang === "ru"
+      ? machineData.titleRu
+      : machineData.titleEn;
+
+  const displayDescription =
+    currentLang === "ar"
+      ? machineData.descriptionAr
+      : currentLang === "ja"
+      ? machineData.descriptionJa
+      : currentLang === "ru"
+      ? machineData.descriptionRu
+      : machineData.descriptionEn;
+
+  const displayCategory =
+    currentLang === "ar"
+      ? machineData.category?.nameAr
+      : currentLang === "ja"
+      ? machineData.category?.nameJa
+      : currentLang === "ru"
+      ? machineData.category?.nameRu
+      : machineData.category?.nameEn;
+
   const isSold = Boolean(machineData.isSold);
 
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 font-sans relative">
 
+      {/* Success Toast */}
       {showToast && (
-        <div className={`fixed top-5 z-50 flex items-center gap-3 bg-emerald-500 text-white px-5 py-3.5 rounded-xl shadow-xl transition-all duration-300 font-medium text-sm border border-emerald-400/20 ${isRtl ? 'left-5' : 'right-5'}`}>
+        <div
+          className={`fixed top-5 z-50 flex items-center gap-3 bg-emerald-500 text-white px-5 py-3.5 rounded-xl shadow-xl transition-all duration-300 font-medium text-sm border border-emerald-400/20 ${
+            isRtl ? "left-5" : "right-5"
+          }`}
+        >
           <span className="text-base">✓</span>
-          <span>{t('details.toast_success')}</span>
+
+          <span>
+            {t("details.toast_success")}
+          </span>
         </div>
       )}
 
       <div className="max-w-7xl mx-auto">
-       <div className="flex flex-col lg:flex-row gap-8 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm mb-8"> {/* Gallery */} <div className="w-full lg:w-1/2"> <MachineryGallery images={machineData.images || []} title={displayTitle} category={displayCategory} isSold={isSold} soldLabel={t("machinery.sold_badge")} dir={isRtl ? "rtl" : "ltr"} /> </div>
-          {/* تفاصيل الموديل والمواصفات الأساسية */}
+
+        {/* Main machine card */}
+        <div className="flex flex-col lg:flex-row gap-8 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm mb-8">
+
+          {/* Gallery */}
+          <div className="w-full lg:w-1/2">
+            <MachineryGallery
+              images={machineData.images || []}
+              title={displayTitle}
+              category={displayCategory}
+              isSold={isSold}
+              soldLabel={t("machinery.sold_badge")}
+              dir={isRtl ? "rtl" : "ltr"}
+            />
+          </div>
+
+          {/* Details */}
           <div className="w-full lg:w-1/2 flex flex-col justify-between">
+
             <div>
+
+              {/* Stock + Published */}
               <div className="flex items-center justify-between text-sm text-slate-500 mb-2">
-                <span>{t('details.stock_id')} : #{machineData.stockNo || machineData.id.slice(0,6)}</span>
-                <span>{t('details.published')} : {new Date(machineData.createdAt).toLocaleDateString()}</span>
-              </div>
+                <span>
+                  {t("details.stock_id")} : #
+                  {machineData.stockNo ||
+                    machineData.id.slice(0, 6)}
+                </span>
 
-              <h1 className="text-3xl font-bold text-[#0F172A] uppercase mb-1">
-                {machineData.manufacturer?.name} {machineData.slug.replace(/-/g, ' ')}
-              </h1>
-              <p className="text-lg text-slate-500 mb-2">{displayTitle}</p>
-              <p className="text-sm text-slate-400 mb-6">{displayDescription}</p>
-
-              <div className="grid grid-cols-3 gap-4 border-y border-slate-100 py-4 mb-6">
-                <div className="text-center">
-                  <span className="block text-xs text-slate-400 uppercase font-medium">{t('machine.year')}</span>
-                  <span className="text-base font-bold text-[#0F172A]">{machineData.year}</span>
-                </div>
-                <div className="text-center border-x border-slate-100">
-                  <span className="block text-xs text-slate-400 uppercase font-medium">{t('machine.hours')}</span>
-                  <span className="text-base font-bold text-[#0F172A]">{machineData.hour} {t('machine.hours_unit')}</span>
-                </div>
-                <div className="text-center">
-                  <span className="block text-xs text-slate-400 uppercase font-medium">{t('machine.location')}</span>
-                  <span className="text-base font-bold text-[#0F172A]">
-                    {t(`machine.locations.${machineData.location?.toLowerCase()}`, machineData.location)}
-                  </span>
-                </div>
-              </div>
-
-              {/* أسعار تقديرية من حقول الـ Object */}
-              <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">{t('details.price_ranges')}</h3>
-                <div className="grid grid-cols-3 gap-3 text-center">
-                  <div className="bg-white border border-slate-200 rounded-lg p-2.5">
-                    <span className="block text-[10px] text-slate-400 font-medium mb-0.5">{t('details.min_price')}</span>
-                    <span className="text-sm font-bold text-slate-700">¥ {machineData.minPrice?.toLocaleString()}</span>
-                  </div>
-                  <div className="bg-white border border-[#C47B36]/20 rounded-lg p-2.5 shadow-sm">
-                    <span className="block text-[10px] text-[#C47B36] font-medium mb-0.5">{t('details.avg_price')}</span>
-                    <span className="text-sm font-bold text-[#0F172A]">¥ {machineData.avgPrice?.toLocaleString()}</span>
-                  </div>
-                  <div className="bg-white border border-slate-200 rounded-lg p-2.5">
-                    <span className="block text-[10px] text-slate-400 font-medium mb-0.5">{t('details.max_price')}</span>
-                    <span className="text-sm font-bold text-slate-700">¥ {machineData.maxPrice?.toLocaleString()}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 items-center justify-between border-t border-slate-100 pt-6">
-              <div>
-                <span className="block text-xs text-slate-400 uppercase font-medium">{t('machine.fob_price')}</span>
-                <span className="text-2xl font-black text-[#C47B36]">
-                  {machineData.price > 0 ? `¥ ${machineData.price.toLocaleString()}` : t('machine.inquire')}
+                <span>
+                  {t("details.published")} :{" "}
+                  {new Date(
+                    machineData.createdAt
+                  ).toLocaleDateString()}
                 </span>
               </div>
+
+              {/* Title */}
+              <h1 className="text-3xl font-bold text-[#0F172A] uppercase mb-1">
+                {machineData.manufacturer?.name}{" "}
+                {machineData.slug.replace(/-/g, " ")}
+              </h1>
+
+              <p className="text-lg text-slate-500 mb-2">
+                {displayTitle}
+              </p>
+
+              <p className="text-sm text-slate-400 mb-6">
+                {displayDescription}
+              </p>
+
+              {/* Basic specifications */}
+              <div className="grid grid-cols-3 gap-4 border-y border-slate-100 py-4 mb-6">
+
+                <div className="text-center">
+                  <span className="block text-xs text-slate-400 uppercase font-medium">
+                    {t("machine.year")}
+                  </span>
+
+                  <span className="text-base font-bold text-[#0F172A]">
+                    {machineData.year}
+                  </span>
+                </div>
+
+                <div className="text-center border-x border-slate-100">
+                  <span className="block text-xs text-slate-400 uppercase font-medium">
+                    {t("machine.hours")}
+                  </span>
+
+                  <span className="text-base font-bold text-[#0F172A]">
+                    {machineData.hour}{" "}
+                    {t("machine.hours_unit")}
+                  </span>
+                </div>
+
+                <div className="text-center">
+                  <span className="block text-xs text-slate-400 uppercase font-medium">
+                    {t("machine.location")}
+                  </span>
+
+                  <span className="text-base font-bold text-[#0F172A]">
+                    {t(
+                      `machine.locations.${machineData.location?.toLowerCase()}`,
+                      machineData.location
+                    )}
+                  </span>
+                </div>
+
+              </div>
+
+              {/* Price ranges */}
+              <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
+
+                <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
+                  {t("details.price_ranges")}
+                </h3>
+
+                <div className="grid grid-cols-3 gap-3 text-center">
+
+                  <div className="bg-white border border-slate-200 rounded-lg p-2.5">
+                    <span className="block text-[10px] text-slate-400 font-medium mb-0.5">
+                      {t("details.min_price")}
+                    </span>
+
+                    <span className="text-sm font-bold text-slate-700">
+                      ¥{" "}
+                      {machineData.minPrice?.toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="bg-white border border-[#C47B36]/20 rounded-lg p-2.5 shadow-sm">
+                    <span className="block text-[10px] text-[#C47B36] font-medium mb-0.5">
+                      {t("details.avg_price")}
+                    </span>
+
+                    <span className="text-sm font-bold text-[#0F172A]">
+                      ¥{" "}
+                      {machineData.avgPrice?.toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="bg-white border border-slate-200 rounded-lg p-2.5">
+                    <span className="block text-[10px] text-slate-400 font-medium mb-0.5">
+                      {t("details.max_price")}
+                    </span>
+
+                    <span className="text-sm font-bold text-slate-700">
+                      ¥{" "}
+                      {machineData.maxPrice?.toLocaleString()}
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+            {/* Bottom action */}
+            <div className="mt-8 flex flex-col sm:flex-row gap-4 items-center justify-between border-t border-slate-100 pt-6">
+
+              <div>
+                <span className="block text-xs text-slate-400 uppercase font-medium">
+                  {t("machine.fob_price")}
+                </span>
+
+                <span className="text-2xl font-black text-[#C47B36]">
+                  {machineData.price > 0
+                    ? `¥ ${machineData.price.toLocaleString()}`
+                    : t("machine.inquire")}
+                </span>
+              </div>
+
+              {/* Quote button - available للجميع */}
               <button
+                type="button"
                 onClick={() => {
-                  if (isAuthenticated) {
-                    setIsModalOpen(true);
-                  }
+                  setErrorMessage("");
+                  setIsModalOpen(true);
                 }}
-                disabled={!isAuthenticated}
-                className="w-full sm:w-auto px-8 py-3.5 rounded-xl text-white font-semibold text-sm transition-all duration-300
-                  disabled:bg-slate-300 disabled:cursor-not-allowed disabled:text-slate-500
-                  bg-[#0F172A] hover:bg-[#C47B36]"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-xl text-white font-semibold text-sm transition-all duration-300 bg-[#0F172A] hover:bg-[#C47B36] shadow-sm hover:shadow-md"
               >
-                {isAuthenticated ? t('machine.btn_quote') : t('machine.btn_quote_login_required')}
+                {t("machine.btn_quote")}
               </button>
+
             </div>
           </div>
         </div>
 
-        {machineData.specifications && machineData.specifications.length > 0 && (
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-            <h2 className="text-xl font-bold text-[#0F172A] mb-4 pb-2 border-b border-slate-100">
-              {t('details.specs_title')}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 text-sm">
-              {machineData.specifications.map((item, index) => {
-                const specName =
-                  currentLang === 'ar' ? item.specification?.nameAr :
-                  currentLang === 'ja' ? item.specification?.nameJa :
-                  currentLang === 'ru' ? item.specification?.nameRu :
-                  item.specification?.nameEn;
+        {/* Specifications */}
+        {machineData.specifications &&
+          machineData.specifications.length > 0 && (
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
 
-                const unitName = item.unit?.name || '';
+              <h2 className="text-xl font-bold text-[#0F172A] mb-4 pb-2 border-b border-slate-100">
+                {t("details.specs_title")}
+              </h2>
 
-                return (
-                  <div key={index} className="flex justify-between py-2 border-b border-slate-50 last:border-0 md:last:border-b">
-                    <span className="text-slate-500 font-medium">
-                      {specName || `${t('details.spec_label')} ${index + 1}`}
-                    </span>
-                    <span className="font-semibold text-[#0F172A]">
-                      {item.value} {unitName}
-                    </span>
-                  </div>
-                );
-              })}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 text-sm">
+
+                {machineData.specifications.map(
+                  (item, index) => {
+
+                    const specName =
+                      currentLang === "ar"
+                        ? item.specification?.nameAr
+                        : currentLang === "ja"
+                        ? item.specification?.nameJa
+                        : currentLang === "ru"
+                        ? item.specification?.nameRu
+                        : item.specification?.nameEn;
+
+                    const unitName =
+                      item.unit?.name || "";
+
+                    return (
+                      <div
+                        key={index}
+                        className="flex justify-between py-2 border-b border-slate-50 last:border-0 md:last:border-b"
+                      >
+                        <span className="text-slate-500 font-medium">
+                          {specName ||
+                            `${t(
+                              "details.spec_label"
+                            )} ${index + 1}`}
+                        </span>
+
+                        <span className="font-semibold text-[#0F172A]">
+                          {item.value} {unitName}
+                        </span>
+                      </div>
+                    );
+                  }
+                )}
+
+              </div>
             </div>
-          </div>
-        )}
+          )}
+
       </div>
-      {/* المودال ونموذج التواصل المحمي من الباك إند */}
+
+      {/* --------------------------------------------------
+          Quote Modal
+          متاح للزائر وللمستخدم المسجل
+      -------------------------------------------------- */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 border border-slate-200 shadow-2xl relative" dir={isRtl ? "rtl" : "ltr"}>
-            <button onClick={() => { if(!isSubmitting) setIsModalOpen(false); }} className={`absolute top-4 text-slate-400 hover:text-slate-600 text-xl ${isRtl ? 'left-4' : 'right-4'}`} disabled={isSubmitting}>✕</button>
-            <div className="mb-5">
-              <h2 className="text-xl font-bold text-[#0F172A]">{t('details.modal_title')}</h2>
-              <p className="text-xs text-slate-500 mt-1">{t('details.form.request_subtitle')} <span className="font-semibold text-[#C47B36]">{displayTitle}</span></p>
+
+          <div
+            className="bg-white rounded-2xl max-w-lg w-full p-6 border border-slate-200 shadow-2xl relative"
+            dir={isRtl ? "rtl" : "ltr"}
+          >
+
+            {/* Close */}
+            <button
+              type="button"
+              onClick={() => {
+                if (!isSubmitting) {
+                  setIsModalOpen(false);
+                  setErrorMessage("");
+                }
+              }}
+              className={`absolute top-4 text-slate-400 hover:text-slate-600 text-xl ${
+                isRtl ? "left-4" : "right-4"
+              }`}
+              disabled={isSubmitting}
+            >
+              ✕
+            </button>
+
+            {/* Header */}
+            <div className="mb-5 pr-6">
+              <h2 className="text-xl font-bold text-[#0F172A]">
+                {t("details.modal_title")}
+              </h2>
+
+              <p className="text-xs text-slate-500 mt-1">
+                {t("details.form.request_subtitle")}{" "}
+                <span className="font-semibold text-[#C47B36]">
+                  {displayTitle}
+                </span>
+              </p>
             </div>
 
-            {!isAuthenticated && status !== "loading" && (
-              <div className="mb-4 p-3.5 bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium rounded-xl">
-                ⚠️ {t("contact_page.err_auth")}
+            {/* API Error */}
+            {errorMessage && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-xs font-medium rounded-xl">
+                ⚠️ {errorMessage}
               </div>
             )}
 
-            {errorMessage && <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-xs font-medium rounded-xl">⚠️ {errorMessage}</div>}
+            {/* Form */}
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-4"
+            >
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Name */}
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t('details.form.name')}</label>
-                <input type="text" name="name" required value={formData.name} onChange={handleInputChange} disabled={isSubmitting} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#C47B36] text-[#0F172A] disabled:bg-slate-50" placeholder="John Doe" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t('details.form.email')}</label>
-                <input type="email" name="email" required value={formData.email} onChange={handleInputChange} disabled={isSubmitting} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#C47B36] text-[#0F172A] disabled:bg-slate-50" placeholder="john@example.com" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t('details.form.phone')}</label>
-                <input type="tel" name="phone" required value={formData.phone} onChange={handleInputChange} disabled={isSubmitting} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#C47B36] text-[#0F172A] disabled:bg-slate-50" placeholder="+81 90-1234-5678" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">{t('details.form.message')}</label>
-                <textarea name="message" rows="3" value={formData.message} onChange={handleInputChange} disabled={isSubmitting} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#C47B36] text-[#0F172A] resize-none disabled:bg-slate-50" placeholder={t('details.form.message_placeholder')}></textarea>
+                <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">
+                  {t("details.form.name")}
+                </label>
+
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#C47B36] text-[#0F172A] disabled:bg-slate-50"
+                  placeholder="John Doe"
+                />
               </div>
 
+              {/* Email */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">
+                  {t("details.form.email")}
+                </label>
+
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#C47B36] text-[#0F172A] disabled:bg-slate-50"
+                  placeholder="john@example.com"
+                />
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">
+                  {t("details.form.phone")}
+                </label>
+
+                <input
+                  type="tel"
+                  name="phone"
+                  required
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#C47B36] text-[#0F172A] disabled:bg-slate-50"
+                  placeholder="+81 90-1234-5678"
+                />
+              </div>
+
+              {/* Message */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">
+                  {t("details.form.message")}
+                </label>
+
+                <textarea
+                  name="message"
+                  rows="3"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#C47B36] text-[#0F172A] resize-none disabled:bg-slate-50"
+                  placeholder={t(
+                    "details.form.message_placeholder"
+                  )}
+                />
+              </div>
+
+              {/* Submit */}
               <div className="pt-2">
+
                 <button
                   type="submit"
-                  disabled={!isAuthenticated || isSubmitting}
+                  disabled={isSubmitting}
                   className="w-full py-3 rounded-xl bg-[#0F172A] hover:bg-[#C47B36] text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 disabled:bg-slate-300 disabled:text-slate-500 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     <>
                       <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
-                      <span>{t('details.form.submitting')}</span>
+
+                      <span>
+                        {t("details.form.submitting")}
+                      </span>
                     </>
                   ) : (
-                    <span>{t('details.form.submit_btn')}</span>
+                    <span>
+                      {t("details.form.submit_btn")}
+                    </span>
                   )}
                 </button>
+
               </div>
+
             </form>
           </div>
         </div>
       )}
-
     </div>
   );
 }
-
-

@@ -22,6 +22,8 @@ import MachineryDetails from './components/MachineryDetails';
 import AllMachineryPage from './components/AllMachineryPage'; 
 import ScrollToTop from "./components/ScrollToTop"; 
 import AboutUs from  "./components/AboutUs"; 
+import ExportGalleryPage from "./components/ExportGalleryPage";
+
  
 export default function App() {
   const { t, i18n } = useTranslation();
@@ -223,6 +225,7 @@ export default function App() {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/machinery/:id" element={<MachineryDetails />} />
             <Route path="/machinery-all/:category" element={<AllMachineryPage />} />
+            <Route path="/export-gallery" element={<ExportGalleryPage />} />
 
           </Routes>
         </div>

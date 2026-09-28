@@ -7,6 +7,7 @@ import CountriesSection from '../components/CountriesSection';
 import FaqSection from '../components/FaqSection'; 
 import ExportCTA from '../components/ExportCTA'; 
 import FeaturedExportMachinery from '../components/FeaturedExportMachinery'; 
+import ExportContainers from '../components/ExportContainers'; 
 
 export default function ExportPage() {
   return (
@@ -15,6 +16,7 @@ export default function ExportPage() {
       
 <ExportHero />
 <FeaturedExportMachinery /> 
+<ExportContainers />
 <ExportProcess />
 <InspectionSection />
 <ShippingMethods />
