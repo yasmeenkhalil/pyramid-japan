@@ -813,6 +813,11 @@
   },
  
   "export_gallery": {
+    "view_archive": "全アーカイブを見る",
+    "no_records": "現在、出荷記録はありません。",
+    "default_shipment_title": "コンテナ出荷",
+    "export_badge": "輸出出荷",
+    "explore_all": "すべての出荷を見る",
     "back_to_export": "輸出ページへ戻る",
     "badge": "輸出出荷アーカイブ",
     "title": "世界向け出荷アーカイブ",

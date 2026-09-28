@@ -813,6 +813,11 @@
   },
   
   "export_gallery": {
+    "view_archive": "View Full Archive",
+    "no_records": "No shipment records are currently available.",
+    "default_shipment_title": "Pyramid Shipment",
+    "export_badge": "Export Shipment",
+    "explore_all": "Explore All Shipments",
     "back_to_export": "Back to Export",
     "badge": "Export Shipment Archive",
     "title": "Global Shipment Archive",

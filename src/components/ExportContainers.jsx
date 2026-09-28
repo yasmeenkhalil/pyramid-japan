@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -14,11 +13,10 @@ import {
   X,
 } from "lucide-react";
 
-const API_URL =
-  import.meta.env.VITE_API_URL || "https://pyramidjapan.jp";
+const API_URL = import.meta.env.VITE_API_URL || "https://pyramidjapan.jp";
 
 export default function ExportContainers() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [containers, setContainers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -69,13 +67,12 @@ export default function ExportContainers() {
 
     return country.nameEn || "";
   };
-
   return (
     <section
       dir={isArabic ? "rtl" : "ltr"}
       className="relative overflow-hidden border-t border-white/[0.05] bg-[#071525] px-4 py-20 sm:px-6 lg:px-8"
     >
-      {/* Background */}
+      {/* Background Glow */}
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[550px] w-[550px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#d9a441]/[0.035] blur-[140px]" />
 
       <div className="relative mx-auto max-w-[1480px]">
@@ -84,30 +81,15 @@ export default function ExportContainers() {
           <div>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#d9a441]/20 bg-[#d9a441]/[0.07] px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[#e3b65c]">
               <Ship className="h-3.5 w-3.5" />
-
-              {isArabic
-                ? "سجل الشحن"
-                : isJapanese
-                ? "出荷記録"
-                : isRussian
-                ? "Журнал отправок"
-                : "Shipment Records"}
+              {t("export_gallery.badge")}
             </div>
 
             <h2 className="text-3xl font-black tracking-tight text-white md:text-4xl">
-              {isArabic
-                ? "شحناتنا حول العالم"
-                : isJapanese
-                ? "世界への輸出実績"
-                : isRussian
-                ? "Наши экспортные отправки"
-                : "Our Global Shipments"}
+              {t("export_gallery.title")}
             </h2>
 
             <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">
-              {isArabic
-                ? "نماذج من عمليات تجهيز وشحن المعدات والآلات من اليابان إلى عملائنا حول العالم."
-                : "A selection of machinery shipments prepared and exported from Japan to customers worldwide."}
+              {t("export_gallery.description")}
             </p>
           </div>
 
@@ -115,7 +97,7 @@ export default function ExportContainers() {
             to="/export-gallery"
             className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-white/[0.09] bg-white/[0.035] px-5 py-3 text-xs font-bold text-slate-200 transition hover:border-[#d9a441]/40 hover:bg-[#d9a441]/10 hover:text-[#e3b65c]"
           >
-            {isArabic ? "عرض الأرشيف الكامل" : "View Full Archive"}
+            {t("export_gallery.view_archive")}
 
             {isArabic ? (
               <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
@@ -125,7 +107,7 @@ export default function ExportContainers() {
           </Link>
         </div>
 
-        {/* Loading */}
+        {/* Loading Skeleton */}
         {loading ? (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {Array.from({ length: 4 }).map((_, index) => (
@@ -134,7 +116,6 @@ export default function ExportContainers() {
                 className="overflow-hidden rounded-2xl border border-white/[0.06] bg-[#09192d]"
               >
                 <div className="aspect-[4/3] animate-pulse bg-white/[0.04]" />
-
                 <div className="space-y-3 p-5">
                   <div className="h-3 w-24 animate-pulse rounded bg-white/[0.06]" />
                   <div className="h-4 w-3/4 animate-pulse rounded bg-white/[0.06]" />
@@ -146,29 +127,22 @@ export default function ExportContainers() {
         ) : containers.length === 0 ? (
           <div className="rounded-2xl border border-white/[0.07] bg-white/[0.025] py-16 text-center text-sm text-slate-500">
             <Package className="mx-auto mb-4 h-7 w-7" />
-
-            {isArabic
-              ? "لا توجد سجلات شحن متوفرة حالياً."
-              : "No shipment records are currently available."}
+            {t("export_gallery.no_records")}
           </div>
         ) : (
           <>
+            {/* Grid Container Content */}
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {containers.map((container) => {
-                const title =
-                  getContainerTitle(container) ||
-                  (isArabic ? "شحنة حاوية" : "Pyramid Shipment");
-
-                const country = getCountryName(
-                  container.exportCountry
-                );
+                const title = getContainerTitle(container) || t("export_gallery.default_shipment_title");
+                const country = getCountryName(container.exportCountry);
 
                 return (
                   <article
                     key={container.id}
                     className="group overflow-hidden rounded-2xl border border-white/[0.07] bg-[#09192d] transition-all duration-300 hover:-translate-y-1 hover:border-[#d9a441]/30"
                   >
-                    {/* Image */}
+                    {/* Image Box */}
                     <div className="relative aspect-[4/3] overflow-hidden bg-[#050f1c]">
                       <img
                         src={container.imageUrl}
@@ -186,10 +160,7 @@ export default function ExportContainers() {
                           }`}
                         >
                           <Globe2 className="h-3 w-3 shrink-0 text-[#d9a441]" />
-
-                          <span className="truncate">
-                            {country}
-                          </span>
+                          <span className="truncate">{country}</span>
                         </div>
                       )}
 
@@ -207,13 +178,11 @@ export default function ExportContainers() {
                       </button>
                     </div>
 
-                    {/* Content */}
+                    {/* Content Box */}
                     <div className="p-5">
                       <div className="mb-3 flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.16em] text-[#d9a441]">
                         <Ship className="h-3 w-3" />
-                        {isArabic
-                          ? "شحنة مصدّرة"
-                          : "Export Shipment"}
+                        {t("export_gallery.export_badge")}
                       </div>
 
                       <h3
@@ -227,7 +196,6 @@ export default function ExportContainers() {
                       {country && (
                         <div className="mt-4 flex items-center gap-2 border-t border-white/[0.06] pt-4">
                           <Globe2 className="h-3.5 w-3.5 shrink-0 text-[#d9a441]" />
-
                           <span className="truncate text-xs text-slate-400">
                             {country}
                           </span>
@@ -239,14 +207,13 @@ export default function ExportContainers() {
               })}
             </div>
 
+            {/* Bottom Button */}
             <div className="mt-10 flex justify-center">
               <Link
                 to="/export-gallery"
                 className="group inline-flex items-center gap-2 rounded-xl bg-[#d9a441] px-7 py-3.5 text-xs font-bold text-[#071525] shadow-lg shadow-[#d9a441]/10 transition hover:bg-[#e3b65c]"
               >
-                {isArabic
-                  ? "استكشف جميع الشحنات"
-                  : "Explore All Shipments"}
+                {t("export_gallery.explore_all")}
 
                 {isArabic ? (
                   <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
@@ -259,10 +226,10 @@ export default function ExportContainers() {
         )}
       </div>
 
-      {/* Modal */}
+      {/* Lightbox Modal */}
       {activeImage && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-md"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-md"
           onClick={() => setActiveImage(null)}
         >
           <button
@@ -282,7 +249,6 @@ export default function ExportContainers() {
               alt={activeImage.title}
               className="max-h-[82vh] max-w-[90vw] object-contain"
             />
-
             <div className="border-t border-white/[0.07] px-5 py-4">
               <p className="text-sm font-semibold text-white">
                 {activeImage.title}
