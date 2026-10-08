@@ -52,64 +52,36 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
 
-  // 👇 1. أضيفي هذا القسم للسماح بمشاركة الكوكيز بين النطاقات المختلفة (Cross-Domain)
-  useSecureCookies: true, // تفعيل الكوكيز الآمنة لأنك تستخدمين HTTPS على الاستضافة
+    useSecureCookies: true, 
   cookies: {
     sessionToken: {
-      name: `next-auth.session-token`,
+      name: `__Secure-next-auth.session-token`, 
       options: {
         httpOnly: true,
-        sameSite: "none", // 👈 ضروري جداً لكي يسمح المتصفح لتطبيق React بقراءة الكوكيز من نطاق Next.js الفرعي
+        sameSite: "lax", 
         path: "/",
-        secure: true, // يجب أن يكون true لأن الموقع يعمل بـ https
+        secure: true, 
       },
     },
     callbackUrl: {
-      name: `next-auth.callback-url`,
+      name: `__Secure-next-auth.callback-url`,
       options: {
-        sameSite: "none",
+        sameSite: "lax", 
         path: "/",
         secure: true,
       },
     },
     csrfToken: {
-      name: `next-auth.csrf-token`,
+      name: `__Secure-next-auth.csrf-token`,
       options: {
         httpOnly: true,
-        sameSite: "none",
+        sameSite: "lax", 
         path: "/",
         secure: true,
       },
     },
   },
 
-  callbacks: {
-    async jwt({ token, user, trigger, session }) {
-      if (user) {
-        token.id = user.id;
-        token.name = user.name;
-        token.email = user.email;
-        token.role = (user as any).role;
-      }
 
-      if (trigger === "update" && session?.user) {
-        token.name = session.user.name;
-        token.email = session.user.email;
-      }
-
-      return token;
-    },
-
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.name = token.name;
-        session.user.email = token.email;
-        (session.user as any).role = token.role;
-      }
-
-      return session;
-    },
-  },
-
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || "secret-key" ,
 };
