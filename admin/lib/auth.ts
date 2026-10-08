@@ -53,35 +53,35 @@ export const authOptions: NextAuthOptions = {
   },
 
     useSecureCookies: true, 
-  // cookies: {
-  //   sessionToken: {
-  //     name: `__Secure-next-auth.session-token`, 
-  //     options: {
-  //       httpOnly: true,
-  //       sameSite: "lax", 
-  //       path: "/",
-  //       secure: true, 
-  //     },
-  //   },
-  //   callbackUrl: {
-  //     name: `__Secure-next-auth.callback-url`,
-  //     options: {
-  //       sameSite: "lax", 
-  //       path: "/",
-  //       secure: true,
-  //     },
-  //   },
-  //   csrfToken: {
-  //     name: `__Secure-next-auth.csrf-token`,
-  //     options: {
-  //       httpOnly: true,
-  //       sameSite: "lax", 
-  //       path: "/",
-  //       secure: true,
-  //     },
-  //   },
-  // },
+  cookies: {
+    sessionToken: {
+      name: `__Secure-next-auth.session-token`, 
+      options: {
+        httpOnly: true,
+        sameSite: "lax", 
+        path: "/",
+        secure: true, 
+      },
+    },
+    callbackUrl: {
+      name: `__Secure-next-auth.callback-url`,
+      options: {
+        sameSite: "lax", 
+        path: "/",
+        secure: true,
+      },
+    },
+    csrfToken: {
+      name: `__Secure-next-auth.csrf-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax", 
+        path: "/",
+        secure: true,
+      },
+    },
+  },
 
 
-  secret: process.env.NEXTAUTH_SECRET || "secret-key_oooooooooo" ,
+  secret: process.env.NEXTAUTH_SECRET  ,
 };
