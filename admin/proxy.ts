@@ -1,75 +1,142 @@
-import { withAuth } from "next-auth/middleware";
+
+import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// 1. تعريف هيدرز الـ CORS المطلوبة بشكل موحد
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "https://app.pyramidjapan.jp",
-  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Date, X-Api-Version",
-  "Access-Control-Allow-Credentials": "true",
-  "Access-Control-Max-Age": "86400", // كاش للإعدادات لتسريع الطلبات القادمة
-};
+const ALLOWED_ORIGIN = "https://pyramidjapan.jp";
 
-// 2. دالة لفحص ومعالجة طلبات الـ CORS المبكرة (OPTIONS)
-function handleCors(req: NextRequest) {
-  if (req.method === "OPTIONS") {
-    return new NextResponse(null, {
-      status: 204,
-      headers: corsHeaders,
-    });
+const CORS_METHODS = "GET, POST, PUT, PATCH, DELETE, OPTIONS";
+
+const CORS_HEADERS =
+  "Content-Type, Authorization, X-CSRF-Token, X-Requested-With, Accept";
+
+function addCorsHeaders(
+  response: NextResponse,
+  request: NextRequest
+) {
+  const origin = request.headers.get("origin");
+
+  if (origin === ALLOWED_ORIGIN) {
+    response.headers.set("Access-Control-Allow-Origin", origin);
+    response.headers.set("Access-Control-Allow-Credentials", "true");
+    response.headers.set("Access-Control-Allow-Methods", CORS_METHODS);
+    response.headers.set("Access-Control-Allow-Headers", CORS_HEADERS);
+    response.headers.set("Access-Control-Max-Age", "86400");
+    response.headers.append("Vary", "Origin");
   }
-  return null;
+
+  return response;
 }
 
-// 3. تصدير دالة الـ middleware المحدثة
-export default withAuth(
-  function middleware(req) {
-    // أ) فحص ومعالجة الـ CORS أولاً (مهم جداً لمنع الحظر التلقائي)
-    const corsResponse = handleCors(req);
-    if (corsResponse) return corsResponse;
+export async function proxy(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
 
-    const token = req.nextauth.token;
-    const isApiRoute = req.nextUrl.pathname.startsWith("/api");
+  const isApiRoute =
+    pathname === "/api" || pathname.startsWith("/api/");
 
-    // ب) إذا لم يكن المستخدم أدمن
-    if (token?.role !== "admin") {
-      if (isApiRoute) {
-        // نرجع خطأ 403 مع تمرير هيدرز الـ CORS لئلا يظهر خطأ CORS بالمتصفح
-        return NextResponse.json(
-          { message: "Not Authorized" }, 
-          { status: 403, headers: corsHeaders } 
-        );
-      }
-      return NextResponse.redirect(new URL("/login", req.url));
-    }
+  const isAdminPage =
+    pathname === "/admin" || pathname.startsWith("/admin/");
 
-    // ج) في حال النجاح (المستخدم أدمن ومصرح له)
-    const response = NextResponse.next();
-    // نرفق هيدرز الـ CORS مع الاستجابة الناجحة
-    Object.entries(corsHeaders).forEach(([key, value]) => {
-      response.headers.set(key, value);
+  const isAdminApi =
+    pathname === "/api/admin" ||
+    pathname.startsWith("/api/admin/");
+
+  // Handle CORS preflight before authentication.
+  if (isApiRoute && request.method === "OPTIONS") {
+    const response = new NextResponse(null, {
+      status: 204,
     });
-    return response;
-  },
-  {
-    callbacks: {
-      // تعديل جوهري: السماح بمرور طلبات الـ OPTIONS والـ CORS دون فحص التوكن لمنع حظر المتصفح
-      authorized: ({ token, req }) => {
-        if (req.method === "OPTIONS") return true;
-        return !!token;
-      },
-    },
-    pages: {
-      signIn: "/login", 
-    }
+
+    return addCorsHeaders(response, request);
   }
-);
+
+  // Public API routes are not authenticated here.
+  // They must implement their own authorization where required.
+  if (!isAdminPage && !isAdminApi) {
+    if (isApiRoute) {
+      return addCorsHeaders(NextResponse.next(), request);
+    }
+
+    return NextResponse.next();
+  }
+
+  // Fail closed if the production secret is missing.
+  const secret = process.env.NEXTAUTH_SECRET;
+
+  if (!secret) {
+    if (isAdminApi) {
+      return addCorsHeaders(
+        NextResponse.json(
+          { message: "Authentication configuration error." },
+          { status: 500 }
+        ),
+        request
+      );
+    }
+
+    return NextResponse.redirect(
+      new URL("/login", request.url)
+    );
+  }
+
+  let token;
+
+  try {
+    token = await getToken({
+      req: request,
+      secret,
+      secureCookie: process.env.NODE_ENV === "production",
+    });
+  } catch (error) {
+    console.error("Failed to read authentication token:", error);
+    token = null;
+  }
+
+  if (!token) {
+    if (isAdminApi) {
+      return addCorsHeaders(
+        NextResponse.json(
+          { message: "Authentication required." },
+          { status: 401 }
+        ),
+        request
+      );
+    }
+
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set(
+      "callbackUrl",
+      request.nextUrl.pathname + request.nextUrl.search
+    );
+
+    return NextResponse.redirect(loginUrl);
+  }
+
+  if (token.role !== "admin") {
+    if (isAdminApi) {
+      return addCorsHeaders(
+        NextResponse.json(
+          { message: "Not authorized." },
+          { status: 403 }
+        ),
+        request
+      );
+    }
+
+    return NextResponse.redirect(
+      new URL("/login", request.url)
+    );
+  }
+
+  const response = NextResponse.next();
+
+  if (isApiRoute) {
+    return addCorsHeaders(response, request);
+  }
+
+  return response;
+}
 
 export const config = {
-  matcher: [
-    "/admin/:path*",        
-    "/api/admin/:path*",
-  ], 
+  matcher: ["/admin/:path*", "/api/:path*"],
 };
-

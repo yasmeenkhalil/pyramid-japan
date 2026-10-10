@@ -1,4 +1,5 @@
-import { NextAuthOptions } from "next-auth";
+
+import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
@@ -8,8 +9,14 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        email: {
+          label: "Email",
+          type: "email",
+        },
+        password: {
+          label: "Password",
+          type: "password",
+        },
       },
 
       async authorize(credentials) {
@@ -18,11 +25,13 @@ export const authOptions: NextAuthOptions = {
         }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: {
+            email: credentials.email.trim(),
+          },
         });
 
         if (!user) {
-          throw new Error("No user found with this email.");
+          throw new Error("Invalid email or password.");
         }
 
         const isPasswordCorrect = await bcrypt.compare(
@@ -31,7 +40,7 @@ export const authOptions: NextAuthOptions = {
         );
 
         if (!isPasswordCorrect) {
-          throw new Error("Invalid password.");
+          throw new Error("Invalid email or password.");
         }
 
         return {
@@ -50,38 +59,40 @@ export const authOptions: NextAuthOptions = {
 
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
   },
 
-    useSecureCookies: true, 
-  cookies: {
-    sessionToken: {
-      name: `__Secure-next-auth.session-token`, 
-      options: {
-        httpOnly: true,
-        sameSite: "lax", 
-        path: "/",
-        secure: true, 
-      },
+  useSecureCookies: process.env.NODE_ENV === "production",
+
+  callbacks: {
+    async jwt({ token, user }) {
+      const mutableToken = token as typeof token & {
+        role?: string;
+      };
+
+      if (user) {
+        mutableToken.role = (
+          user as typeof user & { role?: string }
+        ).role;
+      }
+
+      return token;
     },
-    callbackUrl: {
-      name: `__Secure-next-auth.callback-url`,
-      options: {
-        sameSite: "lax", 
-        path: "/",
-        secure: true,
-      },
-    },
-    csrfToken: {
-      name: `__Secure-next-auth.csrf-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax", 
-        path: "/",
-        secure: true,
-      },
+
+    async session({ session, token }) {
+      if (session.user) {
+        const mutableSessionUser = session.user as typeof session.user & {
+          role?: string;
+        };
+
+        mutableSessionUser.role = (
+          token as typeof token & { role?: string }
+        ).role;
+      }
+
+      return session;
     },
   },
 
-
-  secret: process.env.NEXTAUTH_SECRET  ,
+  secret: process.env.NEXTAUTH_SECRET,
 };
